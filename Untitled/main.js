@@ -3,4 +3,4 @@
 */
 
 Game = new game();
-Game.$scene = Scene_Play();
+Game.$scene = new Scene_Play();

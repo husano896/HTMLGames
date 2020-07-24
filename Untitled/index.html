@@ -8,7 +8,7 @@
   <base href="./">
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="./main.css" />
+  <link rel="stylesheet" href="main.css" />
   <link rel="stylesheet" href="../shared/style.css" />
 </head>
 
@@ -16,12 +16,19 @@
   <div>
     <canvas id="game" width="800" height="600"></canvas>
   </div>
-  <button onclick="location.reload()">Reload</button>
+  <!-- 其他全站用的工具 -->
   <script src="../shared/Utils.js"></script>
-  <script src="./game.js"></script>
-  <script src="./scene.js"></script>
-  <script src="./main.js"></script>
+  <script src="../shared/prototype_overrider.js"></script>
+
+  <!-- 遊戲主體 -->
+  <script src="game.js"></script>
+  <!-- 插件 -->
+  <!-- 遊戲物件 -->
+  <script src="sprite/sprite.js"></script>
+  <!-- 可切換的場景 -->
+  <script src="scene/scene.js"></script>
+  <script src="scene/scene_play.js"></script>
+  <!-- 遊戲進入點 -->
+  <script src="main.js"></script>
 
 </body>
-
-</html>
