@@ -28,16 +28,16 @@ class Sprite_Orange extends Sprite {
     }
 
     draw() {
-        if (this.life <= 0.0) 
+        if (this.life <= 0.0) {
             return;
-        
+        }
         this.transpancy = this.life;
         super.draw();
     }
     handle_gravity(groundY) {
-        if (!this.life) 
+        if (!this.life) {
             return;
-        
+        }
         // 掉到地上後逐漸消失的橘
         if (super.handle_gravity(groundY)) {
             this.life -= 0.05;
