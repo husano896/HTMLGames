@@ -1,91 +1,119 @@
 class Sprite_Player extends Sprite {
     jump_power = 20;
     jumping = false;
+    snd_jump = new Audio().setSrc('audio/boop.mp3');
+    gravity = 1
+    image = new Image().setSrc('img/a.png');
     constructor() {
-        const i = new Image();
-        i.src = 'img/a.png';
-        super({ image: i });
+        super();
+        
     }
 
     jump() {
         if (this.vec_y !== 0 || this.jumping)
             return;
-
         this.vec_y = this.jump_power;
         this.jumping = true;
+        this.snd_jump.play();
     }
-
 }
 
 class Sprite_Orange extends Sprite {
     life = 1.0;
-    constructor(i = null) {
-        if (!i) {
-            i = new Image();
-            i.src = 'img/orange0.png';
-        }
-        super({ image: i, x: Math.random() * (Game.WIDTH - 60) });
+    gravity = 0.25
+    image = new Image().setSrc('img/orange0.png');
+    constructor() {
+        // 初始化時設定位置
+        super({x: Math.random() * (Game.WIDTH - 60) });
     }
 
-    draw = function () {
+    draw() {
         if (this.life <= 0.0) {
             return;
         }
-        Game.drawImage(this.image, this.x, this.y, this.life);
+        this.transpancy = this.life;
+        super.draw();
     }
-    handle_gravity(g, groundY) {
+    handle_gravity(groundY) {
         if (!this.life) {
             return;
         }
-        if (super.handle_gravity(0.25, groundY)) {
+        // 掉到地上後逐漸消失的橘
+        if (super.handle_gravity(groundY)) {
             this.life -= 0.05;
         }
     }
 }
 
+// 壞橘
 class Sprite_Orange2 extends Sprite_Orange {
-    constructor() {
-        const i = new Image();
-        i.src = 'img/orange1.png';
-        super(i);
-    }
+    image = new Image().setSrc('img/orange1.png');
 }
 
 class Scene_Play extends Scene {
     time = 0
     score = 0
-    gravity = 1
+
     gameover = false
 
     // 音效圖片加載
-    snd_score;
+    snd_score = new Audio().setSrc('../shared/Audio/SE/decision7.mp3');
+    snd_scoreDec = new Audio().setSrc('../shared/Audio/SE/decision15.mp3');
+    snd_timeUp = new Audio().setSrc('audio/timeUp.mp3');
     spr_player;
     spr_oranges = [];
+    
     // 讀取資源區
     constructor() {
         super();
-        this.snd_score = new Audio();
-        this.snd_score.onloadeddata = function () {
-            this.ready = true;
-            this.startGame();
-        }.bind(this);
-        this.snd_score.src = 'audio/boop.mp3'
         this.snd_score.load();
+        this.snd_scoreDec.load();
+        this.snd_timeUp.load();
 
-        this.spr_player = new Sprite_Player();
+        // 素材讀取完後才開始
+        Promise.all([this.snd_score, this.snd_scoreDec, this.snd_timeUp].map(snd =>
+            new Promise((resolve, reject) => {
+                snd.onloadeddata = resolve
+                snd.onerror = reject
+            })
+        )).then(() => {
+            this.ready = true;
+        });
     }
 
     // 開始遊戲
-    startGame = function () {
+    startGame() {
+        this.spr_oranges = [];
+        this.spr_player = new Sprite_Player();
         this.time = 1800;
         this.gameover = false;
+        this.score = 0;
     }
 
     // 畫面更新
-    update = function () {
+    update() {
         if (!this.ready) {
             return;
         }
+        // 遊戲尚未開始時
+        if (!this.spr_player) {
+            Game.drawText(`Catch`, Game.WIDTH / 2, 120,
+                { size: 24, color: 'rgb(255,255,255)', font: 'PressStart2P', textAlign: 'center' });
+            Game.drawText(`OrangeJam`, Game.WIDTH / 2, 120 + 48,
+                { size: 48, color: 'rgb(255,127,39)', font: 'PressStart2P', textAlign: 'center' });
+            Game.drawText(`Press Space to start`, Game.WIDTH / 2, Game.HEIGHT - 72 - 36,
+                { size: 24, color: 'rgb(255,255,0)', font: 'PressStart2P', textAlign: 'center' });
+            if (Game.getPressed('Space')) {
+                this.startGame();
+            }
+            return;
+        }
+        // 重新開始
+        if (Game.getPressed('KeyR')) {
+            this.startGame();
+            return;
+        }
+
         // 時間
         if (this.gameover) {
             Game.drawText('--', Game.WIDTH / 2, 8,
@@ -95,13 +123,20 @@ class Scene_Play extends Scene {
             const color = Math.round(255 * this.time / 600);
             Game.drawText(timeLeft, Game.WIDTH / 2, 8,
                 { size: 32, color: `rgba(255,${color},${color},1)`, font: 'PressStart2P', textAlign: 'center' });
+
+            // 分數
+            Game.drawText(this.score, Game.WIDTH / 2, Game.HEIGHT / 2 - 36,
+                { size: 72, color: 'rgba(255,255,255,0.25)', font: 'PressStart2P', textAlign: 'center' });
         }
 
-        // 分數
-        Game.drawText(this.score, Game.WIDTH / 2, Game.HEIGHT / 2 - 36,
-            { size: 72, color: 'rgba(255,255,255,0.25)', font: 'PressStart2P', textAlign: 'center' });
-
+        // 已經遊戲結束時
         if (this.gameover) {
+            Game.drawText(`SCORE`, Game.WIDTH / 2, Game.HEIGHT / 2 - 36 - 108,
+                { size: 48, color: 'rgb(255,255,255)', font: 'PressStart2P', textAlign: 'center' });
+            Game.drawText(`${this.score}`, Game.WIDTH / 2, Game.HEIGHT / 2 - 36,
+                { size: 72, color: 'rgb(255,255,0)', font: 'PressStart2P', textAlign: 'center' });
+            Game.drawText(`Press R to Restart`, Game.WIDTH / 2, Game.HEIGHT - 72 - 36,
+                { size: 24, color: 'rgb(255,255,255)', font: 'PressStart2P', textAlign: 'center' });
             return;
         }
 
@@ -114,7 +149,9 @@ class Scene_Play extends Scene {
                 this.spr_oranges.push(newOrange);
             }
         } else {
+            // 時間到
             this.gameover = true;
+            this.snd_timeUp.play();
             return;
         }
 
@@ -128,37 +165,46 @@ class Scene_Play extends Scene {
         if (Game.getPressed('ArrowUp')) {
             this.spr_player.jump();
         }
-        else if (Game.getPressed('ArrowDown')) {
-            // this.spr_player.y = Math.min(this.spr_player.y +4, Game.HEIGHT - this.spr_player.height);
-        }
-        this.spr_player.handle_gravity(this.gravity, Game.HEIGHT);
+
+        // 玩家處理
+        this.spr_player.handle_gravity(Game.HEIGHT);
+        this.spr_player.draw();
+
         // 繪製
-        for (var i=0;i<this.spr_oranges.length;i++) {
+        for (var i = 0; i < this.spr_oranges.length; i++) {
             const o = this.spr_oranges[i];
-            o.handle_gravity(this.gravity / 2, Game.HEIGHT);
+            o.handle_gravity(Game.HEIGHT);
             o.draw();
-            // 如果放到時間到?
+            // 如果把橘橘放到壞掉?
             if (o.life <= 0) {
                 // 漏接壞橘橘
                 if (o instanceof Sprite_Orange2) {
                     this.score++;
+                    this.snd_score.play();
                 } else {
                     this.score--;
+                    this.snd_scoreDec.play();
                 }
                 delete this.spr_oranges[i];
-            }/* else if (o.checkCollide(this.spr_player, )){
-
-            }*/
-            
+            } else if (o.checkCollide(this.spr_player)) {
+                // 接到壞橘橘
+                if (o instanceof Sprite_Orange2) {
+                    this.score--;
+                    this.snd_scoreDec.play();
+                } else {
+                    this.score++;
+                    this.snd_score.play();
+                }
+                delete this.spr_oranges[i];
+            }
         }
-        
+        // 去除過期橘橘
         this.spr_oranges = this.spr_oranges.filter(o => !!o);
-        // 分數判定
-        this.spr_player.draw();
+
     }
 
-    onClick = function (event) {
-        console.log(this, event);
+    onClick() {
+        console.log(this.spr_player, this.spr_oranges);
     }
 }
 

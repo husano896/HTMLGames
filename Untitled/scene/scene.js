@@ -1,11 +1,11 @@
 class Scene {
 	ready = false;
 	constructor() { }
-	update = function (...args) { }
-	destroy = function (...args) { }
+	update(...args) { }
+	destroy(...args) { }
 
-	onClick = function (...args) { }
-	onMouseMove = function(...args) {}
-	onKeyDown = function (...args) { }
-	onKeyUp = function (...args) { }
+	onClick(...args) { }
+	onMouseMove(...args) {}
+	onKeyDown(...args) { }
+	onKeyUp(...args) { }
 }

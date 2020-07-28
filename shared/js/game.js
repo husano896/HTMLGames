@@ -21,7 +21,7 @@ var game = class {
 
   pressedKeys = {};
   // 初始化畫布
-  initalizeCanvas = function () {
+  initalizeCanvas() {
     this.canvas = document.getElementById('game');
     if (!this.canvas) { throw new Error('找不到畫布.'); }
 
@@ -37,24 +37,24 @@ var game = class {
   }
 
   // 更新畫布
-  update = function () {
+  update() {
     this.ctx.fillStyle = "rgb(0,0,0)";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     if (this._scene) {
-      this._scene.update(this);
+      this._scene.update();
     }
     window.requestAnimationFrame(this.update.bind(this));
   }
 
   // 畫布點擊事件
-  onCanvasClick = function (event) {
+  onCanvasClick(event) {
     // console.log(event);
     // this.playAudio(this.audio.snd_tada);
     if (this._scene)
       this._scene.onClick(event);
   }
   // 滑鼠移動事件
-  onMouseMove = function (event) {
+  onMouseMove(event) {
     //滑鼠請抓offsetX, offsetY
     /*if (event.offsetX || event.offsetY) {
       event.x = event.offsetX;
@@ -66,34 +66,34 @@ var game = class {
   }
 
   // 鍵盤點擊事件
-  onKeyDown = function (event) {
+  onKeyDown(event) {
     // console.log(event);
-    this.pressedKeys[event.key] = true;
+    this.pressedKeys[event.code] = true;
     if (this._scene)
       this._scene.onKeyDown(event);
   }
 
-  onKeyUp = function (event) {
+  onKeyUp(event) {
     // console.log(event);
-    this.pressedKeys[event.key] = false;
+    this.pressedKeys[event.code] = false;
     if (this._scene)
       this._scene.onKeyUp(event);
   }
 
   // 取得是否已按下按鍵(包含壓著)
-  getPressed = function (key) {
+  getPressed(key) {
     return this.pressedKeys[key];
   }
 
   // 播放聲音
-  playAudio = function (fileName) {
+  playAudio(fileName) {
     const a = new Audio(fileName);
     a.play();
     return a;
   }
 
   // 繪製文字
-  drawText = function (text, x, y, ...[args]) {
+  drawText(text, x, y, ...[args]) {
     this.ctx.font = `${args.size || 14}pt ${args.font || 'Arial'}`;
     this.ctx.textAlign = args.textAlign || 'start';
     this.ctx.fillStyle = args.color || 'white';
@@ -102,7 +102,7 @@ var game = class {
     return this.ctx.fillText(text, x, y);
   }
   // 繪製圖像
-  drawImage = function (image, x, y, alpha = 1.0, align = 'left-top') {
+  drawImage(image, x, y, alpha = 1.0, align = 'left-top') {
     this.ctx.globalAlpha = alpha;
     switch (align) {
       case 'center':
@@ -112,6 +112,7 @@ var game = class {
         this.ctx.drawImage(image, x, y);
         break;
     }
+    this.ctx.globalAlpha = 1.0;
   }
 
   constructor() {
