@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
 
 <head>
@@ -12,44 +11,27 @@ a:visited		{font:9pt/12pt 新細明體; color:#4e4e4e}
 <script> 
 
 function Homepage(){
-// in real bits, urls get returned to our script like this:
-// res://shdocvw.dll/http_404.htm#http://www.DocURL.com/bar.htm 
 
-	//For testing use DocURL = "res://shdocvw.dll/http_404.htm#https://www.microsoft.com/bar.htm"
 	DocURL = document.location.href;
-		
-	//this is where the http or https will be, as found by searching for :// but skipping the res://
 	protocolIndex=DocURL.indexOf("://",4);
-	
-	//this finds the ending slash for the domain server 
 	serverIndex=DocURL.indexOf("/",protocolIndex + 3);
-
-		//for the href, we need a valid URL to the domain. We search for the # symbol to find the begining 
-	//of the true URL, and add 1 to skip it - this is the BeginURL value. We use serverIndex as the end marker.
-	//urlresult=DocURL.substring(protocolIndex - 4,serverIndex);
 	BeginURL=DocURL.indexOf("#",1) + 1;
 	if (protocolIndex - BeginURL > 7)
 		urlresult=""
 	
 	urlresult=DocURL.substring(BeginURL,serverIndex);
 
-	//for display, we need to skip after http://, and go to the next slash
 	displayresult=DocURL.substring(protocolIndex + 3 ,serverIndex);
-
-	// Security precaution: must filter out "urlResult" and "displayresult"
-	forbiddenChars = new RegExp("[<>\'\"]", "g");	// Global search/replace
+	forbiddenChars = new RegExp("[<>\'\"]", "g");
 	urlresult = urlresult.replace(forbiddenChars, "");
 	displayresult = displayresult.replace(forbiddenChars, "");
-
 	document.write('<A target=_top HREF="' + urlresult + '">' + displayresult + "</a>");
-
 }
 
 </script>
 
 
 <body bgcolor="white">
-<object id=saOC CLASSID='clsid:B45FF030-4447-11D2-85DE-00C04FA35C89' HEIGHT=0 width=0></object>
 
 <table width="400" cellpadding="3" cellspacing="5">
   <tr>

@@ -10,23 +10,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Tocas UI：CSS 與元件 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.css">
+  
   <!-- Tocas JS：模塊與 JavaScript 函式 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tocas-ui/2.3.3/tocas.js"></script>
+  
+  <link rel="stylesheet" href="main.css">
 </head>
 
-<body class="ts container"  style="padding:32px;">
-  
+
+</head>
+
+
+<body >
+  <div class="ts narrow container"  style="padding-top:32px;">
   <h3 class="ts center aligned icon header">
     <i class="star icon"></i>HTMLGames
     <div class="sub header">Made with canvas & js</div>
 </h3>
   <div class="ts segmented list">
     <a class="selected item"  href="CatchOrangeJam">
-      搖橘
+      抓橘
     </a>
     <a class="item" href="FurBall180">
       FurBall180
-
     </a>
   </div>
+  </div>
+  <canvas id="game">
+  </canvas>
+  <!-- 遊戲進入點 -->
+  <script src="main.js"></script>
 </body>
