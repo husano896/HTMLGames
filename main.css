@@ -1,7 +1,14 @@
 canvas {
-  cursor: url('shared/cursor.png'), auto;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
-  z-index: -1;
+  z-index: 0;
+}
+
+body, *:not(a) {
+  cursor: url('shared/cursor.png'), auto;
+}
+
+.container {
+  z-index: 1;
 }
