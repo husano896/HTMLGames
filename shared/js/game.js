@@ -4,10 +4,6 @@ var game = class {
   get WIDTH() { return 800; }
   get HEIGHT() { return 600; }
 
-  canvas = null;
-  ctx = null;
-  // 場景設定
-  _scene = null;
   get $scene() {
     return this._scene;
   };
@@ -102,14 +98,21 @@ var game = class {
     return this.ctx.fillText(text, x, y);
   }
   // 繪製圖像
-  drawImage(image, x, y, alpha = 1.0, align = 'left-top') {
+  drawImage(image, x, y, alpha = 1.0, ...[args]) {
     this.ctx.globalAlpha = alpha;
+    let align = args?.align || 'left-top';
+    let srcX = args?.srcX || 0;
+    let srcY = args?.srcY || 0;
+    let srcWidth = args?.srcWidth || image.width;
+    let srcHeight = args?.srcHeight || image.height;
+    let dstWidth = args?.dstWidth || srcWidth;
+    let dstHeight = args?.dstHeight || srcHeight;
     switch (align) {
       case 'center':
-        this.ctx.drawImage(image, x - image.width / 2, y - image.height / 2);
+        this.ctx.drawImage(image, x - dstWidth / 2, y - dstHeight / 2);
         break;
       default:
-        this.ctx.drawImage(image, x, y);
+        this.ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, x, y, dstWidth, dstHeight);
         break;
     }
     this.ctx.globalAlpha = 1.0;

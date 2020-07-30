@@ -1,17 +1,19 @@
-random_color = function (min = 96, plusRange = 128){
+function random_color(min = 96, plusRange = 128){
   return Math.floor(Math.random() * plusRange + min);
 }
 
 class Sprite_Ball {
-  x = 0;
-  y = 0;
-  vec_x = 4;
-  vec_y = 0;
-  gravity = 0.5;
-  BALL_SIZE = 4;
-  BALL_COLOR = "";
-  BOUNCE_POWER = 16;
+  init() {
+    this.vec_x = 4;
+    this.vec_y = 0;
+    this.gravity = 0.5;
+    this.BALL_SIZE = 4;
+    this.BALL_COLOR = "";
+    this.BOUNCE_POWER = 16;
+  }
+
   constructor() {
+    this.init();
     this.x = Math.random() * window.innerWidth;
     this.y = Math.random() * window.innerHeight;
     this.BALL_COLOR = `rgb(${random_color()} ,${random_color()},${random_color()})`;

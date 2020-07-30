@@ -1,6 +1,8 @@
 class Scene {
-	ready = false;
-	constructor() { }
+	
+	constructor() {
+		this.ready = false;
+	}
 	update(...args) { }
 	destroy(...args) { }
 

@@ -1,12 +1,15 @@
 class Sprite_Player extends Sprite {
-    jump_power = 20;
-    jumping = false;
-    snd_jump = new Audio().setSrc('audio/boop.mp3');
-    gravity = 1
-    image = new Image().setSrc('img/a.png');
+    init() {
+        this.jump_power = 20;
+        this.jumping = false;
+        this.snd_jump = new Audio().setSrc('audio/boop.mp3');
+        this.gravity = 1
+        this.image = new Image().setSrc('img/a.png');
+    }
+
     constructor() {
         super();
-        
+        this.init();
     }
 
     jump() {
@@ -19,12 +22,16 @@ class Sprite_Player extends Sprite {
 }
 
 class Sprite_Orange extends Sprite {
-    life = 1.0;
-    gravity = 0.25
-    image = new Image().setSrc('img/orange0.png');
+    init() {
+        this.life = 1.0;
+        this.gravity = 0.25
+        this.image = new Image().setSrc('img/orange0.png');
+    }
+
     constructor() {
         // 初始化時設定位置
         super({x: Math.random() * (Game.WIDTH - 60) });
+        this.init();
     }
 
     draw() {
@@ -47,25 +54,31 @@ class Sprite_Orange extends Sprite {
 
 // 壞橘
 class Sprite_Orange2 extends Sprite_Orange {
-    image = new Image().setSrc('img/orange1.png');
+    constructor() {
+        super();
+        this.image = new Image().setSrc('img/orange1.png');
+    }
 }
 
 class Scene_Play extends Scene {
-    time = 0
-    score = 0
-
-    gameover = false
-
-    // 音效圖片加載
-    snd_score = new Audio().setSrc('../shared/Audio/SE/decision7.mp3');
-    snd_scoreDec = new Audio().setSrc('../shared/Audio/SE/decision15.mp3');
-    snd_timeUp = new Audio().setSrc('audio/timeUp.mp3');
-    spr_player;
-    spr_oranges = [];
+    init() {
+        this.time = 0
+        this.score = 0
+    
+        this.gameover = false
+    
+        // 音效圖片加載
+        this.snd_score = new Audio().setSrc('../shared/Audio/SE/decision7.mp3');
+        this.snd_scoreDec = new Audio().setSrc('../shared/Audio/SE/decision15.mp3');
+        this.snd_timeUp = new Audio().setSrc('audio/timeUp.mp3');
+        this.spr_player;
+        this.spr_oranges = [];
+    }
     
     // 讀取資源區
     constructor() {
         super();
+        this.init();
         this.snd_score.load();
         this.snd_scoreDec.load();
         this.snd_timeUp.load();
