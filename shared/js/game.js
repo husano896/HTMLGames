@@ -1,8 +1,8 @@
 var game = class {
 
   // 畫面大小常數
-  get WIDTH() { return 800; }
-  get HEIGHT() { return 600; }
+  get WIDTH() { return this.canvas.width; }
+  get HEIGHT() { return this.canvas.height; }
 
   get $scene() {
     return this._scene;
@@ -15,7 +15,25 @@ var game = class {
     this._scene = newScene;
   }
 
-  pressedKeys = {};
+  constructor() {
+    // 系統項
+    this.pressedKeys = {};
+    this._scene = null;
+    this.clearColor = 'black';
+
+    // 掛載畫布
+    this.initalizeCanvas();
+
+    // 掛載事件
+    this.canvas.addEventListener('click', this.onCanvasClick.bind(this));
+    this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+    document.addEventListener('keydown', this.onKeyDown.bind(this));
+    document.addEventListener('keyup', this.onKeyUp.bind(this));
+
+    // 畫面更新推動
+    window.requestAnimationFrame(this.update.bind(this));
+  }
+
   // 初始化畫布
   initalizeCanvas() {
     this.canvas = document.getElementById('game');
@@ -24,17 +42,13 @@ var game = class {
     this.ctx = this.canvas.getContext('2d');
     if (!this.ctx) { throw new Error('找不到Context.'); }
 
-    // 設定畫布大小
-    this.canvas.width = this.WIDTH;
-    this.canvas.height = this.HEIGHT;
-
     console.log('畫布', this.canvas);
     console.log('Context', this.ctx);
   }
 
   // 更新畫布
   update() {
-    this.ctx.fillStyle = "rgb(0,0,0)";
+    this.ctx.fillStyle = this.clearColor;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     if (this._scene) {
       this._scene.update();
@@ -118,17 +132,6 @@ var game = class {
     this.ctx.globalAlpha = 1.0;
   }
 
-  constructor() {
-    // 掛載畫布
-    this.initalizeCanvas();
 
-    // 掛載事件
-    this.canvas.addEventListener('click', this.onCanvasClick.bind(this));
-    this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
-    document.addEventListener('keydown', this.onKeyDown.bind(this));
-    document.addEventListener('keyup', this.onKeyUp.bind(this));
-
-    window.requestAnimationFrame(this.update.bind(this));
-  }
 
 }

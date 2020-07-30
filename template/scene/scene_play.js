@@ -18,58 +18,10 @@ class Sprite_Player extends Sprite {
     }
 }
 
-class Sprite_Orange extends Sprite {
-    init() {
-        this.life = 1.0;
-        this.gravity = 0.25
-        this.image = R.Image.Orange0;
-    }
-
-    constructor() {
-        // 初始化時設定位置
-        super({x: Math.random() * (Game.WIDTH - 60) });
-        this.init();
-    }
-
-    draw() {
-        if (this.life <= 0.0) {
-            return;
-        }
-        this.transpancy = this.life;
-        super.draw();
-    }
-    handle_gravity(groundY) {
-        if (!this.life) {
-            return;
-        }
-        // 掉到地上後逐漸消失的橘
-        if (super.handle_gravity(groundY)) {
-            this.life -= 0.05;
-        }
-    }
-}
-
-// 壞橘
-class Sprite_Orange2 extends Sprite_Orange {
-    constructor() {
-        super();
-        this.image = R.Image.Orange1;
-    }
-}
-
 class Scene_Play extends Scene {
-    init() {
-
-    }
-    
     // 讀取資源區
     constructor() {
         super();
-        this.time = 0
-        this.score = 0
-    
-        this.gameover = false
-    
         // 音效圖片加載
         this.snd_score = R.Audio.SE_Score;
         this.snd_scoreDec = R.Audio.SE_ScoreDec;
@@ -77,7 +29,7 @@ class Scene_Play extends Scene {
         this.spr_player;
         this.spr_oranges = [];
 
-        this.ready = true;
+        // 素材讀取完後才開始
     }
 
     // 開始遊戲

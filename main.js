@@ -3,22 +3,19 @@ function random_color(min = 96, plusRange = 128){
 }
 
 class Sprite_Ball {
-  init() {
+  constructor() {
+
     this.vec_x = 4;
     this.vec_y = 0;
     this.gravity = 0.5;
     this.BALL_SIZE = 4;
     this.BALL_COLOR = "";
     this.BOUNCE_POWER = 16;
-  }
 
-  constructor() {
-    this.init();
     this.x = Math.random() * window.innerWidth;
     this.y = Math.random() * window.innerHeight;
     this.BALL_COLOR = `rgb(${random_color()} ,${random_color()},${random_color()})`;
   }
-
 
   draw() {
     Game.ctx.fillStyle = this.BALL_COLOR;
@@ -54,12 +51,28 @@ class Sprite_Ball {
 
 var game = class {
 
-  canvas = null;
-  ctx = null;
+  constructor() {
+    // 掛載畫布
+    this.initalizeCanvas();
 
-  pressedKeys = {};
+    // 掛載事件
+    this.canvas.addEventListener('click', this.onCanvasClick.bind(this));
+    this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+    document.addEventListener('keydown', this.onKeyDown.bind(this));
+    document.addEventListener('keyup', this.onKeyUp.bind(this));
 
-  balls = [];
+    // 場景初始化
+    this.pressedKeys = {};
+    this.balls = [];
+    // 根據現在時間決定球數量
+    for (var i = 0; i < new Date().getHours() * 5; i++) {
+      this.balls.push(new Sprite_Ball());
+    }
+
+    window.requestAnimationFrame(this.update.bind(this));
+  }
+
+  
   // 初始化畫布
   initalizeCanvas() {
     this.canvas = document.getElementById('game');
@@ -70,11 +83,6 @@ var game = class {
 
     console.log('畫布', this.canvas);
     console.log('Context', this.ctx);
-
-    // 根據現在時間決定球數量
-    for (var i = 0; i < new Date().getHours() * 5; i++) {
-      this.balls.push(new Sprite_Ball());
-    }
   }
 
   // 更新畫布
@@ -129,18 +137,6 @@ var game = class {
     return this.ctx.fillText(text, x, y);
   }
 
-  constructor() {
-    // 掛載畫布
-    this.initalizeCanvas();
-
-    // 掛載事件
-    this.canvas.addEventListener('click', this.onCanvasClick.bind(this));
-    this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
-    document.addEventListener('keydown', this.onKeyDown.bind(this));
-    document.addEventListener('keyup', this.onKeyUp.bind(this));
-
-    window.requestAnimationFrame(this.update.bind(this));
-  }
 
 }
 
