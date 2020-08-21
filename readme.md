@@ -10,4 +10,4 @@ Some games may have different license due to assets.
 
 ## 遊戲列表 Game List
 
-- coming soooooooon(TM)
+- [遊戲目錄首頁](https://husano896.github.io/HTMLGames)

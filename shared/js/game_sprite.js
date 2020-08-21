@@ -14,7 +14,7 @@ class Sprite {
         this.srcHeight = 0;
         this.dstWidth = 0;
         this.dstHeight = 0;
-        console.log(args);
+        // console.log(args);
         if (args) {
             if (args.imageSrc) {
                 const i = new Image();
@@ -25,7 +25,7 @@ class Sprite {
             }
             if (args.image) {
                 this.image = args.image;
-                console.log(args.image);
+                // console.log(args.image);
             }
             if (args.x)
                 this.x = args.x;
@@ -36,9 +36,7 @@ class Sprite {
         }
     }
 
-    update() {
-
-    }
+    update() {}
     draw() {
         if (!this.image) {
             console.error(this);
@@ -64,10 +62,10 @@ class Sprite {
     }
 
     setSubRect(srcX, srcY, subWidth, subHeight) {
-        this.srcX = srcX || 0;
-        this.srcY = srcY || 0;
-        this.srcWidth = subWidth || 0;
-        this.srcHeight = subHeight || 0;
+        this.srcX = srcX !== undefined ? srcX : this.srcX || 0;
+        this.srcY = srcY !== undefined ? srcY : this.srcY || 0;
+        this.srcWidth = subWidth !== undefined ? subWidth : this.srcWidth || 0;
+        this.srcHeight = subHeight !== undefined ? subHeight : this.srcHeight || 0;
     }
 
     get width() {
@@ -96,5 +94,50 @@ class Sprite {
                 return this.y + this.height;
         }
         return this.y;
+    }
+}
+
+class SpriteGroup {
+    constructor(...args) {
+        this.x = 0;
+        this.y = 0;
+        this.sprites = args || [];
+    }
+
+    draw() {
+        this.sprites.forEach(s => {
+            const x = s.x + this.x;
+            const y = s.y + this.y;
+            // 超出畫面時不繪製
+            if (-s.width > x || x > Game.WIDTH ||
+                -s.height > y || y > Game.HEIGHT) {
+                return;
+            }
+            Game.drawImage(s.image, s.x, s.y, s.transpancy, {
+                srcX: s.srcX,
+                srcY: s.srcY,
+                srcWidth: s.srcWidth,
+                srcHeight: s.srcHeight,
+                dstWidth: s.dstWidth,
+                dstHeight: s.dstHeight
+            });
+        });
+    }
+    push(spr) {
+        this.sprites.push(spr);
+    }
+    moveToTop(spr) {
+        const index = this.sprites.findIndex(s => s === spr);
+        if (index > 0) {
+            this.sprites = this.sprites.filter(s !== spr)
+            this.sprites.unshift(spr);
+        }
+    }
+    moveToBottom(spr) {
+        const index = this.sprites.findIndex(s => s === spr);
+        if (index >= 0) {
+            this.sprites = this.sprites.filter(s !== spr)
+            this.sprites.push(spr);
+        }
     }
 }

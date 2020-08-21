@@ -81,6 +81,7 @@ var game = class {
     this.pressedKeys[event.code] = true;
     if (this._scene)
       this._scene.onKeyDown(event);
+    console.log(event);
   }
 
   onKeyUp(event) {
@@ -122,8 +123,14 @@ var game = class {
     let dstWidth = args?.dstWidth || srcWidth;
     let dstHeight = args?.dstHeight || srcHeight;
     switch (align) {
+      case 'center-top':
+        this.ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, x - dstWidth / 2, y, dstWidth, dstHeight);
+        break;
       case 'center':
-        this.ctx.drawImage(image, x - dstWidth / 2, y - dstHeight / 2);
+        this.ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, x - dstWidth / 2, y - dstHeight / 2, dstWidth, dstHeight);
+        break;
+      case 'center-bottom':
+        this.ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, x - dstWidth / 2, y - dstHeight, dstWidth, dstHeight);
         break;
       default:
         this.ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, x, y, dstWidth, dstHeight);

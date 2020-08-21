@@ -204,6 +204,9 @@ class Scene_Play extends Scene {
 
     onClick() {
         console.log(this.spr_player, this.spr_oranges);
+        if (!this.spr_player) {
+            this.startGame();
+        }
     }
 }
 

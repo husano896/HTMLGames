@@ -12,12 +12,15 @@ var furBallWorld = furBallWorld || function () {
       this.ball = new Image();
       this.ball.src = './ball.png';
       this.rotate = 0;
+      this.stop = false;
     }
     update() {
-	  if (!this.face.complete || !this.ball.complete) {
-		return;
-	  }
-      this.rotate = (this.rotate + furBallSpeed) % 360;
+      if (!this.face.complete || !this.ball.complete) {
+        return;
+      }
+      if (!this.stop) {
+        this.rotate = (this.rotate + furBallSpeed) % 360;
+      }
       ctx.save();
       // rotate the canvas to the specified degrees
       ctx.setTransform(1, 0, 0, 1, canvas.width / 2, canvas.height / 2); // sets scale and origin
@@ -43,8 +46,13 @@ var furBallWorld = furBallWorld || function () {
     console.log('Context', ctx);
 
     furBall = new FurBall();
+
+    canvas.addEventListener('click', onCanvasClick);
   }
 
+  onCanvasClick = function() {
+    furBall.stop = !furBall.stop;
+  }
   // 更新畫布
   update = function () {
     ctx.fillStyle = "#fff";

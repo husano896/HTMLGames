@@ -3,9 +3,12 @@ class _Resource {
     constructor() {
         // 素材區
         this.Audio = {
+            SE_Jump: new Audio().setSrc('audio/SE/boop.mp3')
         };
         this.Image = {
-            Male01: new Image().setSrc('img/Male01.png')
+            Male01: new Image().setSrc('img/Male01.png'),
+            BG: new Image().setSrc('img/bg/bg.png'),
+            Stat: new Image().setSrc('img/stat.png'),
         };
 
         this.error = null;
