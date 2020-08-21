@@ -5,15 +5,19 @@
 	<style>
 		body {
 			text-align: center;
+			margin: 0;
 		}
 		video {
 			width: 100%;
+			max-width: 720px;
 		}
 	</style>
 </head>
 
 <body>
-	<video id="IShakeable" src="doc.mp4"></video>
+	<video muted playsinline id="IShakeable" src="doc.mp4">
+		<source src="doc.mp4" type="video/mp4">
+	</video>
 
 	<p>毛毛：汪醬、橘醬、一手金牌台啤小薄荷</p>
 	<p>動你的滑鼠！</p>
