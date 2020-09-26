@@ -122,6 +122,9 @@ var game = class {
     let srcHeight = args?.srcHeight || image.height;
     let dstWidth = args?.dstWidth || srcWidth;
     let dstHeight = args?.dstHeight || srcHeight;
+
+    // 濾鏡
+    if (args?.filter) { this.ctx.filter = args.filter;  }
     switch (align) {
       case 'center-top':
         this.ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, x - dstWidth / 2, y, dstWidth, dstHeight);
@@ -136,6 +139,7 @@ var game = class {
         this.ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, x, y, dstWidth, dstHeight);
         break;
     }
+    this.ctx.filter = 'none';
     this.ctx.globalAlpha = 1.0;
   }
 

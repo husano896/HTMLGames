@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="google" value="notranslate">
-  <title>抓橘</title>
+  <title>Template</title>
   <base href="./">
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,6 +16,9 @@
   <div>
     <canvas id="game"></canvas>
   </div>
+  <input type="text" id="textInput" #textInput>
+  <button onclick="Utils.RPGMessage(textInput.value)">Message</button>
+  
   <!-- 其他全站用的工具 -->
   <script src="../shared/js/utils.js"></script>
   <script src="../shared/js/prototype_overrider.js"></script>

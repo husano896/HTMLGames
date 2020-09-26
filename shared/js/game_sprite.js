@@ -14,18 +14,15 @@ class Sprite {
         this.srcHeight = 0;
         this.dstWidth = 0;
         this.dstHeight = 0;
-        // console.log(args);
+        this.filter = 'none';
         if (args) {
             if (args.imageSrc) {
                 const i = new Image();
                 i.src = args.imageSrc;
-                i.onload = function () {
-                    this.image = i;
-                }.bind(this);
+                i.onload = function () { this.image = i;}.bind(this);
             }
             if (args.image) {
                 this.image = args.image;
-                // console.log(args.image);
             }
             if (args.x)
                 this.x = args.x;
@@ -35,7 +32,6 @@ class Sprite {
             this.setSubRect(args.srcX, args.srcY, args.srcWidth, args.srcHeight);
         }
     }
-
     update() {}
     draw() {
         if (!this.image) {
@@ -53,7 +49,8 @@ class Sprite {
             srcWidth: this.srcWidth,
             srcHeight: this.srcHeight,
             dstWidth: this.dstWidth,
-            dstHeight: this.dstHeight
+            dstHeight: this.dstHeight,
+            filter: this.filter
         });
     }
 
@@ -84,7 +81,6 @@ class Sprite {
         }
         return this.x;
     }
-
 
     getY(pos) {
         switch (pos) {

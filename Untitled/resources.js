@@ -33,21 +33,15 @@ class _Resource {
             this._onerror.forEach(o => o(err));
             console.error(err);
         });
-    };
+    }
 
     AddLoadedListener(f) {
-        if (this.loaded) {
-            f(this);
-            return;
-        }
+        if (this.loaded) { f(this); return; }
         this._onloaded.push(f);
     }
     AddErrorListener(f) {
-        if (this.error) {
-            f(error);
-            return;
-        }
+        if (this.error) { f(error); return; }
         this._onerror.push(f);
     } 
-};
+}
 var R = new _Resource();

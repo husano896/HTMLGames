@@ -38,12 +38,19 @@ class Sprite_Player extends Sprite {
         switch (this.direction) {
             case 'left':
                 this.srcY = 32;
+                this.filter = 'brightness(50%)';
                 break;
             case 'right':
                 this.srcY = 64;
+                this.filter = 'drop-shadow(0px 4px 2px black)';
+                break;
+            case 'up':
+                this.srcY = 96;
+                this.filter = `blur(2px)`;
                 break;
             default:
                 this.srcY = 0;
+                this.filter = 'none';
         }
     }
     jump() {
@@ -55,9 +62,10 @@ class Sprite_Player extends Sprite {
     }
 
     attack() {
-        if (this.attacking === 0) {
-            this.attacking = 10;
+        if (this.attacking > 0) {
+            return;
         }
+        this.attacking = 10;
     }
 }
 
@@ -84,6 +92,7 @@ class Scene_Play extends Scene {
 
     // 畫面更新
     update() {
+        this.spr_player.moving = false;
         // 操控事件
         if (Game.getPressed('ArrowRight')) {
             this.spr_player.x = Math.min(this.spr_player.x + this.spr_player.move_speed, Game.WIDTH - this.spr_player.width);
@@ -93,24 +102,31 @@ class Scene_Play extends Scene {
             this.spr_player.x = Math.max(0, this.spr_player.x - this.spr_player.move_speed);
             this.spr_player.direction = 'left';
             this.spr_player.moving = true;
-        } else {
-            this.spr_player.moving = false;
-        }
+        } 
+
+        if (Game.getPressed('ArrowUp')) {
+            this.spr_player.y = Math.max(this.spr_player.y - this.spr_player.move_speed, 0);
+            this.spr_player.direction = 'up';
+            this.spr_player.moving = true;
+        } else if (Game.getPressed('ArrowDown')) {
+            this.spr_player.y = Math.min(this.spr_player.y + this.spr_player.move_speed, Game.HEIGHT - this.spr_player.height);
+            this.spr_player.direction = 'down';
+            this.spr_player.moving = true;
+        } 
+        /*
         // 旋轉☆跳躍
         if (Game.getPressed('ArrowUp')) {
             this.spr_player.jump();
         }
+        */
 
-        // 旋轉☆跳躍
+        //測試用改能力
         if (Game.getPressed('KeyQ')) {
             this.spr_player.hp = Math.max(0, this.spr_player.hp - 1);
         }
-        // 旋轉☆跳躍
         if (Game.getPressed('KeyW')) {
             this.spr_player.hp = Math.min(this.spr_player.maxhp, this.spr_player.hp + 1);
         }
-
-        // 旋轉☆跳躍
         if (Game.getPressed('KeyE')) {
             this.spr_player.ex = Math.max(0, this.spr_player.ex - 1);
         }
@@ -119,7 +135,7 @@ class Scene_Play extends Scene {
         }
 
         // 玩家處理
-        this.spr_player.handle_gravity(Game.HEIGHT);
+        // this.spr_player.handle_gravity(Game.HEIGHT);
         this.spr_player.update();
 
         // 描繪

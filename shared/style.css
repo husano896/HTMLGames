@@ -1,15 +1,17 @@
-dialog {
+.game-dialog {
 	position: absolute;
 	margin-left: auto;
 	margin-right: auto;
 	left: 0;
 	right: 0;
-	text-align: center;
+	text-align: start;
 	top: 0;
 	bottom: 0;
+	width: 360px;
 }
-
-body {
-	text-align: center;
-  }
-  
+.game-dialog blink { float: right;}
+body { text-align: center;}
+blink {
+    -webkit-animation: 2s linear infinite condemned_blink_effect;
+    animation: 2s linear infinite condemned_blink_effect;
+}

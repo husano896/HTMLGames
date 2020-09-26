@@ -4,15 +4,13 @@ Audio.prototype.play = function() {
     this.currentTime = 0;
     this._play()
 }
-// 使聲音初始化時可以用chain的方式取得一個已經設定好src的物件
-Audio.prototype.setSrc = function(filename) {
-    this.src = filename;
+// 使聲音和圖片初始化時可以用chain的方式取得一個已經設定好src的物件
+Audio.prototype.setSrc = function(n) {
+    this.src = n;
 	this.load();
 	return this;
 }
-
-// 使聲音初始化時可以用chain的方式取得一個已經設定好src的物件
-Image.prototype.setSrc = function(filename) {
-    this.src = filename;
+Image.prototype.setSrc = function(n) {
+    this.src = n;
 	return this;
 }
