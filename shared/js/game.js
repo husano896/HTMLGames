@@ -20,7 +20,9 @@ var game = class {
     this.pressedKeys = {};
     this._scene = null;
     this.clearColor = 'black';
-
+    this.sprites = [];
+    this.transitionFrameCount = 0;
+    this.transitionImage = null;
     // 掛載畫布
     this.initalizeCanvas();
 
@@ -142,7 +144,12 @@ var game = class {
     this.ctx.filter = 'none';
     this.ctx.globalAlpha = 1.0;
   }
-
+  // 轉場
+  transition(type = 'none',frame = 60) {
+    this.transitionFrameCount = frame;
+    this.transitionImage = new Image();
+    this.transitionImage.src = this.canvas.toDataURL();
+  }
 
 
 }

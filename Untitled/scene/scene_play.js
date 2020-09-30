@@ -148,5 +148,14 @@ class Scene_Play extends Scene {
     onClick() {
         console.log(this.spr_player, this.spr_oranges);
     }
+
+    onKeyDown(event) {
+        event.preventDefault();
+        console.log(event);
+        if (event.code === 'F1') {
+
+            Game.$scene = new Scene_Battle();
+        }
+    }
 }
 
