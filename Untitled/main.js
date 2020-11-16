@@ -1,12 +1,15 @@
+var Game;
 /* 	作為遊戲程式的接入點 */
 R.AddLoadedListener(() => {
 	Game = new game();
+	Game.Interpreter = new Interpreter();
 	Game.$scene = new Scene_Play();
 });
 R.AddErrorListener((err) => {
 	document.body.innerHTML = '<h2 style="color:red">Load failed.</h2><br>Detail:' + JSON.stringify(err);
 });
 
+/*
 var firebaseConfig = {
 	apiKey: "AIzaSyCBO0vsYdNP7XJDV-uokl5ywat1rjIlFDU",
 	authDomain: "xfly-htmlgames.firebaseapp.com",
@@ -19,4 +22,4 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+firebase.analytics();*/

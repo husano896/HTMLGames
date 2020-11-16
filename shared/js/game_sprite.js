@@ -1,7 +1,7 @@
 
 class Sprite {
 
-    constructor(...[args]) {
+    constructor(args) {
         this.x = 0;
         this.y = 0;
         this.vec_x = 0;

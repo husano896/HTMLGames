@@ -1,0 +1,24 @@
+{
+  "name": "xfly-htmlgames",
+  "version": "1.0.0",
+  "description": "Obviously here lies some mini games that can played on web or even mobile devices.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "electron-s": "electron .",
+    "electron-b": "electron-packager . xFly-HTMLGames"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/husano896/HTMLGames.git"
+  },
+  "author": "xFly",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/husano896/HTMLGames/issues"
+  },
+  "homepage": "https://github.com/husano896/HTMLGames#readme",
+  "dependencies": {
+    "electron": "^10.1.5"
+  }
+}

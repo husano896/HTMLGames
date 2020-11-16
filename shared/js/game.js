@@ -107,11 +107,11 @@ var game = class {
 
   // 繪製文字
   drawText(text, x, y, ...[args]) {
-    this.ctx.font = `${args.size || 14}pt ${args.font || 'Arial'}`;
+    this.ctx.font = ` ${args.size || 14}pt ${args.font || 'Arial'}`;
     this.ctx.textAlign = args.textAlign || 'start';
     this.ctx.fillStyle = args.color || 'white';
 
-    this.ctx.textBaseline = 'top'
+    this.ctx.textBaseline = 'center'
     return this.ctx.fillText(text, x, y);
   }
   // 繪製圖像
@@ -126,7 +126,7 @@ var game = class {
     let dstHeight = args?.dstHeight || srcHeight;
 
     // 濾鏡
-    if (args?.filter) { this.ctx.filter = args.filter;  }
+    if (args?.filter) { this.ctx.filter = args.filter; }
     switch (align) {
       case 'center-top':
         this.ctx.drawImage(image, srcX, srcY, srcWidth, srcHeight, x - dstWidth / 2, y, dstWidth, dstHeight);
@@ -144,8 +144,8 @@ var game = class {
     this.ctx.filter = 'none';
     this.ctx.globalAlpha = 1.0;
   }
-  // 轉場
-  transition(type = 'none',frame = 60) {
+  // TODO: 轉場
+  transition(type = 'none', frame = 60) {
     this.transitionFrameCount = frame;
     this.transitionImage = new Image();
     this.transitionImage.src = this.canvas.toDataURL();
