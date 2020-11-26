@@ -1,15 +1,7 @@
 class _Resource {
 
     constructor() {
-        // 素材區
         this.Audio = {
-            SE_Jump: new Audio().setSrc('audio/SE/boop.mp3'),
-            SE_Popup: new Audio().setSrc('audio/SE/decision7.mp3'),
-            SE_Cursor: new Audio().setSrc('audio/SE/decision3.mp3'),
-            SE_Confirm: new Audio().setSrc('audio/SE/decision22.mp3'),
-            SE_Cancel: new Audio().setSrc('audio/SE/decision15.mp3'),
-            SE_Positive: new Audio().setSrc('audio/SE/decision5.mp3'),
-            // 魔法寶石側
             SE_Down: new Audio().setSrc('audio/SE/down.mp3'),
             SE_Up: new Audio().setSrc('audio/SE/up.mp3'),
             SE_NewLine: new Audio().setSrc('audio/SE/newLine.mp3'),
@@ -24,10 +16,6 @@ class _Resource {
             SE_Combo8: new Audio().setSrc('audio/SE/c8.mp3')
         };
         this.Image = {
-            Male01: new Image().setSrc('img/Male01.png'),
-            BG: new Image().setSrc('img/bg/bg.png'),
-            Stat: new Image().setSrc('img/stat.png'),
-            // 魔法寶石側
             BallBase: new Image().setSrc('img/BallBase.png'),
             Ball1: new Image().setSrc('img/b1.png'),
             Ball2: new Image().setSrc('img/b2.png'),

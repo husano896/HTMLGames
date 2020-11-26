@@ -3,11 +3,11 @@ class Scene {
 	constructor() {
 		this.ready = false;
 	}
-	update(...args) { }
-	destroy(...args) { }
+	update() { }
+	destroy() { }
 
-	onClick(...args) { }
-	onMouseMove(...args) {}
-	onKeyDown(...args) { }
-	onKeyUp(...args) { }
+	onClick(event) { }
+	onMouseMove(event) {}
+	onKeyDown(event) { }
+	onKeyUp(event) { }
 }
