@@ -9,7 +9,7 @@ class Scene_SwapX {
 		// 最小消除顆數
 		this.MINCLEAR = 3;
 		// 攻擊傷害表
-		this.DAMAGETABLE = [1, 4, 7, 10, 15, 20, 25, 30];
+		this.DAMAGETABLE = [1, 2, 4, 6, 9, 12, 16, 20];
 		// 最小有額外加成的Combo數
 		this.MINCOMBO = 2;
 		// 球顏色數量
@@ -33,11 +33,23 @@ class Scene_SwapX {
 			R.Audio.SE_Combo7,
 			R.Audio.SE_Combo8
 		]
+		this.BG_IMG = [
+			R.Image.BG_01,
+			R.Image.BG_02,
+			R.Image.BG_03,
+			R.Image.BG_04,
+			R.Image.BG_05,
+			R.Image.BG_06,
+		]
 		// 球大小
 		this.BALL_SIZE = 48;
 		this.resetGame();
 	}
 	update() {
+		// 背景
+		if (this.background) {
+			Game.drawImage(this.background, 0, 0);
+		}
 		// 繪製版面
 		for (let x = 0; x < this.COLUMN; x++) {
 			for (let y = 0; y < this.playField[x].length; y++) {
@@ -95,10 +107,10 @@ class Scene_SwapX {
 		if (this.lastBumpUp + this.Interval < currentTime) {
 			this.lastBumpUp = currentTime;
 			this.newLine();
-			
+
 		}
 		// 隨分數設定產生速度
-		this.Interval = Math.max(1000, 7500 - this.score / 100);
+		this.Interval = Math.max(1000, 7500 - this.score / 20);
 	}
 	destroy() { }
 
@@ -191,7 +203,7 @@ class Scene_SwapX {
 			this.damage += this.DAMAGETABLE[Math.min(extraBallCount, this.DAMAGETABLE.length) - 1];
 		}
 		if (extraComboCount) {
-			this.damage += extraComboCount * 4;
+			this.damage += Math.min(extraComboCount * 2, 20);
 		}
 	}
 	// 加入新行
@@ -226,6 +238,8 @@ class Scene_SwapX {
 		this.damage = 0;
 		// 目前連擊
 		this.combo = 0;
+		// 隨機選一張背景
+		this.background = this.BG_IMG[_.random(this.BG_IMG.length - 1)];
 		// 生新版面
 		for (let i = 0; i < 6; i++) {
 			this.newLine();

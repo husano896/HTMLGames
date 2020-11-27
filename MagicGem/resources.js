@@ -23,6 +23,12 @@ class _Resource {
             Ball4: new Image().setSrc('img/b4.png'),
             Ball5: new Image().setSrc('img/b5.png'),
             Ball6: new Image().setSrc('img/b6.png'),
+            BG_01: new Image().setSrc('img/bg/01.jpg'),
+            BG_02: new Image().setSrc('img/bg/02.jpg'),
+            BG_03: new Image().setSrc('img/bg/03.jpg'),
+            BG_04: new Image().setSrc('img/bg/04.jpg'),
+            BG_05: new Image().setSrc('img/bg/05.jpg'),
+            BG_06: new Image().setSrc('img/bg/06.jpg'),
         };
         this.TIMEOUT = 10000;
         this.error = null;
