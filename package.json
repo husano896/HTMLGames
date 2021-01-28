@@ -19,6 +19,6 @@
   },
   "homepage": "https://github.com/husano896/HTMLGames#readme",
   "dependencies": {
-    "electron": "^10.1.5"
+    "electron": "^10.2.0"
   }
 }
