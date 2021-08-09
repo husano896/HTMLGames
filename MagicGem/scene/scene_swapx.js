@@ -59,16 +59,7 @@ class Scene_SwapX {
 				);
 			}
 		}
-		/*
-		for (let x = 0; x < this.COLUMN; x++) {
-			for (let y = 0; y < this.playField[x].length; y++) {
-				Game.drawImage(this.BALL_IMAGE[this.playField[x][y] - 1],
-					Game.WIDTH / 2 + x * this.BALL_SIZE,
-					y * this.BALL_SIZE, 1.0,
-				);
-			}
-		}
-		*/
+
 		// 警戒線
 		Game.ctx.fillStyle = 'rgba(255,64,64,0.75)';
 		Game.ctx.fillRect(0, this.ROW * this.BALL_SIZE + 2, Game.WIDTH, 4)
@@ -139,12 +130,12 @@ class Scene_SwapX {
 			console.log(takeableBalls);
 		}
 		else if (event.code === 'ArrowUp') {
-			R.Audio.SE_Up.play();
+
 			// 玩家手上沒球時不動作
 			if (!this.playerBall) {
 				return;
 			}
-
+			R.Audio.SE_Up.play();
 			// 目前球道(直)
 			const currentRow = this.playField[this.playerX];
 			// 推球上去

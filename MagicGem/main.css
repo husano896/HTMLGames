@@ -1,7 +1,10 @@
 body {
   text-align: center;
+  margin: 0;
+  overflow-y: hidden;
 }
 
 canvas {
   cursor: url('../shared/cursor.png'), auto;
+  height: 99vh;
 }

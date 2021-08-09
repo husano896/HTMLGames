@@ -3,9 +3,10 @@ canvas {
   left: 0;
   top: 0;
   z-index: 0;
+  cursor: url('shared/cursor.png'), auto;
 }
 
-body, *:not(a) {
+body {
   cursor: url('shared/cursor.png'), auto;
 }
 

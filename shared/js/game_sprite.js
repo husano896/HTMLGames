@@ -15,11 +15,14 @@ class Sprite {
         this.dstWidth = 0;
         this.dstHeight = 0;
         this.filter = 'none';
+        // 如果alive為false時可以安心把Sprite從Group移除
+        this.alive = true;
+
         if (args) {
             if (args.imageSrc) {
                 const i = new Image();
                 i.src = args.imageSrc;
-                i.onload = function () { this.image = i;}.bind(this);
+                i.onload = function () { this.image = i; }.bind(this);
             }
             if (args.image) {
                 this.image = args.image;
@@ -32,7 +35,7 @@ class Sprite {
             this.setSubRect(args.srcX, args.srcY, args.srcWidth, args.srcHeight);
         }
     }
-    update() {}
+    update() { }
     draw() {
         if (!this.image) {
             console.error(this);
