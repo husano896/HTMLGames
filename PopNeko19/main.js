@@ -6,6 +6,14 @@ var pop1Element = document.querySelector('.pog1');
 var se = new Audio('audio/pog.mp3');
 pop1Element.style.display = 'none';
 
+function share() {
+    const shareData = {
+        title: 'Pop 椪柑',
+        text: '點擊椪柑',
+        url: 'https://husano896.github.io/HTMLGames/PopNeko19/',
+    }
+    navigator.share(shareData)
+}
 function load() {
     try {
         popCount = localStorage.getItem('pog') || 0;
@@ -14,6 +22,7 @@ function load() {
         console.log('讀取椪柑數量:', popCount);
     } catch (err) { console.log('我們還沒有玩過椪柑') }
 }
+
 function sendScore() {
     if (lastSentCount === popCount) {
         return;

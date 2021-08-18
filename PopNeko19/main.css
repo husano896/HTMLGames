@@ -6,7 +6,7 @@ body {
   background-size: cover;
 }
 
-body, * {
+body, *:not(a) {
 	/* because why not */
 	font-family: 新細明體;
 	color: white;
@@ -14,6 +14,11 @@ body, * {
 	font-weight: 690;
 }
 
+a {
+	color: cyan;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+	font-weight: 690;
+}
 .pog-container {
 	position: absolute;
 	bottom: 0;
