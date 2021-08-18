@@ -1,0 +1,21 @@
+body {
+  text-align: center;
+  margin: 0;
+  overflow-y: hidden;
+  background-image: url('./img/bg.jpg');
+  background-size: cover;
+}
+
+body, * {
+	/* because why not */
+	font-family: 新細明體;
+	color: white;
+	text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+	font-weight: 690;
+}
+
+.pog-container {
+	position: absolute;
+	bottom: 0;
+	z-index: -1;
+}
