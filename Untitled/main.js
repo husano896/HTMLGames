@@ -1,6 +1,6 @@
 var Game;
 /* 	作為遊戲程式的接入點 */
-/*
+
 R.AddLoadedListener(() => {
 	Game = new game();
 	Game.Interpreter = new Interpreter();
@@ -9,8 +9,7 @@ R.AddLoadedListener(() => {
 R.AddErrorListener((err) => {
 	document.body.innerHTML = '<h2 style="color:red">Load failed.</h2><br>Detail:' + JSON.stringify(err);
 });
-*/
-document.body.innerHTML = 'WIP at this moment, come back later!';
+
 /*
 var firebaseConfig = {
 	apiKey: "AIzaSyCBO0vsYdNP7XJDV-uokl5ywat1rjIlFDU",

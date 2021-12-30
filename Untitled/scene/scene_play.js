@@ -138,13 +138,17 @@ class Scene_Play extends Scene {
 		// this.spr_player.handle_gravity(Game.HEIGHT);
 		this.spr_player.update();
 
+
+	}
+
+	draw() {
 		// 描繪
 		Game.drawImage(this.bg, Game.WIDTH / 2, Game.HEIGHT, 1, { align: 'center-bottom' });
 		this.spr_player.draw();
 
 		this.updateUI();
 	}
-
+	
 	onClick() {
 		console.log(this.spr_player, this.spr_oranges);
 	}

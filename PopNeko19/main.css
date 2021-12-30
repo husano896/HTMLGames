@@ -24,3 +24,7 @@ a {
 	bottom: 0;
 	z-index: -1;
 }
+
+.pog-container > img {
+	max-height: 80vh;
+}

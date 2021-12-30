@@ -23,15 +23,20 @@ var game = class {
     this.sprites = [];
     this.transitionFrameCount = 0;
     this.transitionImage = null;
+	this.MAXFPS = 60;
+	this.DRAWDELAY = Math.floor(1000 / this.MAXFPS);
     // 掛載畫布
     this.initalizeCanvas();
 
     // 掛載事件
     this.canvas.addEventListener('click', this.onCanvasClick.bind(this));
     this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
-    document.addEventListener('keydown', this.onKeyDown.bind(this));
-    document.addEventListener('keyup', this.onKeyUp.bind(this));
+    document.onkeydown = this.onKeyDown.bind(this);
+    document.onkeyup = this.onKeyUp.bind(this);
 
+	// 計時器
+	this.globalTimer = 0;
+	this.lastDrawTime = 0;
     // 畫面更新推動
     window.requestAnimationFrame(this.update.bind(this));
   }
@@ -48,20 +53,28 @@ var game = class {
     console.log('Context', this.ctx);
   }
 
+  // update更新的速度會隨使用者螢幕更新率上升, 為限制動畫速度應該將顯示放於draw()
+  // 並使用時間而非畫格計算動畫
   // 更新畫布
   update() {
-    this.ctx.fillStyle = this.clearColor;
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+	// 資料端的更新
+	this.globalTimer = new Date().getTime();
     if (this._scene) {
       this._scene.update();
     }
+	// 畫面端的更新
+	if (this.lastDrawTime + this.DRAWDELAY <= this.globalTimer) {
+		this.ctx.fillStyle = this.clearColor;
+		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+		if (this._scene) { this._scene.draw(); }
+		this.lastDrawTime = this.globalTimer;
+	}
     window.requestAnimationFrame(this.update.bind(this));
   }
 
   // 畫布點擊事件
   onCanvasClick(event) {
-    // console.log(event);
-    // this.playAudio(this.audio.snd_tada);
     if (this._scene)
       this._scene.onClick(event);
   }
@@ -79,7 +92,6 @@ var game = class {
 
   // 鍵盤點擊事件
   onKeyDown(event) {
-    // console.log(event);
     this.pressedKeys[event.code] = true;
     if (this._scene)
       this._scene.onKeyDown(event);
@@ -87,7 +99,6 @@ var game = class {
   }
 
   onKeyUp(event) {
-    // console.log(event);
     this.pressedKeys[event.code] = false;
     if (this._scene)
       this._scene.onKeyUp(event);
@@ -98,12 +109,6 @@ var game = class {
     return this.pressedKeys[key];
   }
 
-  // 播放聲音
-  playAudio(fileName) {
-    const a = new Audio(fileName);
-    a.play();
-    return a;
-  }
 
   // 繪製文字
   drawText(text, x, y, ...[args]) {
@@ -150,6 +155,5 @@ var game = class {
     this.transitionImage = new Image();
     this.transitionImage.src = this.canvas.toDataURL();
   }
-
 
 }

@@ -4,6 +4,7 @@ class Scene {
 		this.ready = false;
 	}
 	update() { }
+	draw() {}
 	destroy() { }
 
 	onClick(event) { }

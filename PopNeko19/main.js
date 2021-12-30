@@ -42,7 +42,10 @@ function sendScore() {
     xhr.send(data);
     lastSentCount = popCount;
 }
-function popdown() {
+function popdown(event) {
+    if (event.type === 'keydown') {
+        event.preventDefault();
+    }
     popCount++;
     popCountElement.innerHTML = popCount.toString();
     pop0Element.style.display = 'none';
@@ -50,7 +53,8 @@ function popdown() {
     localStorage.setItem('pog', popCount);
     se.play();
 }
-function popup() {
+function popup(event) {
+	event.preventDefault();
     pop0Element.style.display = '';
     pop1Element.style.display = 'none';
 }
