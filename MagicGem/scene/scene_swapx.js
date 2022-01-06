@@ -45,7 +45,7 @@ class Scene_SwapX {
 		this.BALL_SIZE = 48;
 		this.resetGame();
 	}
-	update() {
+	draw() {
 		// 背景
 		if (this.background) {
 			Game.drawImage(this.background, 0, 0);
@@ -92,13 +92,15 @@ class Scene_SwapX {
 			Game.WIDTH - 16,
 			96,
 			{ color: 'white', size: 14, textAlign: 'right' });
+
+	}
+	update() {
 		// 定時生垃圾行判定
 		// 最後一次增加垃圾行的時間
 		const currentTime = new Date().getTime();
 		if (this.lastBumpUp + this.Interval < currentTime) {
 			this.lastBumpUp = currentTime;
 			this.newLine();
-
 		}
 		// 隨分數設定產生速度
 		this.Interval = Math.max(1000, 7500 - this.score / 20);

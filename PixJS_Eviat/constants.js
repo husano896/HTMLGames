@@ -1,3 +1,7 @@
+const GameConsts = {
+	width: 800,
+	height: 600
+}
 const $TextStyle = {
     Sprite_Window_Title: new PIXI.TextStyle({
         align: 'center',
