@@ -1,9 +1,11 @@
+import { Sprite_Pause } from './../Sprites/Sprite_Pause';
 import { Sprite_HintText } from './../Sprites/Sprite_HintText';
 import * as PIXI from 'pixi.js';
 
 import { GameConsts, $TextStyle } from '../constants';
 import { Scene } from './scene';
 import $R from '../resources';
+import { InteractionEvent } from 'pixi.js';
 export class Scene_Title extends Scene {
 
 	toolBar: PIXI.Container;
@@ -14,12 +16,14 @@ export class Scene_Title extends Scene {
 	whygogoTexR: PIXI.Texture;
 	whygogoSpr: PIXI.Sprite;
 
-	hintTextSpr: PIXI.Text;
+	hintTextSpr: Sprite_HintText;
 
 	scoreTextSpr: PIXI.Text;
 
 	timerBombTex: PIXI.Texture;
 	timerBombSpr: PIXI.Sprite;
+
+	pauseSpr: Sprite_Pause;
 
 	lives: number;
 	score: number = 10;
@@ -49,11 +53,7 @@ export class Scene_Title extends Scene {
 		);
 		this.addChild(tilingSprite);
 
-		// 工具列
-		this.toolBar = this.createToolbar();
-		this.toolBar.x = 0;
-		this.toolBar.y = 0;
-		this.addChild(this.toolBar);
+
 
 		// 載入whygogo texture
 		this.whygogoTex = PIXI.Texture.from($R.Image.whygogo);
@@ -80,18 +80,29 @@ export class Scene_Title extends Scene {
 		this.timerBombSpr.x = 0;
 		this.timerBombSpr.y = GameConsts.HEIGHT - this.timerBombSpr.height;
 		this.addChild(this.timerBombSpr);
-		
+
+		this.pauseSpr = new Sprite_Pause(this.continueCallBack.bind(this), this.continueCallBack.bind(this));
+
+		// 工具列
+		this.toolBar = this.createToolbar();
+		this.toolBar.x = 0;
+		this.toolBar.y = 0;
+		this.addChild(this.toolBar);
 		// 衛生紙 和綠帽
 		// 位置 左 右 中上
 		// 重整前提示
 		// window.onbeforeunload = () => confirm('Are you sure you want to quit?');
 	}
 
+	continueCallBack() {
+		this.removeChild(this.pauseSpr)
+	}
+
 	update(delta: number) {
 		// 如果按壓中
 		if (this.pressed) {
-			this.whygogoSpr.x += this.POWER * Math.sin(this.whygogoSpr.rotation);
-			this.whygogoSpr.y -= this.POWER * Math.cos(this.whygogoSpr.rotation);
+			this.whygogoSpr.x += this.POWER * Math.sin(this.whygogoSpr.rotation) * delta;
+			this.whygogoSpr.y -= this.POWER * Math.cos(this.whygogoSpr.rotation) * delta;
 		}
 		this.whygogoSpr.y += delta * this.GRAVITY;
 		const halfHeight = this.whygogoSpr.height / 2;
@@ -107,20 +118,27 @@ export class Scene_Title extends Scene {
 		} else if (this.whygogoSpr.x > GameConsts.WIDTH - halfWidth) {
 			this.whygogoSpr.x = GameConsts.WIDTH - halfWidth;
 		}
+		this.hintTextSpr.update(delta);
 	}
 
 	// 目前0度是在上面(12點鐘方向)
-	onMouseDown(event) {
+	onMouseDown(event: InteractionEvent) {
 		console.log(event);
-		this.pressed = true;
-
-		this.whygogoSpr.texture = this.whygogoTexR;
+		if (event.data.button === 0) {
+			// 按小小
+			this.pressed = true;
+			this.whygogoSpr.texture = this.whygogoTexR;
+		} else if (event.data.button === 2) {
+			this.pause();
+		}
 	}
 
-	onMouseUp(event) {
+	onMouseUp(event: InteractionEvent) {
 		console.log(event);
-		this.pressed = false;
-		this.whygogoSpr.texture = this.whygogoTex;
+		if (event.data.button === 0) {
+			this.pressed = false;
+			this.whygogoSpr.texture = this.whygogoTex;
+		}
 	}
 
 	onMouseMove(event) {
@@ -143,13 +161,15 @@ export class Scene_Title extends Scene {
 
 	private createToolbar() {
 		const container = new PIXI.Container();
-
+		container.interactive = true;
 		// 暫停按鈕
 		const pauseButton = PIXI.Sprite.from($R.Image.iconPause);
-		pauseButton.interactive = true;
+		pauseButton.cursor = 'hover';
 		pauseButton.buttonMode = true;
-		pauseButton.on('pointerdown', () => {
+		pauseButton.interactive = true;
 
+		pauseButton.on('pointerdown', () => {
+			this.pause();
 		});
 		pauseButton.x = 0;
 
@@ -161,6 +181,15 @@ export class Scene_Title extends Scene {
 	private createWhyGoGo() {
 		const button = new PIXI.Sprite(this.whygogoTex);
 		return button;
+	}
+
+	private pause() {
+		if (!this.paused) {
+			this.addChild(this.pauseSpr);
+		}
+	}
+	get paused() {
+		return this.children.includes(this.pauseSpr);
 	}
 }
 

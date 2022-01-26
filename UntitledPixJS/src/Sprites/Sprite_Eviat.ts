@@ -1,5 +1,8 @@
-class Sprite_Eviat extends PIXI.Sprite {
+import * as PIXI from 'pixi.js';
 
+export class Sprite_Eviat extends PIXI.Sprite {
+    target: {x: number, y: number};
+    startPos: {x: number, y: number};
     constructor() {
 		const texture = PIXI.Texture.from('img/5.png');
         super(texture);

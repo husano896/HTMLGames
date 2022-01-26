@@ -4,30 +4,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="google" value="notranslate">
-  <title>Template</title>
+  <title>Untitled</title>
   <base href="./">
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="main.css" />
-  <script src="https://pixijs.download/release/pixi.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"
-    integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
-  <script src="constants.js"></script>
-  <script>
-    // Create the application helper and add its render target to the page
-    const $game = new PIXI.Application({ width: GameConsts.width, height: GameConsts.height });
-    document.body.appendChild($game.view);
-  </script>
-  <script src="resources.js"></script>
-  <!-- Sprites -->
-  <script src="sprites/Sprite_Window.js"></script>
-  <script src="sprites/Sprite_Eviat.js"></script>
-
-  <script src="scene/scene.js"></script>
-  <script src="scene/scene_title.js"></script>
-  <script src="main.js"></script>
+  <script type="module" src="dist/bundle.js"></script>
+  <div id="game-container"></div>
 </body>

@@ -1,9 +1,22 @@
-class Scene_Title extends Scene {
+import { Scene } from './scene';
+import { Sprite_Eviat } from '../Sprites/Sprite_Eviat';
+import * as PIXI from 'pixi.js';
+
+import $R from '../resources';
+
+export class Scene_Eviat extends Scene {
+	bg: PIXI.Sprite;
+
+	sprite_eviat: Sprite_Eviat;
+
+	holding: boolean;
+
+	lastClickTime: number;
 	// 讀取資源區
 	constructor() {
 		super();
 
-		this.bg = new PIXI.Sprite.from('img/bg.jpg');
+		this.bg = PIXI.Sprite.from('imgs/bg.jpg');
 		this.addChild(this.bg);
 
 		this.sprite_eviat = new Sprite_Eviat();

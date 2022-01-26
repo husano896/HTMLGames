@@ -1,7 +1,3 @@
 body {
   text-align: center;
 }
-
-canvas {
-  cursor: url('../shared/cursor.png'), auto;
-}

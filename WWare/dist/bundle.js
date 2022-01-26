@@ -69,7 +69,28 @@ const $TextStyle = {
         padding: 8,
         dropShadow: true,
         lineJoin: 'round',
-    })
+    }),
+    PauseTitleText: new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+        align: 'center',
+        fontFamily: 'Arial',
+        fontSize: 48,
+        fontWeight: 'bold',
+        fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 4,
+        padding: 8,
+        dropShadow: true,
+        lineJoin: 'round',
+    }),
+    PauseActionText: new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+        align: 'center',
+        fontFamily: 'Arial',
+        fontSize: 32,
+        fill: '#ffffff',
+        padding: 8,
+        dropShadow: true,
+        lineJoin: 'round',
+    }),
 };
 
 
@@ -43909,17 +43930,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Scene_Title": () => (/* binding */ Scene_Title)
 /* harmony export */ });
-/* harmony import */ var _Sprites_Sprite_HintText__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(54);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
-/* harmony import */ var _scene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(55);
-/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(56);
+/* harmony import */ var _Sprites_Sprite_Pause__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(54);
+/* harmony import */ var _Sprites_Sprite_HintText__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(55);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2);
+/* harmony import */ var _scene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(56);
+/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(57);
 
 
 
 
 
-class Scene_Title extends _scene__WEBPACK_IMPORTED_MODULE_3__.Scene {
+
+class Scene_Title extends _scene__WEBPACK_IMPORTED_MODULE_4__.Scene {
     // 讀取資源區
     constructor() {
         super();
@@ -43934,50 +43957,54 @@ class Scene_Title extends _scene__WEBPACK_IMPORTED_MODULE_3__.Scene {
         console.log(this);
         this.interactive = true;
         // 背景
-        const texture = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_4__["default"].Image.tile);
-        const tilingSprite = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.TilingSprite(texture, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT);
+        const texture = pixi_js__WEBPACK_IMPORTED_MODULE_2__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_5__["default"].Image.tile);
+        const tilingSprite = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.TilingSprite(texture, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT);
         this.addChild(tilingSprite);
+        // 載入whygogo texture
+        this.whygogoTex = pixi_js__WEBPACK_IMPORTED_MODULE_2__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_5__["default"].Image.whygogo);
+        this.whygogoTexR = pixi_js__WEBPACK_IMPORTED_MODULE_2__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_5__["default"].Image.whygogoR);
+        this.whygogoSpr = this.createWhyGoGo();
+        this.whygogoSpr.anchor.set(0.5, 0.5);
+        this.whygogoSpr.x = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH / 2;
+        this.whygogoSpr.y = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT / 2;
+        this.addChild(this.whygogoSpr);
+        // 關卡指示文字
+        this.hintTextSpr = new _Sprites_Sprite_HintText__WEBPACK_IMPORTED_MODULE_1__.Sprite_HintText('拿到衛生紙！');
+        this.addChild(this.hintTextSpr);
+        this.scoreTextSpr = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Text(this.score.toString().padStart(3, '0'), _constants__WEBPACK_IMPORTED_MODULE_3__.$TextStyle.ScoreText);
+        this.scoreTextSpr.anchor.set(0.5, 0.5);
+        this.scoreTextSpr.x = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH / 2;
+        this.scoreTextSpr.y = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT / 10;
+        this.addChild(this.scoreTextSpr);
+        // 時間炸彈
+        this.timerBombSpr = pixi_js__WEBPACK_IMPORTED_MODULE_2__.Sprite.from(_resources__WEBPACK_IMPORTED_MODULE_5__["default"].Image.timerBomb);
+        this.timerBombSpr.x = 0;
+        this.timerBombSpr.y = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT - this.timerBombSpr.height;
+        this.addChild(this.timerBombSpr);
+        this.pauseSpr = new _Sprites_Sprite_Pause__WEBPACK_IMPORTED_MODULE_0__.Sprite_Pause(this.continueCallBack.bind(this), this.continueCallBack.bind(this));
         // 工具列
         this.toolBar = this.createToolbar();
         this.toolBar.x = 0;
         this.toolBar.y = 0;
         this.addChild(this.toolBar);
-        // 載入whygogo texture
-        this.whygogoTex = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_4__["default"].Image.whygogo);
-        this.whygogoTexR = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_4__["default"].Image.whygogoR);
-        this.whygogoSpr = this.createWhyGoGo();
-        this.whygogoSpr.anchor.set(0.5, 0.5);
-        this.whygogoSpr.x = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH / 2;
-        this.whygogoSpr.y = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT / 2;
-        this.addChild(this.whygogoSpr);
-        // 關卡指示文字
-        this.hintTextSpr = new _Sprites_Sprite_HintText__WEBPACK_IMPORTED_MODULE_0__.Sprite_HintText('拿到衛生紙！');
-        this.addChild(this.hintTextSpr);
-        this.scoreTextSpr = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Text(this.score.toString().padStart(3, '0'), _constants__WEBPACK_IMPORTED_MODULE_2__.$TextStyle.ScoreText);
-        this.scoreTextSpr.anchor.set(0.5, 0.5);
-        this.scoreTextSpr.x = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH / 2;
-        this.scoreTextSpr.y = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT / 10;
-        this.addChild(this.scoreTextSpr);
-        // 時間炸彈
-        this.timerBombSpr = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from(_resources__WEBPACK_IMPORTED_MODULE_4__["default"].Image.timerBomb);
-        this.timerBombSpr.x = 0;
-        this.timerBombSpr.y = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT - this.timerBombSpr.height;
-        this.addChild(this.timerBombSpr);
         // 衛生紙 和綠帽
         // 位置 左 右 中上
         // 重整前提示
         // window.onbeforeunload = () => confirm('Are you sure you want to quit?');
     }
+    continueCallBack() {
+        this.removeChild(this.pauseSpr);
+    }
     update(delta) {
         // 如果按壓中
         if (this.pressed) {
-            this.whygogoSpr.x += this.POWER * Math.sin(this.whygogoSpr.rotation);
-            this.whygogoSpr.y -= this.POWER * Math.cos(this.whygogoSpr.rotation);
+            this.whygogoSpr.x += this.POWER * Math.sin(this.whygogoSpr.rotation) * delta;
+            this.whygogoSpr.y -= this.POWER * Math.cos(this.whygogoSpr.rotation) * delta;
         }
         this.whygogoSpr.y += delta * this.GRAVITY;
         const halfHeight = this.whygogoSpr.height / 2;
-        if (this.whygogoSpr.y > _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT - halfHeight) {
-            this.whygogoSpr.y = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT - halfHeight;
+        if (this.whygogoSpr.y > _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT - halfHeight) {
+            this.whygogoSpr.y = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT - halfHeight;
         }
         else if (this.whygogoSpr.y < 0) {
             this.whygogoSpr.y = 0;
@@ -43986,20 +44013,29 @@ class Scene_Title extends _scene__WEBPACK_IMPORTED_MODULE_3__.Scene {
         if (this.whygogoSpr.x < halfWidth) {
             this.whygogoSpr.x = halfWidth;
         }
-        else if (this.whygogoSpr.x > _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH - halfWidth) {
-            this.whygogoSpr.x = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH - halfWidth;
+        else if (this.whygogoSpr.x > _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH - halfWidth) {
+            this.whygogoSpr.x = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH - halfWidth;
         }
+        this.hintTextSpr.update(delta);
     }
     // 目前0度是在上面(12點鐘方向)
     onMouseDown(event) {
         console.log(event);
-        this.pressed = true;
-        this.whygogoSpr.texture = this.whygogoTexR;
+        if (event.data.button === 0) {
+            // 按小小
+            this.pressed = true;
+            this.whygogoSpr.texture = this.whygogoTexR;
+        }
+        else if (event.data.button === 2) {
+            this.pause();
+        }
     }
     onMouseUp(event) {
         console.log(event);
-        this.pressed = false;
-        this.whygogoSpr.texture = this.whygogoTex;
+        if (event.data.button === 0) {
+            this.pressed = false;
+            this.whygogoSpr.texture = this.whygogoTex;
+        }
     }
     onMouseMove(event) {
         const x = event.data.global.x;
@@ -44015,26 +44051,82 @@ class Scene_Title extends _scene__WEBPACK_IMPORTED_MODULE_3__.Scene {
         console.log(event);
     }
     createToolbar() {
-        const container = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
+        const container = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Container();
+        container.interactive = true;
         // 暫停按鈕
-        const pauseButton = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from(_resources__WEBPACK_IMPORTED_MODULE_4__["default"].Image.iconPause);
-        pauseButton.interactive = true;
+        const pauseButton = pixi_js__WEBPACK_IMPORTED_MODULE_2__.Sprite.from(_resources__WEBPACK_IMPORTED_MODULE_5__["default"].Image.iconPause);
+        pauseButton.cursor = 'hover';
         pauseButton.buttonMode = true;
+        pauseButton.interactive = true;
         pauseButton.on('pointerdown', () => {
+            this.pause();
         });
         pauseButton.x = 0;
         container.addChild(pauseButton);
         return container;
     }
     createWhyGoGo() {
-        const button = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite(this.whygogoTex);
+        const button = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Sprite(this.whygogoTex);
         return button;
+    }
+    pause() {
+        if (!this.paused) {
+            this.addChild(this.pauseSpr);
+        }
+    }
+    get paused() {
+        return this.children.includes(this.pauseSpr);
     }
 }
 
 
 /***/ }),
 /* 54 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Sprite_Pause": () => (/* binding */ Sprite_Pause)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+
+
+class Sprite_Pause extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+    constructor(continueCallBack, exitCallBack) {
+        super();
+        this.pauseBg = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+        this.pauseBg.beginFill(0x333333, 0.5);
+        this.pauseBg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.HEIGHT);
+        this.pauseBg.endFill();
+        this.pauseTitleText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text('暫停', _constants__WEBPACK_IMPORTED_MODULE_1__.$TextStyle.PauseTitleText);
+        this.pauseTitleText.anchor.set(0.5);
+        this.pauseTitleText.x = _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.WIDTH / 2;
+        this.pauseTitleText.y = _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.HEIGHT / 2 - 48;
+        this.continueText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text('繼續', _constants__WEBPACK_IMPORTED_MODULE_1__.$TextStyle.PauseActionText);
+        this.continueText.anchor.set(0.5);
+        this.continueText.x = _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.WIDTH / 2 - 96;
+        this.continueText.y = this.pauseTitleText.y + 48;
+        this.continueText.cursor = 'hover';
+        this.continueText.buttonMode = true;
+        this.continueText.interactive = true;
+        this.continueText.on('pointerdown', continueCallBack);
+        this.exitText = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text('離開', _constants__WEBPACK_IMPORTED_MODULE_1__.$TextStyle.PauseActionText);
+        this.exitText.anchor.set(0.5);
+        this.exitText.x = _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.WIDTH / 2 + 96;
+        this.exitText.y = this.continueText.y;
+        this.exitText.cursor = 'hover';
+        this.exitText.buttonMode = true;
+        this.exitText.interactive = true;
+        this.exitText.on('pointerdown', exitCallBack);
+        this.addChild(this.pauseBg, this.pauseTitleText, this.continueText, this.exitText);
+    }
+}
+
+
+/***/ }),
+/* 55 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -44050,24 +44142,24 @@ class Sprite_HintText extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text {
     constructor(text) {
         super(text, _constants__WEBPACK_IMPORTED_MODULE_1__.$TextStyle.GameText);
         // 顯示時間 (秒)
-        this.timeLength = 2;
+        this.timeLength = 48;
         this.anchor.set(0.5, 0.5);
         this.x = _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.WIDTH / 2;
         this.y = _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.HEIGHT / 3;
     }
     setText(text) {
         this.text = text;
-        this.timeLength = 2;
+        this.timeLength = 64;
     }
     update(delta) {
         // 進入時
-        if (this.timeLength > 1) {
-            this.scale.set(this.timeLength * 4);
+        if (this.timeLength > 32) {
+            this.scale.set((this.timeLength - 32) / 4 + 1);
         }
         // 淡出時
         else if (this.timeLength > 0) {
             this.scale.set(1);
-            this.alpha = this.timeLength;
+            this.alpha = this.timeLength / 32;
         }
         else {
             // 顯示完畢走人
@@ -44080,7 +44172,7 @@ class Sprite_HintText extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text {
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -44102,7 +44194,7 @@ class Scene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";

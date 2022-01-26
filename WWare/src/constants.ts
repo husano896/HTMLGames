@@ -38,5 +38,26 @@ export const $TextStyle = {
         padding: 8, 
         dropShadow: true,
         lineJoin: 'round',
-    })
+    }),
+    PauseTitleText: new PIXI.TextStyle({
+        align: 'center',
+        fontFamily: 'Arial',
+        fontSize: 48,
+        fontWeight: 'bold',
+        fill: '#ffffff', // gradient
+        stroke: '#000000',
+        strokeThickness: 4,
+        padding: 8, 
+        dropShadow: true,
+        lineJoin: 'round',
+    }),
+    PauseActionText: new PIXI.TextStyle({
+        align: 'center',
+        fontFamily: 'Arial',
+        fontSize: 32,
+        fill: '#ffffff', // gradient
+        padding: 8, 
+        dropShadow: true,
+        lineJoin: 'round',
+    }),
 }
