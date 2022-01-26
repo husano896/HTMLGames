@@ -28,6 +28,7 @@ export class Sprite_Seto extends PIXI.AnimatedSprite {
     this.moveSpeed = 4;
     this.anchor.set(0.5);
     this.animationSpeed = 1.0;
+    this.target = {x:0, y:0};
     this.play();
   }
   setMoving(direction?: number, moving?: boolean) {
