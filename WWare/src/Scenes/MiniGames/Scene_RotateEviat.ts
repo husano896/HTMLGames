@@ -2,7 +2,6 @@ import $R from '../../resources';
 import { Sprite_Eviat } from './../../Sprites/Sprite_Eviat';
 import { EClearMethod, MiniGameBase } from './MiniGameBase';
 import * as PIXI from 'pixi.js';
-import { $TextStyle } from '../../constants';
 export class Scene_RotateEviat extends MiniGameBase {
     // 過關方式：達成目標
     clearMethod = EClearMethod.TARGET;
@@ -13,23 +12,16 @@ export class Scene_RotateEviat extends MiniGameBase {
 
     sprEviat: Sprite_Eviat;
 
-    debugText: PIXI.Text;
-
     constructor() {
         super();
         this.sprEviat = new Sprite_Eviat();
 
         this.on('pointerdown', this.onMouseDown.bind(this));
         this.interactive = true;
-        this.debugText = new PIXI.Text('0', $TextStyle.PauseActionText);
-        this.debugText.x = 32;
-        this.debugText.y = 32;
         this.addChild(this.sprEviat);
-        this.addChild(this.debugText);
     }
 
     update(delta: number): void {
-        this.debugText.text = this.sprEviat.ballSpr.rotation.toString();
         this.sprEviat.update(delta);
     }
 

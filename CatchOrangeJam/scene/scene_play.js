@@ -96,12 +96,6 @@ class Scene_Play extends Scene {
         }
         // 遊戲尚未開始時
         if (!this.spr_player) {
-            Game.drawText(`Catch`, Game.WIDTH / 2, 120,
-                { size: 24, color: 'rgb(255,255,255)', font: 'PressStart2P', textAlign: 'center' });
-            Game.drawText(`OrangeJam`, Game.WIDTH / 2, 120 + 48,
-                { size: 48, color: 'rgb(255,127,39)', font: 'PressStart2P', textAlign: 'center' });
-            Game.drawText(`Press Space to start`, Game.WIDTH / 2, Game.HEIGHT - 72 - 36,
-                { size: 24, color: 'rgb(255,255,0)', font: 'PressStart2P', textAlign: 'center' });
             if (Game.getPressed('Space')) {
                 this.startGame();
             }
@@ -113,31 +107,6 @@ class Scene_Play extends Scene {
             return;
         }
 
-        // 時間
-        if (this.gameover) {
-            Game.drawText('--', Game.WIDTH / 2, 8,
-                { size: 32, color: 'rgba(255,255,255,1)', font: 'PressStart2P', textAlign: 'center' });
-        } else {
-            const timeLeft = Math.floor(this.time / 60);
-            const color = Math.round(255 * this.time / 600);
-            Game.drawText(timeLeft, Game.WIDTH / 2, 8,
-                { size: 32, color: `rgba(255,${color},${color},1)`, font: 'PressStart2P', textAlign: 'center' });
-
-            // 分數
-            Game.drawText(this.score, Game.WIDTH / 2, Game.HEIGHT / 2 - 36,
-                { size: 72, color: 'rgba(255,255,255,0.25)', font: 'PressStart2P', textAlign: 'center' });
-        }
-
-        // 已經遊戲結束時
-        if (this.gameover) {
-            Game.drawText(`SCORE`, Game.WIDTH / 2, Game.HEIGHT / 2 - 36 - 108,
-                { size: 48, color: 'rgb(255,255,255)', font: 'PressStart2P', textAlign: 'center' });
-            Game.drawText(`${this.score}`, Game.WIDTH / 2, Game.HEIGHT / 2 - 36,
-                { size: 72, color: 'rgb(255,255,0)', font: 'PressStart2P', textAlign: 'center' });
-            Game.drawText(`Press R to Restart`, Game.WIDTH / 2, Game.HEIGHT - 72 - 36,
-                { size: 24, color: 'rgb(255,255,255)', font: 'PressStart2P', textAlign: 'center' });
-            return;
-        }
 
         // 時間計算
         if (this.time && !this.gameover) {
@@ -167,13 +136,11 @@ class Scene_Play extends Scene {
 
         // 玩家處理
         this.spr_player.handle_gravity(Game.HEIGHT);
-        this.spr_player.draw();
 
         // 繪製
         for (var i = 0; i < this.spr_oranges.length; i++) {
             const o = this.spr_oranges[i];
             o.handle_gravity(Game.HEIGHT);
-            o.draw();
             // 如果把橘橘放到壞掉?
             if (o.life <= 0) {
                 // 漏接壞橘橘
@@ -201,7 +168,57 @@ class Scene_Play extends Scene {
         this.spr_oranges = this.spr_oranges.filter(o => !!o);
 
     }
+	draw() {
+	
+        if (!this.ready) {
+            return;
+        }
+        // 遊戲尚未開始時
+        if (!this.spr_player) {
+            Game.drawText(`Catch`, Game.WIDTH / 2, 120,
+                { size: 24, color: 'rgb(255,255,255)', font: 'PressStart2P', textAlign: 'center' });
+            Game.drawText(`OrangeJam`, Game.WIDTH / 2, 120 + 48,
+                { size: 48, color: 'rgb(255,127,39)', font: 'PressStart2P', textAlign: 'center' });
+            Game.drawText(`Press Space to start`, Game.WIDTH / 2, Game.HEIGHT - 72 - 36,
+                { size: 24, color: 'rgb(255,255,0)', font: 'PressStart2P', textAlign: 'center' });
+            return;
+        }
+		
+		
+        // 時間
+        if (this.gameover) {
+            Game.drawText('--', Game.WIDTH / 2, 48,
+                { size: 32, color: 'rgba(255,255,255,1)', font: 'PressStart2P', textAlign: 'center' });
+        } else {
+            const timeLeft = Math.floor(this.time / 60);
+            const color = Math.round(255 * this.time / 600);
+            Game.drawText(timeLeft, Game.WIDTH / 2, 48,
+                { size: 32, color: `rgba(255,${color},${color},1)`, font: 'PressStart2P', textAlign: 'center' });
 
+            // 分數
+            Game.drawText(this.score, Game.WIDTH / 2, Game.HEIGHT / 2 - 36,
+                { size: 72, color: 'rgba(255,255,255,0.25)', font: 'PressStart2P', textAlign: 'center' });
+        }
+
+        // 已經遊戲結束時
+        if (this.gameover) {
+            Game.drawText(`SCORE`, Game.WIDTH / 2, Game.HEIGHT / 2 - 36 - 108,
+                { size: 48, color: 'rgb(255,255,255)', font: 'PressStart2P', textAlign: 'center' });
+            Game.drawText(`${this.score}`, Game.WIDTH / 2, Game.HEIGHT / 2 - 36,
+                { size: 72, color: 'rgb(255,255,0)', font: 'PressStart2P', textAlign: 'center' });
+            Game.drawText(`Press R to Restart`, Game.WIDTH / 2, Game.HEIGHT - 72 - 36,
+                { size: 24, color: 'rgb(255,255,255)', font: 'PressStart2P', textAlign: 'center' });
+            return;
+        }
+		// 玩家處理
+		this.spr_player.draw();
+		
+		// 繪製
+        for (var i = 0; i < this.spr_oranges.length; i++) {
+            const o = this.spr_oranges[i];
+            o.draw();
+        }
+	}
     onClick() {
         console.log(this.spr_player, this.spr_oranges);
         if (!this.spr_player) {

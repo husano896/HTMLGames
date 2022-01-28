@@ -5,6 +5,12 @@ export enum EClearMethod {
 	// 撐到時間到
 	SURVIVE,
 }
+
+// 可給予MiniGame目前的等級調整選項或視覺
+export interface MiniGameOption {
+	level?: number;
+}
+
 export abstract class MiniGameBase extends Scene {
 	// 過關flag
 	clearFlag: boolean;
@@ -14,7 +20,7 @@ export abstract class MiniGameBase extends Scene {
 	timeLength: number;
 	// 目標文字
 	targetText: string;
-	constructor() { super(); }
+	constructor(option?: MiniGameOption) { super(); }
 
 	get Succed() {
 		// 如果是達成目標時, clearFlag須為true

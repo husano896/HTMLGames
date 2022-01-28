@@ -16,10 +16,6 @@ export class Scene_Title extends Scene {
 	whygogoTexR: PIXI.Texture;
 	whygogoSpr: PIXI.Sprite;
 
-	hintTextSpr: Sprite_HintText;
-
-	scoreTextSpr: PIXI.Text;
-
 	timerBombTex: PIXI.Texture;
 	timerBombSpr: PIXI.Sprite;
 
@@ -53,8 +49,6 @@ export class Scene_Title extends Scene {
 		);
 		this.addChild(tilingSprite);
 
-
-
 		// 載入whygogo texture
 		this.whygogoTex = PIXI.Texture.from($R.Image.whygogo);
 		this.whygogoTexR = PIXI.Texture.from($R.Image.whygogoR);
@@ -64,16 +58,6 @@ export class Scene_Title extends Scene {
 		this.whygogoSpr.x = GameConsts.WIDTH / 2;
 		this.whygogoSpr.y = GameConsts.HEIGHT / 2;
 		this.addChild(this.whygogoSpr);
-
-		// 關卡指示文字
-		this.hintTextSpr = new Sprite_HintText('拿到衛生紙！')
-		this.addChild(this.hintTextSpr);
-
-		this.scoreTextSpr = new PIXI.Text(this.score.toString().padStart(3, '0'), $TextStyle.ScoreText);
-		this.scoreTextSpr.anchor.set(0.5, 0.5);
-		this.scoreTextSpr.x = GameConsts.WIDTH / 2;
-		this.scoreTextSpr.y = GameConsts.HEIGHT / 10;
-		this.addChild(this.scoreTextSpr);
 
 		// 時間炸彈
 		this.timerBombSpr = PIXI.Sprite.from($R.Image.timerBomb);
@@ -118,7 +102,6 @@ export class Scene_Title extends Scene {
 		} else if (this.whygogoSpr.x > GameConsts.WIDTH - halfWidth) {
 			this.whygogoSpr.x = GameConsts.WIDTH - halfWidth;
 		}
-		this.hintTextSpr.update(delta);
 	}
 
 	// 目前0度是在上面(12點鐘方向)
