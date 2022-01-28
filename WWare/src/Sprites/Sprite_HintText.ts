@@ -15,7 +15,8 @@ export class Sprite_HintText extends PIXI.Text {
 
     setText(text: string) {
         this.text = text;
-        this.timeLength = 64;
+        this.timeLength = 48;
+        this.alpha = 1;
     }
     update(delta: number) {
         // 進入時
