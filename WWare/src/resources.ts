@@ -6,10 +6,11 @@ const $R = {
     // music: new Howl({ src: 'audio/opium_and_purple_haze_dwatt.mp3' }),
     // tick: new Howl({ src: 'audio/tick.wav' })
     Success: new Howl({ src: 'audio/decision40.mp3' }),
-    Fail:  new Howl({ src: 'audio/stupid3.mp3' }),
+    Fail: new Howl({ src: 'audio/stupid3.mp3' }),
 
     // 逃跑嘎嗚吼 失敗效果音
-    anWolfFail:  new Howl({ src: 'audio/stupid3.mp3' }),
+    anWolfFail: new Howl({ src: 'audio/ah.mp3' }),
+    anWolfWow: new Howl({ src: 'audio/wow.mp3' }),
     //https://www.youtube.com/watch?v=PJ_QgB7bAnM
   },
   Image: {
@@ -28,7 +29,9 @@ const $R = {
     eviatFace: 'imgs/eviat_face.png',
     // 逃跑嘎嗚吼
     anDra: 'imgs/anDra.webp',
-    anWolfAAA: 'imgs/anWolfAAA.webp'
+    anWolf: 'imgs/anWolf.webp',
+    anWolfAAA: 'imgs/anWolfAAA.webp',
+    anWolfRainbow: 'imgs/anWolfR.webp'
   }
 }
 // 圖像處理部分

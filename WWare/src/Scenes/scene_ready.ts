@@ -6,6 +6,7 @@ import { Sprite_HintText } from '../Sprites/Sprite_HintText';
 import { MiniGameBase } from './MiniGames/MiniGameBase';
 import { Scene } from './scene';
 import $R from '../resources';
+import MiniGameScenes from './MiniGames';
 
 const ObjectzIndex = {
     // Index越小越上層
@@ -87,8 +88,7 @@ export class Scene_Ready extends Scene {
 
     setNextGame() {
         this.score++;
-        this.nextGame = new Scene_RotateEviat();
-
+        this.nextGame = new MiniGameScenes[Math.floor(Math.random() * MiniGameScenes.length)];
     }
 
     enterNextGame() {

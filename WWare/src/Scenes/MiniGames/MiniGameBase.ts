@@ -11,15 +11,15 @@ export interface MiniGameOption {
 	level?: number;
 }
 
-export abstract class MiniGameBase extends Scene {
+export class MiniGameBase extends Scene {
 	// 過關flag
 	clearFlag: boolean;
 	// 過關方式
-	clearMethod: EClearMethod;
+	clearMethod: EClearMethod = EClearMethod.SURVIVE;
 	// 小遊戲時間長度
-	timeLength: number;
+	timeLength: number = 1;
 	// 目標文字
-	targetText: string;
+	targetText: string = 'PlaceHolder';
 	constructor(option?: MiniGameOption) { super(); }
 
 	get Succed() {
