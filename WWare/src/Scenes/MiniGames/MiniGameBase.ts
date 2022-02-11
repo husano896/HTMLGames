@@ -16,7 +16,7 @@ export class MiniGameBase extends Scene {
 	clearFlag: boolean;
 	// 過關方式
 	clearMethod: EClearMethod = EClearMethod.SURVIVE;
-	// 小遊戲時間長度
+	// 小遊戲時間長度秒數，設為 -1 則不限時間
 	timeLength: number = 1;
 	// 目標文字
 	targetText: string = 'PlaceHolder';
@@ -24,10 +24,11 @@ export class MiniGameBase extends Scene {
 
 	get Succed() {
 		// 如果是達成目標時, clearFlag須為true
-		// 如果是生存制時, clearFlag須為false
 		if (this.clearMethod === EClearMethod.TARGET) {
 			return this.clearFlag;
-		} else {
+		}
+		// 如果是生存制時, clearFlag須為false
+		else {
 			return !this.clearFlag;
 		}
 	}

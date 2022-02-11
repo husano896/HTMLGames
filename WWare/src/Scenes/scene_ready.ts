@@ -1,4 +1,3 @@
-import { Scene_RotateEviat } from './MiniGames/Scene_RotateEviat';
 import * as PIXI from 'pixi.js';
 
 import { GameConsts, $TextStyle } from '../constants';
@@ -59,6 +58,7 @@ export class Scene_Ready extends Scene {
 
     update(delta: number) {
         this.hintTextSpr.update(delta);
+        // 目前分數文字
         this.scoreTextSpr.text = this.score.toString().padStart(3, '0') + `(${this.lives})`;
         if (this.currentGame && this.miniGameTimeLeft > 0) {
             this.miniGameTimeLeft -= delta;

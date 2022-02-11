@@ -4,7 +4,9 @@
   "description": "",
   "dependencies": {
     "howler": "^2.2.3",
-    "pixi.js": "^6.2.0"
+    "pixi.js": "^6.2.0",
+    "pixi.js-keyboard": "^1.1.6",
+    "pixi.js-mouse": "^1.1.6"
   },
   "devDependencies": {
     "@types/howler": "^2.2.4",

@@ -15,5 +15,15 @@ export const $TextStyle = {
         // strokeThickness: 5,
         wordWrap: true,
         wordWrapWidth: 440,
+    }),
+    Sprite_HealthBar: new PIXI.TextStyle({
+        align: 'right',
+        fontFamily: 'Arial',
+        fontSize: 16,
+        fill: ['#ff0000','#ffffff', '#ffaaaa'], // gradient
+        stroke: '#000000',
+        strokeThickness: 4,
+        wordWrap: true,
+        wordWrapWidth: 128,
     })
 }

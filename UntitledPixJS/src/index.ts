@@ -1,16 +1,20 @@
-import { Scene_Map } from './Scenes/scene_map';
+import Mouse from 'pixi.js-mouse';
+import Keyboard from 'pixi.js-keyboard';
 import $game from "./game";
-import { Scene_Eviat } from "./Scenes/scene_eviat";
+import { Scene_Map } from './Scenes/scene_map';
 
 let $resources = {};
 $game.loader.load((loader, resources) => {
-	
+
 	$resources = resources;
-	let $scene = new Scene_Map();
 	// 初始畫面
+	let $scene = new Scene_Map();
 	$game.stage.addChild($scene);
+	
 	$game.ticker.add((delta) => {
 		if ($scene) {
+			Keyboard.update();
+			Mouse.update();
 			$scene.update(delta);
 		}
 	});
