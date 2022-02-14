@@ -1,3 +1,4 @@
+import { Game_Battler } from './../Game/Game_Battler';
 import * as PIXI from 'pixi.js';
 import { $TextStyle } from '../constants';
 
@@ -11,7 +12,7 @@ const height = 8;
 export class Sprite_HealthBar extends PIXI.Container {
 
   // 最後結算時的值
-  private lastVal: number;
+  lastVal: number = 0;
 
   // 血量最大值
   private maxVal: number = 0;
@@ -24,10 +25,11 @@ export class Sprite_HealthBar extends PIXI.Container {
   private graphicVal: PIXI.Graphics;
   private graphicDelta: PIXI.Graphics;
 
+  battler: Game_Battler;
   text: PIXI.Text;
-  constructor() {
+  constructor(battler?: Game_Battler) {
     super();
-
+    this.battler = battler;
     this.graphicVal = new PIXI.Graphics();
     this.graphicDelta = new PIXI.Graphics();
 
@@ -55,6 +57,10 @@ export class Sprite_HealthBar extends PIXI.Container {
   }
 
   update(delta: number) {
+    if (this.battler) {
+      this.maxVal = this.battler.maxhp;
+      this.lastVal = this.battler.hp;
+    }
     if (!this.maxVal) {
       return;
     }
@@ -75,10 +81,10 @@ export class Sprite_HealthBar extends PIXI.Container {
   }
 
   setHealth(current: number, max?: number) {
-    this.lastVal = current;
     if (max) {
       this.maxVal = max;
     }
+    this.lastVal = Math.min(this.maxVal, Math.max(0, current))
   }
   // 把目前的數值變更進行結算
   flush() {

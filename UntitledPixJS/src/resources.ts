@@ -8,6 +8,9 @@ const $R = {
   Image: {
     bg: 'imgs/bg.jpg',
     eviat: 'imgs/5.png',
+    jewelRed: 'imgs/jewelIcon/jewel1l-4.png',
+    jewelBlue: 'imgs/jewelIcon/jewel1a-4.png',
+    closeBtn: 'imgs/closeBtn.png'
   },
   SpriteSheet: {
     li: 'imgs/M.json'
@@ -19,7 +22,7 @@ $game.stop();
 Object.entries($R.Image).forEach(([key, path]) => $game.loader.add(key, path));
 
 // 圖像處理部分
-Object.entries($R.SpriteSheet).forEach(([key, path]) => $game.loader.add('spritesheet', path));
+Object.entries($R.SpriteSheet).forEach(([key, path]) => $game.loader.add(key, path));
 
 
 

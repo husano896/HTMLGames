@@ -1,8 +1,12 @@
+import { Game_Battler } from './../Game/Game_Battler';
+
+import { Window_MapItem } from './../Sprites/Window_MapItem';
+import { Sprite_Damage } from './../Sprites/Sprite_Damage';
 import { Sprite_HealthBar } from './../Sprites/Sprite_HealthBar';
 import Keyboard from 'pixi.js-keyboard';
 import { Scene } from './scene';
 import { Sprite_Seto } from '../Sprites/Sprite_Seto';
-
+import { Game_Global } from './../Game/Game_Global';
 export class Scene_Map extends Scene {
 
 	sprite_seto: Sprite_Seto;
@@ -12,13 +16,15 @@ export class Scene_Map extends Scene {
 	lastClickTime: number;
 
 	sprite_healthBar: Sprite_HealthBar;
+
+	window_mapItem: Window_MapItem;
+	battler: Game_Battler;
 	// 讀取資源區
 	constructor() {
 		super();
-
 		this.sprite_seto = new Sprite_Seto();
-		this.sprite_healthBar = new Sprite_HealthBar();
-		this.addChild(this.sprite_seto, this.sprite_healthBar);
+		this.sprite_healthBar = new Sprite_HealthBar(Game_Global.battler);
+		this.addChild(this.sprite_healthBar);
 		this.sprite_healthBar.x = 320;
 		this.sprite_healthBar.y = 8;
 		this.on('pointerdown', this.onDown.bind(this));
@@ -29,6 +35,9 @@ export class Scene_Map extends Scene {
 
 		this.holding = false;
 		this.lastClickTime = 0;
+
+		this.window_mapItem = new Window_MapItem();
+		this.addChild(this.window_mapItem);
 		console.log(this);
 	}
 
@@ -42,7 +51,7 @@ export class Scene_Map extends Scene {
 
 	update(delta) {
 		const time = new Date().getTime();
-		this.sprite_healthBar.update(delta);
+		this.children.forEach((c: any)=>c?.update(delta));
 		const target = { x: 0, y: 0 };
 		if (Keyboard.isKeyDown('ArrowUp')) {
 			target.y = -1;
@@ -80,6 +89,17 @@ export class Scene_Map extends Scene {
 		const y = event.data.global.y;
 		this.holding = true;
 		this.lastClickTime = new Date().getTime();
+
+		// 傷害Sprite測試
+		const dmg = Math.round(Math.random() * 2000 - 1000);
+		const dmgSpr = new Sprite_Damage(dmg, Math.random() > 0.5, Math.random() > 0.5);
+		dmgSpr.x = x;
+		dmgSpr.y = y;
+		this.addChild(dmgSpr);
+		Game_Global.battler.hp = Game_Global.battler.hp - dmg;
+		this.sprite_healthBar.flush();
+		console.log(this.sprite_healthBar, Game_Global.battler);
+		console.log(dmgSpr);
 	}
 	onMove(event) {
 		const x = event.data.global.x;

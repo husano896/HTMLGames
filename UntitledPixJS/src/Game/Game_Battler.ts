@@ -12,7 +12,11 @@ export class Game_Battler {
     private _atk: number;
     private _def: number;
     private _states: any[];
-    constructor() { }
+    constructor(p?: { [param: string]: number }) {
+        if (p) {
+            Object.entries(p).forEach(([param, value]) => this[param] = value)
+        }
+    }
 
     get hp() {
         return this._hp;
@@ -33,15 +37,15 @@ export class Game_Battler {
     get sp() {
         return this._sp;
     }
-    
+
     set sp(v: number) {
         this._sp = Math.max(0, Math.min(v, this._maxsp));
     }
-    
+
     get maxsp() {
         return this._maxsp;
     }
-    
+
     set maxsp(v: number) {
         this._maxsp = Math.max(0, Math.min(v, MAXSP_LIMIT));
     }
@@ -49,7 +53,7 @@ export class Game_Battler {
     get atk() {
         return this._atk;
     }
-    
+
     set atk(v: number) {
         this._atk = Math.max(0, Math.min(v, MAXATK_LIMIT));
     }
@@ -57,7 +61,7 @@ export class Game_Battler {
     get def() {
         return this._def;
     }
-    
+
     set def(v: number) {
         this._def = Math.max(0, Math.min(v, MAXDEF_LIMIT));
     }
