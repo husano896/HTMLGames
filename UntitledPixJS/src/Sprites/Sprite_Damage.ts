@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { $TextStyle } from '../constants';
 
-const animLength = 90;
+const animLength = 60;
 export class Sprite_Damage extends PIXI.Container {
 
   damageText: PIXI.Text;

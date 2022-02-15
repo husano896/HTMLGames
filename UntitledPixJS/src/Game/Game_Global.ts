@@ -1,4 +1,5 @@
 import { Game_Battler } from './Game_Battler';
+import { IChatLog } from '../Interfaces';
 export class Game_Global {
     static battler = new Game_Battler({
         maxhp: 1000,
@@ -8,4 +9,6 @@ export class Game_Global {
         atk: 10,
         def: 0
     });
+
+    static ChatLogs: IChatLog[] = [];
 }
