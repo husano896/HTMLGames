@@ -1,3 +1,4 @@
+import { Window_Message } from './../Sprites/Window_Message';
 import { Map001 } from './../Data/Map001';
 import { Sprite_Map } from './../Sprites/Sprite_Map';
 import { Game_Battler } from './../Game/Game_Battler';
@@ -49,8 +50,12 @@ export class Scene_Map extends Scene {
 		this.windows_container = new PIXI.Container();
 		this.addChild(this.windows_container);
 
+		
 		// 道具視窗
 		this.windows_container.addChild(new Window_MapItem());
+		const window_message = new Window_Message();
+		window_message.y = 240;
+		this.windows_container.addChild(window_message);
 		console.log(this);
 	}
 
@@ -64,7 +69,10 @@ export class Scene_Map extends Scene {
 
 	update(delta) {
 		const time = new Date().getTime();
+
 		this.children.forEach((c: any)=>c.update?.(delta));
+		this.windows_container.children.forEach((c:any)=>c.update?.(delta));
+
 		const target = { x: 0, y: 0 };
 		if (Keyboard.isKeyDown('ArrowUp')) {
 			target.y = -1;
@@ -81,19 +89,8 @@ export class Scene_Map extends Scene {
 			this.sprite_seto.target = { x: this.sprite_seto.x + target.x, y: this.sprite_seto.y + target.y };
 		}
 
-		if (this.holding || target.x !== 0 || target.y !== 0) {
-			// 根據距離變更移動幅度
-			const rad = Math.atan2(this.sprite_seto.target.y - this.sprite_seto.y, this.sprite_seto.target.x - this.sprite_seto.x);
-			const dx = Math.cos(rad) * this.sprite_seto.moveSpeed;
-			const dy = Math.sin(rad) * this.sprite_seto.moveSpeed;
-			this.sprite_seto.x += dx;
-			this.sprite_seto.y += dy;
-			const directionAngle = (180 * rad / Math.PI + 360) % 360;
-			const direction = [6, 3, 2, 1, 4, 7, 8, 9][Math.floor(directionAngle / 45)];
-			this.sprite_seto.setMoving(direction, true);
-			// 3點鐘 = 0度
-		} else {
-			this.sprite_seto.setMoving(null, false);
+		if (!this.holding && !target) {
+			this.sprite_seto.target = null;
 		}
 	}
 
@@ -122,7 +119,6 @@ export class Scene_Map extends Scene {
 		const x = event.data.global.x;
 		const y = event.data.global.y;
 		this.holding = false;
-		this.sprite_seto.setMoving(-1, false);
 	}
 }
 

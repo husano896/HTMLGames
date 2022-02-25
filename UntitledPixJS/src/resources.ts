@@ -10,6 +10,7 @@ const $R = {
     eviat: 'imgs/5.png',
     jewelRed: 'imgs/jewelIcon/jewel1l-4.png',
     jewelBlue: 'imgs/jewelIcon/jewel1a-4.png',
+    jewelBlueSmall: 'imgs/jewelIcon/jewel1a-2.png',
     closeBtn: 'imgs/closeBtn.png'
   },
   SpriteSheet: {

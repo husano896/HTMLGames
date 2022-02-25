@@ -40,6 +40,24 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 256,
     }),
+    Window_Message: new PIXI.TextStyle({
+        align: 'left',
+        fontFamily: '微軟正黑體',
+        fontSize: 16,
+        fill: ['#ffffff'], // gradient
+        dropShadow: true,
+        dropShadowDistance: 2,
+        dropShadowColor: '#333333',
+        dropShadowAngle: 180,
+        wordWrap: true,
+        wordWrapWidth: 288,
+    }),
+    Sprite_Button: new PIXI.TextStyle({
+        align: 'center',
+        fontFamily: '微軟正黑體',
+        fontSize: 14,
+        fill: ['#ffffff'], // gradient
+    }),
     Sprite_HealthBar: new PIXI.TextStyle({
         align: 'center',
         fontFamily: 'Sitka Text',
@@ -82,8 +100,8 @@ export const $TextStyle = {
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',
         fontSize: 32,
-        fill: ['#cccccc', '#600000', '#ff3333'], // gradient
-        stroke: '#000000',
+        fill: ['#aaaaaa', '#600000', '#ff3333'], // gradient
+        stroke: '#777777',
         strokeThickness: 1,
         dropShadowAngle: 180,
         wordWrap: true,
@@ -95,7 +113,7 @@ export const $TextStyle = {
         fontStyle: 'italic',
         fontSize: 32,
         fill: ['#cccccc', '#333333', '#990000'], // gradient
-        stroke: '#000000',
+        stroke: '#777777',
         strokeThickness: 2,
         dropShadowDistance: 2,
         wordWrap: true,
@@ -107,7 +125,7 @@ export const $TextStyle = {
         fontStyle: 'italic',
         fontSize: 32,
         fill: ['#88ff88', '#00ff00'], // gradient
-        stroke: '#ffffff',
+        stroke: '#777777',
         strokeThickness: 1,
         wordWrap: true,
         wordWrapWidth: 128,
@@ -117,8 +135,8 @@ export const $TextStyle = {
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',
         fontSize: 32,
-        fill: ['#cccccc', '#600000', '#ff00ff'], // gradient
-        stroke: '#000000',
+        fill: ['#aaaaaa', '#600000', '#ff00ff'], // gradient
+        stroke: '#777777',
         strokeThickness: 2,
         dropShadowDistance: 2,
         wordWrap: true,
@@ -130,7 +148,7 @@ export const $TextStyle = {
         fontStyle: 'italic',
         fontSize: 32,
         fill: ['#8888ff', '#0000ff'], // gradient
-        stroke: '#ffffff',
+        stroke: '#777777',
         strokeThickness: 1,
         dropShadowAngle: 180,
         wordWrap: true,

@@ -25,13 +25,31 @@ export class Sprite_Seto extends PIXI.AnimatedSprite {
     }
     super(tex[2]);
     this.sprTextures = tex;
-    this.moveSpeed = 4;
+    this.moveSpeed = 8;
     this.anchor.set(0.5);
     this.animationSpeed = 1.0;
-    this.target = {x:0, y:0};
-    this.play();
+    this.target = { x: 0, y: 0 };
   }
-  setMoving(direction?: number, moving?: boolean) {
+
+  // 把移動職責放在Sprite內吧
+  update(delta: number) {
+    if (this.target) {
+      const rad = Math.atan2(this.target.y - this.y, this.target.x - this.x);
+      const dx = Math.cos(rad) * this.moveSpeed;
+      const dy = Math.sin(rad) * this.moveSpeed;
+      this.x += dx;
+      this.y += dy;
+      const directionAngle = (180 * rad / Math.PI + 360) % 360;
+      const direction = [6, 3, 2, 1, 4, 7, 8, 9][Math.floor(directionAngle / 45)];
+      this.setMovingAnim(direction, true);
+    } else {
+      this.setMovingAnim(null, false);
+    }
+
+  }
+
+  // 設定移動中動畫以及方向
+  setMovingAnim(direction?: number, moving?: boolean) {
     if (this.sprTextures[direction] && direction >= 0) {
       if (this.direction != direction) {
         this.textures = this.sprTextures[direction];
@@ -40,7 +58,7 @@ export class Sprite_Seto extends PIXI.AnimatedSprite {
         this.direction = direction;
       }
     }
-    
+
     if (this.moving != moving) {
       if (moving) {
         this.play();
@@ -48,7 +66,9 @@ export class Sprite_Seto extends PIXI.AnimatedSprite {
         this.stop();
       }
     }
-    
+
     this.moving = moving;
   }
+
+
 }
