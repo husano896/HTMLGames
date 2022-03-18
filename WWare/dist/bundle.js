@@ -14,7 +14,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Sprites_Sprite_HintText__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(53);
 /* harmony import */ var _scene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(54);
 /* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(55);
-/* harmony import */ var _MiniGames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(58);
+/* harmony import */ var _MiniGames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(59);
 
 
 
@@ -54,6 +54,7 @@ class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_3__.Scene {
     }
     update(delta) {
         this.hintTextSpr.update(delta);
+        // 目前分數文字
         this.scoreTextSpr.text = this.score.toString().padStart(3, '0') + `(${this.lives})`;
         if (this.currentGame && this.miniGameTimeLeft > 0) {
             this.miniGameTimeLeft -= delta;
@@ -44122,7 +44123,8 @@ const $R = {
         anDra: 'imgs/anDra.webp',
         anWolf: 'imgs/anWolf.webp',
         anWolfAAA: 'imgs/anWolfAAA.webp',
-        anWolfRainbow: 'imgs/anWolfR.webp'
+        anWolfRainbow: 'imgs/anWolfR.webp',
+        daisukeMeowMeow: 'imgs/daisukeMeowMeow.gif'
     }
 };
 // 圖像處理部分
@@ -47390,8 +47392,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(52);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _pixi_gif__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(58);
+/* harmony import */ var _pixi_loaders__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
 
 
+
+
+_pixi_loaders__WEBPACK_IMPORTED_MODULE_3__.Loader.registerPlugin(_pixi_gif__WEBPACK_IMPORTED_MODULE_2__.AnimatedGIFLoader);
 // Create the application helper and add its render target to the page
 const $game = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Application({ width: _constants__WEBPACK_IMPORTED_MODULE_0__.GameConsts.WIDTH, height: _constants__WEBPACK_IMPORTED_MODULE_0__.GameConsts.HEIGHT });
 const gameContainer = document.querySelector('#game-container');
@@ -47406,17 +47413,25 @@ gameContainer.appendChild($game.view);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "AnimatedGIF": () => (/* binding */ C),
+/* harmony export */   "AnimatedGIFLoader": () => (/* binding */ O)
 /* harmony export */ });
-/* harmony import */ var _Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(59);
-/* harmony import */ var _Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(62);
-
-
-const games = [
-    _Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__.Scene_EscapeDragon,
-    _Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__.Scene_RotateEviat
-];
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (games);
+/* harmony import */ var _pixi_loaders__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
+/* harmony import */ var _pixi_sprite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(36);
+/* harmony import */ var _pixi_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(27);
+/* harmony import */ var _pixi_settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
+/* harmony import */ var _pixi_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(20);
+/* harmony import */ var _pixi_ticker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(25);
+/*!
+ * @pixi/gif - v1.0.2
+ * https://github.com/pixijs/gif
+ * Compiled Mon, 07 Feb 2022 16:16:04 UTC
+ *
+ * @pixi/gif is licensed under the MIT license.
+ * http://www.opensource.org/licenses/mit-license
+ */
+var s=function(e,t){return s=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(e,t){e.__proto__=t}||function(e,t){for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(e[r]=t[r])},s(e,t)};var d={},c={},u={};Object.defineProperty(u,"__esModule",{value:!0}),u.loop=u.conditional=u.parse=void 0;u.parse=function e(t,r){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},i=arguments.length>3&&void 0!==arguments[3]?arguments[3]:n;if(Array.isArray(r))r.forEach((function(r){return e(t,r,n,i)}));else if("function"==typeof r)r(t,n,i,e);else{var o=Object.keys(r)[0];Array.isArray(r[o])?(i[o]={},e(t,r[o],n,i[o])):i[o]=r[o](t,n,i,e)}return n};u.conditional=function(e,t){return function(r,n,i,o){t(r,n,i)&&o(r,e,n,i)}};u.loop=function(e,t){return function(r,n,i,o){for(var a=[],s=r.pos;t(r,n,i);){var d={};if(o(r,e,n,d),r.pos===s)break;s=r.pos,a.push(d)}return a}};var p={};Object.defineProperty(p,"__esModule",{value:!0}),p.readBits=p.readArray=p.readUnsigned=p.readString=p.peekBytes=p.readBytes=p.peekByte=p.readByte=p.buildStream=void 0;p.buildStream=function(e){return{data:e,pos:0}};var l=function(){return function(e){return e.data[e.pos++]}};p.readByte=l;p.peekByte=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0;return function(t){return t.data[t.pos+e]}};var h=function(e){return function(t){return t.data.subarray(t.pos,t.pos+=e)}};p.readBytes=h;p.peekBytes=function(e){return function(t){return t.data.subarray(t.pos,t.pos+e)}};p.readString=function(e){return function(t){return Array.from(h(e)(t)).map((function(e){return String.fromCharCode(e)})).join("")}};p.readUnsigned=function(e){return function(t){var r=h(2)(t);return e?(r[1]<<8)+r[0]:(r[0]<<8)+r[1]}};p.readArray=function(e,t){return function(r,n,i){for(var o="function"==typeof t?t(r,n,i):t,a=h(e),s=new Array(o),d=0;d<o;d++)s[d]=a(r);return s}};p.readBits=function(e){return function(t){for(var r=function(e){return e.data[e.pos++]}(t),n=new Array(8),i=0;i<8;i++)n[7-i]=!!(r&1<<i);return Object.keys(e).reduce((function(t,r){var i=e[r];return i.length?t[r]=function(e,t,r){for(var n=0,i=0;i<r;i++)n+=e[t+i]&&Math.pow(2,r-i-1);return n}(n,i.index,i.length):t[r]=n[i.index],t}),{})}},function(e){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0;var t=u,r=p,n={blocks:function(e){for(var t=[],n=e.data.length,i=0,o=(0,r.readByte)()(e);0!==o&&o;o=(0,r.readByte)()(e)){if(e.pos+o>=n){var a=n-e.pos;t.push((0,r.readBytes)(a)(e)),i+=a;break}t.push((0,r.readBytes)(o)(e)),i+=o}for(var s=new Uint8Array(i),d=0,c=0;c<t.length;c++)s.set(t[c],d),d+=t[c].length;return s}},i=(0,t.conditional)({gce:[{codes:(0,r.readBytes)(2)},{byteSize:(0,r.readByte)()},{extras:(0,r.readBits)({future:{index:0,length:3},disposal:{index:3,length:3},userInput:{index:6},transparentColorGiven:{index:7}})},{delay:(0,r.readUnsigned)(!0)},{transparentColorIndex:(0,r.readByte)()},{terminator:(0,r.readByte)()}]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&249===t[1]})),o=(0,t.conditional)({image:[{code:(0,r.readByte)()},{descriptor:[{left:(0,r.readUnsigned)(!0)},{top:(0,r.readUnsigned)(!0)},{width:(0,r.readUnsigned)(!0)},{height:(0,r.readUnsigned)(!0)},{lct:(0,r.readBits)({exists:{index:0},interlaced:{index:1},sort:{index:2},future:{index:3,length:2},size:{index:5,length:3}})}]},(0,t.conditional)({lct:(0,r.readArray)(3,(function(e,t,r){return Math.pow(2,r.descriptor.lct.size+1)}))},(function(e,t,r){return r.descriptor.lct.exists})),{data:[{minCodeSize:(0,r.readByte)()},n]}]},(function(e){return 44===(0,r.peekByte)()(e)})),a=(0,t.conditional)({text:[{codes:(0,r.readBytes)(2)},{blockSize:(0,r.readByte)()},{preData:function(e,t,n){return(0,r.readBytes)(n.text.blockSize)(e)}},n]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&1===t[1]})),s=(0,t.conditional)({application:[{codes:(0,r.readBytes)(2)},{blockSize:(0,r.readByte)()},{id:function(e,t,n){return(0,r.readString)(n.blockSize)(e)}},n]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&255===t[1]})),d=(0,t.conditional)({comment:[{codes:(0,r.readBytes)(2)},n]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&254===t[1]})),c=[{header:[{signature:(0,r.readString)(3)},{version:(0,r.readString)(3)}]},{lsd:[{width:(0,r.readUnsigned)(!0)},{height:(0,r.readUnsigned)(!0)},{gct:(0,r.readBits)({exists:{index:0},resolution:{index:1,length:3},sort:{index:4},size:{index:5,length:3}})},{backgroundColorIndex:(0,r.readByte)()},{pixelAspectRatio:(0,r.readByte)()}]},(0,t.conditional)({gct:(0,r.readArray)(3,(function(e,t){return Math.pow(2,t.lsd.gct.size+1)}))},(function(e,t){return t.lsd.gct.exists})),{frames:(0,t.loop)([i,s,d,o,a],(function(e){var t=(0,r.peekByte)()(e);return 33===t||44===t}))}];e.default=c}(c);var f={};Object.defineProperty(f,"__esModule",{value:!0}),f.deinterlace=void 0;f.deinterlace=function(e,t){for(var r=new Array(e.length),n=e.length/t,i=function(n,i){var o=e.slice(i*t,(i+1)*t);r.splice.apply(r,[n*t,t].concat(o))},o=[0,4,2,1],a=[8,8,4,2],s=0,d=0;d<4;d++)for(var c=o[d];c<n;c+=a[d])i(c,s),s++;return r};var y={};Object.defineProperty(y,"__esModule",{value:!0}),y.lzw=void 0;y.lzw=function(e,t,r){var n,i,o,a,s,d,c,u,p,l,h,f,y,g,m,v,_=4096,x=r,b=new Array(r),w=new Array(_),B=new Array(_),T=new Array(4097);for(s=(i=1<<(l=e))+1,n=i+2,c=-1,o=(1<<(a=l+1))-1,u=0;u<i;u++)w[u]=0,B[u]=u;for(h=f=y=g=m=v=0,p=0;p<x;){if(0===g){if(f<a){h+=t[v]<<f,f+=8,v++;continue}if(u=h&o,h>>=a,f-=a,u>n||u==s)break;if(u==i){o=(1<<(a=l+1))-1,n=i+2,c=-1;continue}if(-1==c){T[g++]=B[u],c=u,y=u;continue}for(d=u,u==n&&(T[g++]=y,u=c);u>i;)T[g++]=B[u],u=w[u];y=255&B[u],T[g++]=y,n<_&&(w[n]=c,B[n]=y,0==(++n&o)&&n<_&&(a++,o+=n)),c=d}g--,b[m++]=T[g],p++}for(p=m;p<x;p++)b[p]=0;return b},Object.defineProperty(d,"__esModule",{value:!0});var g,m=d.decompressFrames=d.decompressFrame=B=d.parseGIF=void 0,v=(g=c)&&g.__esModule?g:{default:g},_=u,x=p,b=f,w=y;var B=d.parseGIF=function(e){var t=new Uint8Array(e);return(0,_.parse)((0,x.buildStream)(t),v.default)},T=function(e,t,r){if(e.image){var n=e.image,i=n.descriptor.width*n.descriptor.height,o=(0,w.lzw)(n.data.minCodeSize,n.data.blocks,i);n.descriptor.lct.interlaced&&(o=(0,b.deinterlace)(o,n.descriptor.width));var a={pixels:o,dims:{top:e.image.descriptor.top,left:e.image.descriptor.left,width:e.image.descriptor.width,height:e.image.descriptor.height}};return n.descriptor.lct&&n.descriptor.lct.exists?a.colorTable=n.lct:a.colorTable=t,e.gce&&(a.delay=10*(e.gce.delay||10),a.disposalType=e.gce.extras.disposal,e.gce.extras.transparentColorGiven&&(a.transparentIndex=e.gce.transparentColorIndex)),r&&(a.patch=function(e){for(var t=e.pixels.length,r=new Uint8ClampedArray(4*t),n=0;n<t;n++){var i=4*n,o=e.pixels[n],a=e.colorTable[o]||[0,0,0];r[i]=a[0],r[i+1]=a[1],r[i+2]=a[2],r[i+3]=o!==e.transparentIndex?255:0}return r}(a)),a}};d.decompressFrame=T;m=d.decompressFrames=function(e,t){return e.frames.filter((function(e){return e.image})).map((function(r){return T(r,e.gct,t)}))};var C=function(e){function t(n,i){var o=this,a=Object.assign({},t.defaultOptions,i),s=a.scaleMode,d=function(e,t){var r={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&t.indexOf(n)<0&&(r[n]=e[n]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(n=Object.getOwnPropertySymbols(e);i<n.length;i++)t.indexOf(n[i])<0&&Object.prototype.propertyIsEnumerable.call(e,n[i])&&(r[n[i]]=e[n[i]])}return r}(a,["scaleMode"]),c=document.createElement("canvas"),u=c.getContext("2d");return c.width=n[0].imageData.width,c.height=n[0].imageData.height,(o=e.call(this,_pixi_core__WEBPACK_IMPORTED_MODULE_2__.Texture.from(c,{scaleMode:s}))||this).duration=n[n.length-1].end,o._frames=n,o._context=u,o._playing=!1,o._currentTime=0,o._isConnectedToTicker=!1,Object.assign(o,d),o.currentFrame=0,o.autoPlay&&o.play(),o}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Class extends value "+String(t)+" is not a constructor or null");function r(){this.constructor=e}s(e,t),e.prototype=null===t?Object.create(t):(r.prototype=t.prototype,new r)}(t,e),t.fromBuffer=function(e,r){if(!e||0===e.byteLength)throw new Error("Invalid buffer");var n=B(e),i=m(n,!0),o=[],a=document.createElement("canvas"),s=a.getContext("2d"),d=document.createElement("canvas"),c=d.getContext("2d");a.width=i[0].dims.width,a.height=i[0].dims.height;for(var u=0,p=1e3/Object.assign({},t.defaultOptions,r).fps,l=0;l<i.length;l++){var h=i[l],f=h.disposalType,y=void 0===f?2:f,g=h.delay,v=void 0===g?p:g,_=h.patch,x=h.dims,b=x.width,w=x.height,T=x.left,C=x.top;d.width=b,d.height=w,c.clearRect(0,0,b,w);var O=c.createImageData(b,w);O.data.set(_),c.putImageData(O,0,0),s.drawImage(d,T,C);var F=s.getImageData(0,0,a.width,a.height);2===y&&s.clearRect(0,0,b,w),o.push({start:u,end:u+v,imageData:F}),u+=v}return a.width=a.height=0,d.width=d.height=0,new t(o,r)},t.prototype.stop=function(){this._playing&&(this._playing=!1,this._autoUpdate&&this._isConnectedToTicker&&(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.remove(this.update,this),this._isConnectedToTicker=!1))},t.prototype.play=function(){this._playing||(this._playing=!0,this._autoUpdate&&!this._isConnectedToTicker&&(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.add(this.update,this,_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.UPDATE_PRIORITY.HIGH),this._isConnectedToTicker=!0),this.loop||this.currentFrame!==this._frames.length-1||(this._currentTime=0))},Object.defineProperty(t.prototype,"progress",{get:function(){return this._currentTime/this.duration},enumerable:!1,configurable:!0}),Object.defineProperty(t.prototype,"playing",{get:function(){return this._playing},enumerable:!1,configurable:!0}),t.prototype.update=function(e){var t,r;if(this._playing){var i=this.animationSpeed*e/_pixi_settings__WEBPACK_IMPORTED_MODULE_3__.settings.TARGET_FPMS,o=this._currentTime+i,a=o%this.duration,s=this._frames.findIndex((function(e){return e.start<=a&&e.end>a}));o>=this.duration?this.loop?(this._currentTime=a,this.updateFrameIndex(s),null===(t=this.onLoop)||void 0===t||t.call(this)):(this._currentTime=this.duration,this.updateFrameIndex(this._frames.length-1),null===(r=this.onComplete)||void 0===r||r.call(this),this.stop()):(this._currentTime=a,this.updateFrameIndex(s))}},t.prototype.updateFrame=function(){if(this.dirty){var e=this._frames[this._currentFrame].imageData;this._context.putImageData(e,0,0),this._context.fillStyle="transparent",this._context.fillRect(0,0,0,1),this.texture.update(),this.dirty=!1}},t.prototype._render=function(t){this.updateFrame(),e.prototype._render.call(this,t)},t.prototype._renderCanvas=function(t){this.updateFrame(),e.prototype._renderCanvas.call(this,t)},Object.defineProperty(t.prototype,"autoUpdate",{get:function(){return this._autoUpdate},set:function(e){e!==this._autoUpdate&&(this._autoUpdate=e,!this._autoUpdate&&this._isConnectedToTicker?(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.remove(this.update,this),this._isConnectedToTicker=!1):this._autoUpdate&&!this._isConnectedToTicker&&this._playing&&(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.add(this.update,this),this._isConnectedToTicker=!0))},enumerable:!1,configurable:!0}),Object.defineProperty(t.prototype,"currentFrame",{get:function(){return this._currentFrame},set:function(e){this.updateFrameIndex(e),this._currentTime=this._frames[e].start},enumerable:!1,configurable:!0}),t.prototype.updateFrameIndex=function(e){var t;if(e<0||e>=this._frames.length)throw new Error("Frame index out of range, expecting 0 to "+this.totalFrames+", got "+e);this._currentFrame!==e&&(this._currentFrame=e,this.dirty=!0,null===(t=this.onFrameChange)||void 0===t||t.call(this,e))},Object.defineProperty(t.prototype,"totalFrames",{get:function(){return this._frames.length},enumerable:!1,configurable:!0}),t.prototype.destroy=function(){this.stop(),e.prototype.destroy.call(this,!0),this._context=null,this._frames=null,this.onComplete=null,this.onFrameChange=null,this.onLoop=null},t.prototype.clone=function(){return new t(function(e,t,r){if(r||2===arguments.length)for(var n,i=0,o=t.length;i<o;i++)!n&&i in t||(n||(n=Array.prototype.slice.call(t,0,i)),n[i]=t[i]);return e.concat(n||Array.prototype.slice.call(t))}([],this._frames,!0),{autoUpdate:this._autoUpdate,loop:this.loop,autoPlay:this.autoPlay,scaleMode:this.texture.baseTexture.scaleMode,animationSpeed:this.animationSpeed,onComplete:this.onComplete,onFrameChange:this.onFrameChange,onLoop:this.onLoop})},t.defaultOptions={scaleMode:_pixi_constants__WEBPACK_IMPORTED_MODULE_4__.SCALE_MODES.LINEAR,fps:_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.FPS,loop:!0,animationSpeed:1,autoPlay:!0,autoUpdate:!0,onComplete:null,onFrameChange:null,onLoop:null},t}(_pixi_sprite__WEBPACK_IMPORTED_MODULE_1__.Sprite),O={add:function(){_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.setExtensionXhrType("gif",_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.XHR_RESPONSE_TYPE.BUFFER),_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.setExtensionLoadType("gif",_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.LOAD_TYPE.XHR)},use:function(e,t){"gif"===e.extension&&(e.animation=C.fromBuffer(e.data)),t()}};
+//# sourceMappingURL=pixi-gif.esm.js.map
 
 
 /***/ }),
@@ -47426,13 +47441,36 @@ const games = [
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(60);
+/* harmony import */ var _Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(63);
+/* harmony import */ var _Scene_DaisukeMeow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(65);
+
+
+
+const games = [
+    _Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__.Scene_EscapeDragon,
+    _Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__.Scene_RotateEviat,
+    _Scene_DaisukeMeow__WEBPACK_IMPORTED_MODULE_2__.Scene_DaisukeMeow
+];
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (games);
+
+
+/***/ }),
+/* 60 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Scene_EscapeDragon": () => (/* binding */ Scene_EscapeDragon)
 /* harmony export */ });
 /* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(55);
-/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(60);
+/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(61);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(52);
-/* harmony import */ var _Sprites_Sprite_AnWolf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(61);
+/* harmony import */ var _Sprites_Sprite_AnWolf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(62);
 
 
 
@@ -47532,7 +47570,7 @@ class Scene_EscapeDragon extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.Mini
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -47555,17 +47593,17 @@ class MiniGameBase extends _scene__WEBPACK_IMPORTED_MODULE_0__.Scene {
         super();
         // 過關方式
         this.clearMethod = EClearMethod.SURVIVE;
-        // 小遊戲時間長度
+        // 小遊戲時間長度秒數，設為 -1 則不限時間
         this.timeLength = 1;
         // 目標文字
         this.targetText = 'PlaceHolder';
     }
     get Succed() {
         // 如果是達成目標時, clearFlag須為true
-        // 如果是生存制時, clearFlag須為false
         if (this.clearMethod === EClearMethod.TARGET) {
             return this.clearFlag;
         }
+        // 如果是生存制時, clearFlag須為false
         else {
             return !this.clearFlag;
         }
@@ -47574,7 +47612,7 @@ class MiniGameBase extends _scene__WEBPACK_IMPORTED_MODULE_0__.Scene {
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -47628,7 +47666,7 @@ class Sprite_AnWolf extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite {
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -47637,8 +47675,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Scene_RotateEviat": () => (/* binding */ Scene_RotateEviat)
 /* harmony export */ });
 /* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(55);
-/* harmony import */ var _Sprites_Sprite_Eviat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(63);
-/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(60);
+/* harmony import */ var _Sprites_Sprite_Eviat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(64);
+/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(61);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(52);
 
@@ -47688,7 +47726,7 @@ class Scene_RotateEviat extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_2__.MiniG
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -47743,6 +47781,79 @@ class Sprite_Eviat extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
         // 2pi = 一圈 = 360度
         return (this.ballSpr.rotation % (Math.PI * 2)) < Math.PI * 2 / (360 / 15) ||
             (2 * Math.PI - (this.ballSpr.rotation % (Math.PI * 2))) < Math.PI * 2 / (360 / 15);
+    }
+}
+
+
+/***/ }),
+/* 65 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Scene_DaisukeMeow": () => (/* binding */ Scene_DaisukeMeow)
+/* harmony export */ });
+/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(55);
+/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(61);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(52);
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(57);
+
+
+
+
+
+
+class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniGameBase {
+    constructor() {
+        super();
+        // 過關方式：達成目標
+        this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.EClearMethod.TARGET;
+        // 小遊戲時間長度
+        this.timeLength = 9999;
+        // 目標文字
+        this.targetText = '大助貓貓！';
+        // 改判定的時間點
+        this.reverseTime = 50;
+        this.debugText = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Text('');
+        const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Graphics();
+        Bg.beginFill(0xBBBBBB);
+        Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT);
+        Bg.endFill();
+        Bg.alpha = 0.5;
+        this.addChild(Bg);
+        this.sprVideo = _game__WEBPACK_IMPORTED_MODULE_4__["default"].loader.resources.daisukeMeowMeow.animation;
+        this.sprVideo.stop();
+        this.sprVideo.anchor.set(0.5, 0.5);
+        this.sprVideo.x = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH / 2;
+        this.sprVideo.y = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT / 2;
+        this.on('pointermove', this.onMouseMove.bind(this));
+        this.interactive = true;
+        this.addChild(this.sprVideo);
+        this.addChild(this.debugText);
+    }
+    update(delta) {
+    }
+    onMouseMove($event) {
+        const movementY = $event.data.originalEvent.movementY;
+        this.debugText.text = `rev, ${this.reverse}, ${movementY}`;
+        if ((!this.reverse && movementY > 0) || (this.reverse && movementY < 0)) {
+            this.sprVideo.currentFrame = Math.max(0, Math.min(this.sprVideo.totalFrames - 1, this.sprVideo.currentFrame + 1));
+            if (this.sprVideo.currentFrame >= this.sprVideo.totalFrames - 2 && this.reverse) {
+                // 已經做完向下又向上
+                this.reverse = false;
+                this.sprVideo.currentFrame = 0;
+                if (!this.clearFlag) {
+                    _resources__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Success.play();
+                    this.clearFlag = true;
+                }
+            }
+            else if (this.sprVideo.currentFrame > this.reverseTime) {
+                this.reverse = true;
+            }
+        }
+        this.clearFlag = false;
     }
 }
 

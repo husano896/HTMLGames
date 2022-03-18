@@ -37,7 +37,7 @@ export class Sprite_Damage extends PIXI.Container {
   }
   update(delta: number) {
     if (this.animFrame >= animLength) {
-      this.destroy();
+      this.destroy({children: true});
       return;
     }
     const percent = Math.sin(Math.PI * this.animFrame / animLength);

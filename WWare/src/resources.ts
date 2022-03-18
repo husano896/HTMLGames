@@ -31,7 +31,8 @@ const $R = {
     anDra: 'imgs/anDra.webp',
     anWolf: 'imgs/anWolf.webp',
     anWolfAAA: 'imgs/anWolfAAA.webp',
-    anWolfRainbow: 'imgs/anWolfR.webp'
+    anWolfRainbow: 'imgs/anWolfR.webp',
+    daisukeMeowMeow: 'imgs/daisukeMeowMeow.gif'
   }
 }
 // 圖像處理部分
