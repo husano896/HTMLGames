@@ -9,7 +9,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
     // 過關方式：達成目標
     clearMethod = EClearMethod.TARGET;
     // 小遊戲時間長度
-    timeLength = 9999;
+    timeLength = 600;
     // 目標文字
     targetText = '大助貓貓！';
 
@@ -64,6 +64,5 @@ export class Scene_DaisukeMeow extends MiniGameBase {
                 this.reverse = true;
             }
         }
-        this.clearFlag = false;
     }
 }

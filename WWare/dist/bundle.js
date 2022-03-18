@@ -47811,7 +47811,7 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
         // 過關方式：達成目標
         this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.EClearMethod.TARGET;
         // 小遊戲時間長度
-        this.timeLength = 9999;
+        this.timeLength = 600;
         // 目標文字
         this.targetText = '大助貓貓！';
         // 改判定的時間點
@@ -47853,7 +47853,6 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
                 this.reverse = true;
             }
         }
-        this.clearFlag = false;
     }
 }
 
