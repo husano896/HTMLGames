@@ -11,7 +11,10 @@ const $R = {
     jewelRed: 'imgs/jewelIcon/jewel1l-4.png',
     jewelBlue: 'imgs/jewelIcon/jewel1a-4.png',
     jewelBlueSmall: 'imgs/jewelIcon/jewel1a-2.png',
-    closeBtn: 'imgs/closeBtn.png'
+    closeBtn: 'imgs/closeBtn.png',
+    bgBlue: 'imgs/bgblue.jpg',
+    bgRed: 'imgs/bgred.jpg',
+    bgYellow: 'imgs/bgyellow.jpg',
   },
   SpriteSheet: {
     li: 'imgs/M.json'
