@@ -9,6 +9,6 @@ export class Game_Global {
         atk: 10,
         def: 0
     });
-
-    static ChatLogs: IChatLog[] = [];
+    static hatLogs: IChatLog[] = [];
+    static map: any = {};
 }

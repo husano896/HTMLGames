@@ -2,6 +2,9 @@
 
 const localStorageKey = 'save'
 
+/**
+ * 玩RPG遊戲總要有存檔可以累積吧 是否
+ */
 export class SaveFile {
     constructor(input?: { [key: string]: any }) {
         if (input) {

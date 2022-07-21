@@ -4,12 +4,14 @@
   "description": "",
   "dependencies": {
     "howler": "^2.2.3",
+    "lodash-es": "^4.17.21",
     "pixi.js": "^6.2.0",
     "pixi.js-keyboard": "^1.1.6",
     "pixi.js-mouse": "^1.1.6"
   },
   "devDependencies": {
     "@types/howler": "^2.2.4",
+    "@types/lodash-es": "^4.17.6",
     "ts-loader": "^9.2.6",
     "typescript": "^4.5.2",
     "webpack": "^5.64.4",

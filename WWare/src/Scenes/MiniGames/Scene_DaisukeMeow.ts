@@ -56,6 +56,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
                 // 已經做完向下又向上
                 this.reverse = false;
                 this.sprVideo.currentFrame = 0;
+                // 還沒過關才放音效 當然你可以繼續大助貓貓
                 if (!this.clearFlag) {
                     $R.Audio.Success.play();
                     this.clearFlag = true;

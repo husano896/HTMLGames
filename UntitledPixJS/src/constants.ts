@@ -124,9 +124,9 @@ export const $TextStyle = {
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',
         fontSize: 32,
-        fill: ['#88ff88', '#00ff00'], // gradient
-        stroke: '#777777',
-        strokeThickness: 1,
+        fill: ['#66cc66', '#00cc00'], // gradient
+        stroke: '#000000',
+        strokeThickness: 2,
         wordWrap: true,
         wordWrapWidth: 128,
     }),

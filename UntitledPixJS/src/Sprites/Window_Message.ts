@@ -20,10 +20,6 @@ export class Window_Message extends PIXI.Container {
         text.x = 16;
         text.y = 16;
 
-        // const closeButton = new Sprite_Button('OK');
-        // closeButton.x = WIDTH - 16 - closeButton.width;
-        // closeButton.y = HEIGHT - 16 - closeButton.height;
-
         this.downIcon = new PIXI.Sprite(PIXI.Texture.from($R.Image.jewelBlueSmall));
         this.downIcon.anchor.set(0.5);
         this.downIcon.x = WIDTH - 16;
@@ -34,7 +30,9 @@ export class Window_Message extends PIXI.Container {
         this.addChild(this.downIcon);
     }
     update(delta?: number) {
+
         this.animFrame += delta;
-        this.downIcon.x = WIDTH - 16 + Math.sin(this.animFrame / 16) * 8;
+        // 提示繼續的Icon動畫
+        this.downIcon.y = HEIGHT - 16 + Math.sin(this.animFrame / 8) * 4;
     }
 }
