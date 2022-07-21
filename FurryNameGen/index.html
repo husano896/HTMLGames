@@ -1,0 +1,54 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="google" value="notranslate">
+  <title>獸圈雷包名字產生器</title>
+  <base href="./">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="main.css" />
+  <style>
+	body {
+		text-align: center;
+	}
+  </style>
+  <script>
+  function gen() {
+	var availableWords = document
+	.querySelector('textarea')
+	.value
+	.replaceAll("、","")
+	.replaceAll("，","")
+	.replaceAll(" ", "")
+	.replaceAll(",", "");
+	
+	var length = Math.round(Math.random() * 2) + 1;
+	var result = "";
+	for (var i = 0; i < length; i++) {
+		result += availableWords[Math.round(Math.random() * (availableWords.length - 1))];
+	}
+	
+	var resultEl = document.querySelector("div.result");
+	resultEl.style.display = 'block';
+	
+	var resultNameEl = document.querySelector("h2");
+	resultNameEl.innerHTML = result;
+  }
+  </script>
+</head>
+
+<body>
+  <a href="https://www.facebook.com/permalink.php?story_fbid=pfbid0YiQiizZzkcjohTWamS9jy3KSLKeKR8UCbvVVFNBRJb1ndni5YTP3YpurJ9nJ53Ntl&id=106417180993143">
+	<img src="src.jpg" alt="靠北獸圈#603683">
+  </a>
+  <div class="title">
+	<h1>獸圈雷包名字產生器</h1>
+  </div>
+  
+  <textarea>雷、雪、風、沃、亞、卡、烏、音、白、瑟、特、嵐、凱、狐、魯、爾、天、吉、斯、路、歐</textarea>
+  <div style="margin-top: 8px">
+	<button onclick="gen();">產生</button>
+  </div>
+  <div class="result" style="display: none;margin-top: 8px">
+	<label>從今天起，你是一名合格的雷包了！</label>
+	<h2 style="color: red"></h2>
+  </div>
+</body>
