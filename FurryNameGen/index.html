@@ -14,15 +14,19 @@
 		img { max-width: 100vw; }
 	</style>
 	<script>
+		var randomArray = new Uint32Array(1);
+		function genRandomInt(max) {
+			return crypto.getRandomValues(randomArray) % (max+1);
+		}
 		function gen() {
 			var availableWords = document.querySelector('textarea').value
 				.replaceAll("、", "").replaceAll("，", "")
 				.replaceAll(" ", "").replaceAll(",", "");
 			if (Math.random() * 2017 > 2016) { alert("2016 始春"); }
-			var length = Math.round(Math.random() * 3) + 1;
+			var length = genRandomInt(3)+1;
 			var result = "";
 			for (var i = 0; i < length; i++) {
-				result += availableWords[Math.round(Math.random() * (availableWords.length - 1))];
+				result += availableWords[genRandomInt(availableWords.length - 1)];
 			}
 
 			var resultEl = document.querySelector("div.result");
@@ -52,7 +56,9 @@
 	</div>
 	<div class="result" style="display: none;">
 		<label>從今天起，你是一名合格的雷包了！</label>
-		<h2 style="color: red"></h2>
+		<div style="display: flex; justify-content: center;">
+			<h2 style="color: red"></h2>
+		</div>
 	</div>
 
 	<label>2022/7/22更新：新增更多蹦蹦名字和特效</lab>
