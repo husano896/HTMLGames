@@ -1,61 +1,65 @@
 <head>
-  <meta charset="utf-8">
-  <meta name="google" value="notranslate">
-  <title>獸圈雷包名字產生器</title>
-  <base href="./">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="main.css" />
-  <style>
-	body {
-		text-align: center;
-		margin: 0;
-	}
-	textarea {
-		min-height: 64px;
-		min-width: 256px;
-	}
-	div {
-		margin-top: 8px;
-	}
-  </style>
-  <script>
-  function gen() {
-	var availableWords = document
-	.querySelector('textarea')
-	.value
-	.replaceAll("、","")
-	.replaceAll("，","")
-	.replaceAll(" ", "")
-	.replaceAll(",", "");
-	
-	var length = Math.round(Math.random() * 3) + 1;
-	var result = "";
-	for (var i = 0; i < length; i++) {
-		result += availableWords[Math.round(Math.random() * (availableWords.length - 1))];
-	}
-	
-	var resultEl = document.querySelector("div.result");
-	resultEl.style.display = 'block';
-	
-	var resultNameEl = document.querySelector("h2");
-	resultNameEl.innerHTML = result;
-  }
-  </script>
+	<meta charset="utf-8">
+	<meta name="google" value="notranslate">
+	<title>獸圈雷包名字產生器</title>
+	<base href="./">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="main.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+	<style>
+		body { text-align: center; margin: 0; }
+		textarea { min-height: 64px; min-width: 256px; }
+		div, button, img, label { margin-top: 8px; }
+		button { margin-bottom: 8px; }
+		img { max-width: 100vw; }
+	</style>
+	<script>
+		function gen() {
+			var availableWords = document.querySelector('textarea').value
+				.replaceAll("、", "").replaceAll("，", "")
+				.replaceAll(" ", "").replaceAll(",", "");
+			if (Math.random() * 2017 > 2016) { alert("2016 始春"); }
+			var length = Math.round(Math.random() * 3) + 1;
+			var result = "";
+			for (var i = 0; i < length; i++) {
+				result += availableWords[Math.round(Math.random() * (availableWords.length - 1))];
+			}
+
+			var resultEl = document.querySelector("div.result");
+			resultEl.style.display = 'block';
+
+			var resultNameEl = resultEl.querySelector("h2");
+			resultNameEl.innerHTML = result;
+			resultNameEl.className = ""
+			resultNameEl.className = "animate__animated animate__tada animate__infinite	"
+		}
+	</script>
 </head>
 
 <body>
-  <a href="https://www.facebook.com/permalink.php?story_fbid=pfbid0YiQiizZzkcjohTWamS9jy3KSLKeKR8UCbvVVFNBRJb1ndni5YTP3YpurJ9nJ53Ntl&id=106417180993143">
-	<img src="src.jpg" alt="靠北獸圈#603683" style="max-width: 100vw" >
-  </a>
-  <div class="title">
-	<h1>獸圈雷包名字產生器</h1>
-  </div>
-  <textarea>雷、雪、風、沃、亞、卡、烏、音、白、瑟、特、嵐、凱、狐、魯、爾、天、吉、斯、路、歐</textarea>
-  <div>
-	<button onclick="gen();">產生</button>
-  </div>
-  <div class="result" style="display: none;">
-	<label>從今天起，你是一名合格的雷包了！</label>
-	<h2 style="color: red"></h2>
-  </div>
+	<div>
+		<a
+			href="https://www.facebook.com/permalink.php?story_fbid=pfbid0YiQiizZzkcjohTWamS9jy3KSLKeKR8UCbvVVFNBRJb1ndni5YTP3YpurJ9nJ53Ntl&id=106417180993143">
+			<img src="src.jpg" alt="靠北獸圈#603683">
+		</a>
+	</div>
+	<div class="title">
+		<h1>獸圈雷包名字產生器</h1>
+	</div>
+	<textarea>雷、雪、風、沃、亞、卡、烏、音、白、瑟、特、嵐、凱、狐、魯、爾、天、吉、斯、路、歐、犬、小、克、幻、狼、洛、雨、星、靈、阿、羽、夢、焰、貓、利、木、太、姆、恩、哈、谷、墨、冰、喵、摩、拉、龍、提、空</textarea>
+	<div>
+		<button onclick="gen();">產生</button>
+	</div>
+	<div class="result" style="display: none;">
+		<label>從今天起，你是一名合格的雷包了！</label>
+		<h2 style="color: red"></h2>
+	</div>
+
+	<label>2022/7/22更新：新增更多蹦蹦名字和特效</lab>
+	<div>
+		<a
+			href="https://www.facebook.com/permalink.php?story_fbid=pfbid02Hd6BWd7JH8YiZhGUmu8FY38tSnrXczperjvxc4D4pb2uxVWfzv3SmKxKi3mDLvpBl&id=106417180993143">
+			<img src="src2.jpg" alt="#靠北獸圈603691">
+		</a>
+	</div>
 </body>
