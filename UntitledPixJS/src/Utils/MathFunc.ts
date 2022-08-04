@@ -7,4 +7,9 @@ export class MathFunc {
 	easeOutSineFunc(x: number, start: number, end: number) {
 		return start + (end - start) * Math.sin((x * Math.PI) / 2);
 	}
+	
+	genRandomInt(max: number) {
+		var randomArray = new Uint32Array(1);
+		return crypto.getRandomValues(randomArray) % (max+1);
+	}
 }
