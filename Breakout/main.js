@@ -5,13 +5,49 @@ let points = [];
 let balls = [];
 let blocks = [];
 let gravity = 0.25;
-let particleSize = 4;
 /** 球的半徑 */
 let ballRadius = 8;
+/** 分數 */
 let score = 0;
 // 是否以滑鼠控制球
 let controlBallWithMouse = false;
 
+let localStorageItemName = {
+    Breakout_Settings: 'breakout_settings',
+    Breakout_Save: 'breakout_save'
+}
+// 可調配類
+let settings = {
+    // 粒子大小
+    particleSize: 4,
+    // 粒子數量
+    particleAmount: 0.25
+}
+
+// 存檔紀錄
+let saveData = {
+    totalScore: 0
+}
+
+/** 讀取存檔及設定 */
+function loadSaveAndSettings() {
+    try {
+        /*
+        const localStorageSetting = JSON.parse(localStorage.getItem(localStorageItemName.Breakout_Settings));
+        if (localStorageSetting) {
+            settings = localStorageSetting;
+        }
+        */
+        const localStorageSave = JSON.parse(localStorage.getItem(localStorageItemName.Breakout_Save));
+        if (localStorageSave) {
+            saveData = localStorageSave;
+        }
+    } catch (err) {
+        console.warn('存檔及設定讀取失敗：', err);
+    }
+}
+
+loadSaveAndSettings();
 function cavUpdate() {
 
     window.requestAnimationFrame(cavUpdate)
@@ -67,6 +103,7 @@ function cavUpdate() {
             }
             if (block.cleared) {
                 score += 10;
+                saveData.totalScore += 10;
                 console.log(score)
             }
         })
@@ -84,8 +121,7 @@ function cavUpdate() {
         // 粒子重力
         p.vecy += gravity;
         ctx.fillStyle = p.color;
-        ctx.fillRect(p.x, p.y, particleSize, particleSize);
-
+        ctx.fillRect(p.x, p.y, settings.particleSize, settings.particleSize);
     });
 
     // 移除畫面外的粒子
@@ -103,12 +139,13 @@ function CreateBlock() {
     let colorg = Math.round(Math.random() * 255);
     let colorb = Math.round(Math.random() * 255);
 
+	// 設定方塊長寬
     let blockWidth = Math.round((Math.random() * 20) + 20);
     let blockHeight = Math.round((Math.random() * 20) + 20);
 
     // 避免方塊跑出畫面外面
-    let startX = Math.round(Math.random() * (cav.width - blockWidth * 2) + blockWidth);
-    let startY = Math.round(Math.random() * (cav.height - blockHeight * 2) + blockHeight);
+    let startX = Math.round(Math.random() * (cav.width - blockWidth));
+    let startY = Math.round(Math.random() * (cav.height - blockHeight));
 
     blocks.push({ x: startX, y: startY, width: blockWidth, height: blockHeight, color: `rgb(${colorr}, ${colorg}, ${colorb} )` })
 }
@@ -116,13 +153,14 @@ function CreateBlock() {
  * 建立破壞磚塊後的粒子效果
  */
 function CreateBreakPoints(startX, startY, color, block, ball) {
+    // 粒子數量為0時不建立
+    if (settings.particleAmount === 0) {
+        return;
+    }
     // 假設磚塊在點擊處的上方, 從下往上撞
-    for (let addX = 0; addX <= block.width; addX++) {
-        for (let addY = 0; addY <= block.height; addY++) {
-            // 讓粒子不要那麼多...
-            if (addX % 2 == 0 || addY % 2 == 0) {
-                continue;
-            }
+    for (let addX = 0; addX <= block.width; addX += 1 / settings.particleAmount) {
+        for (let addY = 0; addY <= block.height; addY += 1 / settings.particleAmount) {
+
             // 設定粒子出現位置
             let pointx = block.x + addX;
             let pointy = block.y + addY;
@@ -131,9 +169,10 @@ function CreateBreakPoints(startX, startY, color, block, ball) {
             let hitPower = Math.random() * 10
             // 往球的面相方向發射
             let deg = (Math.atan2(pointy - ball.y, ball.x - pointx) - Math.PI / 2);
-            let vecx = Math.sin(deg) * hitPower;
-            let vecy = Math.cos(deg) * hitPower;
-
+            let vecx = Math.cos(deg) * -ball.vecx;
+            let vecy = Math.sin(deg) * -ball.vecy;
+            // let vecx = Math.sin(deg) * hitPower + ball.vecx;
+            // let vecy = Math.cos(deg) * hitPower + ball.vecy;
             let point = { x: pointx, y: pointy, vecx: vecx, vecy: vecy, color: color }
             points.push(point)
         }
@@ -161,3 +200,8 @@ cav.addEventListener('mousemove', (ev) => {
         })
     }
 });
+// 每秒鐘存檔一次
+setInterval(() => {
+    localStorage.setItem(localStorageItemName.Breakout_Save, saveData);
+    localStorage.setItem(localStorageItemName.Breakout_Settings, settings)
+})
