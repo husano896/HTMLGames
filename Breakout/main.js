@@ -9,6 +9,10 @@ let gravity = 0.25;
 let ballRadius = 8;
 /** 分數 */
 let score = 0;
+let lastDisplayScore = 0;
+/** 開始時間*/
+let startTime = new Date();
+
 // 是否以滑鼠控制球
 let controlBallWithMouse = false;
 
@@ -21,7 +25,7 @@ let settings = {
     // 粒子大小
     particleSize: 4,
     // 粒子數量
-    particleAmount: 0.25
+    particleAmount: 0.5
 }
 
 // 存檔紀錄
@@ -65,6 +69,19 @@ function cavUpdate() {
         }
         console.log('blocks', blocks);
     }
+	
+	// 分數漸動
+	if (lastDisplayScore < score) {
+		lastDisplayScore += Math.ceil((score - lastDisplayScore)/ 10) ;
+	}
+	
+	// 繪製分數
+	ctx.font = '48px Arial';
+	ctx.textAlign = 'center';
+    ctx.fillStyle = '#aaaaaa';
+	ctx.fillText(`${lastDisplayScore}`, cav.width/2, cav.height / 2, cav.width/2);
+	ctx.font = '16px Arial';
+	ctx.fillText(`${saveData.totalScore}`,  cav.width/2, cav.height / 2 + 24, cav.width/2);
 
     // 繪製方塊
     blocks.forEach(b => {
@@ -104,7 +121,6 @@ function cavUpdate() {
             if (block.cleared) {
                 score += 10;
                 saveData.totalScore += 10;
-                console.log(score)
             }
         })
 
@@ -123,7 +139,7 @@ function cavUpdate() {
         ctx.fillStyle = p.color;
         ctx.fillRect(p.x, p.y, settings.particleSize, settings.particleSize);
     });
-
+	
     // 移除畫面外的粒子
     points = points.filter(p => p.x > 0 && p.x < cav.width && p.y > 0 && p.y < cav.height);
     // 移除被擊中的方塊
@@ -135,9 +151,9 @@ function cavUpdate() {
  */
 function CreateBlock() {
     // 設定顏色
-    let colorr = Math.round(Math.random() * 255);
-    let colorg = Math.round(Math.random() * 255);
-    let colorb = Math.round(Math.random() * 255);
+    let colorr = Math.round(Math.random() * 192 + 42);
+    let colorg = Math.round(Math.random() * 192 + 42);
+    let colorb = Math.round(Math.random() * 192 + 42);
 
 	// 設定方塊長寬
     let blockWidth = Math.round((Math.random() * 20) + 20);
@@ -166,11 +182,11 @@ function CreateBreakPoints(startX, startY, color, block, ball) {
             let pointy = block.y + addY;
 
             // 設定粒子的飛行方向
-            let hitPower = Math.random() * 10
+            let hitPower = Math.random() * 4
             // 往球的面相方向發射
             let deg = (Math.atan2(pointy - ball.y, ball.x - pointx) - Math.PI / 2);
-            let vecx = Math.cos(deg) * -ball.vecx;
-            let vecy = Math.sin(deg) * -ball.vecy;
+            let vecx = Math.sin(deg) * hitPower + Math.cos(deg) * -ball.vecx;
+            let vecy = Math.cos(deg) * hitPower + Math.sin(deg) * -ball.vecy;
             // let vecx = Math.sin(deg) * hitPower + ball.vecx;
             // let vecy = Math.cos(deg) * hitPower + ball.vecy;
             let point = { x: pointx, y: pointy, vecx: vecx, vecy: vecy, color: color }
@@ -202,6 +218,6 @@ cav.addEventListener('mousemove', (ev) => {
 });
 // 每秒鐘存檔一次
 setInterval(() => {
-    localStorage.setItem(localStorageItemName.Breakout_Save, saveData);
-    localStorage.setItem(localStorageItemName.Breakout_Settings, settings)
+    localStorage.setItem(localStorageItemName.Breakout_Save, JSON.stringify(saveData));
+    localStorage.setItem(localStorageItemName.Breakout_Settings, JSON.stringify(settings));
 })
