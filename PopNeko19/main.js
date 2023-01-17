@@ -23,6 +23,7 @@ function load() {
     } catch (err) { console.log('我們還沒有玩過椪柑') }
 }
 
+/** 不要真的打這個, 壓根兒沒這個API 笑死*/
 function sendScore() {
     if (lastSentCount === popCount) {
         return;
@@ -50,7 +51,7 @@ function popdown(event) {
     popCountElement.innerHTML = popCount.toString();
     pop0Element.style.display = 'none';
     pop1Element.style.display = '';
-    localStorage.setItem('pog', popCount);
+    localStorage.setItem('popneko19_pog', popCount);
     se.play();
 }
 function popup(event) {

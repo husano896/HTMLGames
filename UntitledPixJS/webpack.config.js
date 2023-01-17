@@ -18,4 +18,9 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
+  // https://webpack.js.org/configuration/optimization/
+  optimization: {
+    chunkIds: 'deterministic',
+    nodeEnv: 'production',
+  }
 };

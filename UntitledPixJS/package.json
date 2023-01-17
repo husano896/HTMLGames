@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "dependencies": {
+    "@pixi/sound": "^5.0.0",
     "howler": "^2.2.3",
     "lodash-es": "^4.17.21",
-    "pixi.js": "^6.2.0",
+    "pixi.js": "^7.1.0",
     "pixi.js-keyboard": "^1.1.6",
     "pixi.js-mouse": "^1.1.6"
   },

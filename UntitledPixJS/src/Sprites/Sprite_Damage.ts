@@ -1,20 +1,20 @@
-import * as PIXI from 'pixi.js';
+import { Text, Container } from 'pixi.js';
 import { $TextStyle } from '../constants';
 
 const animLength = 72;
-export class Sprite_Damage extends PIXI.Container {
+export class Sprite_Damage extends Container {
 
-  damageText: PIXI.Text;
-  criticalText: PIXI.Text;
+  damageText: Text;
+  criticalText: Text;
   animFrame = 0;
   constructor(damage: number | string, sp?: boolean, critical?: boolean) {
     super();
-    const dmgText = typeof(damage) === 'number' ? Math.abs(damage).toString() : damage;
-    this.damageText = new PIXI.Text(dmgText, this.getDamageStyle(damage, sp, critical));
+    const dmgText = typeof (damage) === 'number' ? Math.abs(damage).toString() : damage;
+    this.damageText = new Text(dmgText, this.getDamageStyle(damage, sp, critical));
     this.damageText.anchor.set(0.5);
     this.addChild(this.damageText);
     if (critical) {
-      this.criticalText = new PIXI.Text('Critical', this.getDamageStyle('Critical', sp, critical));
+      this.criticalText = new Text('Critical', this.getDamageStyle('Critical', sp, critical));
       this.criticalText.anchor.set(0.5);
       this.criticalText.y = -24;
       this.damageText.addChild(this.criticalText);
@@ -37,12 +37,12 @@ export class Sprite_Damage extends PIXI.Container {
   }
   update(delta: number) {
     if (this.animFrame >= animLength) {
-      this.destroy({children: true});
+      this.destroy({ children: true });
       return;
     }
     const percent = Math.sin(Math.PI * this.animFrame / animLength);
     const percent2 = Math.cos(Math.PI / 2 * this.animFrame / animLength);
-    this.damageText.x = (1 - percent2)* 128;
+    this.damageText.x = (1 - percent2) * 128;
     this.damageText.y = - percent * 128;
     this.damageText.scale.set(percent2 * 0.75 + 0.25);
 

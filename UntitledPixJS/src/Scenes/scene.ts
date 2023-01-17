@@ -7,5 +7,13 @@ export class Scene extends PIXI.Container {
 		super();
 		this.hitArea = new PIXI.Rectangle(0, 0, GameConsts.width, GameConsts.height);
 	}
+
+	onInit() {
+
+	}
+
+	onDestroy() {
+		
+	}
 	update(delta: number) { }
 }

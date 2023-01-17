@@ -11,3 +11,9 @@ https://husano896.github.io/HTMLGames/UntitledPixJS/
 於網址加入queryString ?game=遊戲名
 
 若可套用時會進入相對應遊戲.
+
+目前可用：
+
+https://husano896.github.io/HTMLGames/UntitledPixJS/?game=eviat
+
+https://husano896.github.io/HTMLGames/UntitledPixJS/?game=map

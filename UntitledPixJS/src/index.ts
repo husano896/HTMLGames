@@ -1,11 +1,8 @@
-import { Scene_Map } from './Scenes/scene_map';
-import { Scene_Eviat } from './Scenes/scene_eviat';
 import Mouse from 'pixi.js-mouse';
 import Keyboard from 'pixi.js-keyboard';
 import $game from "./game";
-import { Scene_Bubble } from './Scenes/Scene_Bubble';
+import { onResourceReady } from './resources';
 
-let $resources = {};
 /**
   * 自URL的QueryString中取得預先開啟的遊戲
   */
@@ -14,22 +11,20 @@ function getGameFromQuery() {
 	let game = params.get("game");
 	switch (game) {
 		case 'eviat':
-			return Scene_Eviat;
+			return import('./Scenes/scene_eviat').then(m => m.Scene_Eviat);
 		case 'map':
-			return Scene_Map;
+			return import('./Scenes/scene_map').then(m => m.Scene_Map);
 		default:
-			return Scene_Bubble;
+			return import('./Scenes/Scene_Bubble').then(m => m.Scene_Bubble);
 	}
 }
 
-$game.loader.load((loader, resources) => {
-
-	$resources = resources;
+onResourceReady.then(async () => {
 	// 初始畫面
 	let scene = getGameFromQuery()
-	let $scene = new scene();
+	let $scene = new (await scene)();
 	$game.stage.addChild($scene);
-	
+
 	$game.ticker.add((delta) => {
 		if ($scene) {
 			Keyboard.update();
@@ -38,5 +33,6 @@ $game.loader.load((loader, resources) => {
 		}
 	});
 	$game.start();
-});
+})
+
 console.log($game);

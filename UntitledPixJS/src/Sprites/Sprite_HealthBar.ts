@@ -1,5 +1,5 @@
 import { Game_Battler } from './../Game/Game_Battler';
-import * as PIXI from 'pixi.js';
+import { Container, Graphics, Text } from 'pixi.js';
 import { $TextStyle } from '../constants';
 
 // 動畫持續時間
@@ -9,7 +9,7 @@ const animLength = 60;
 const width = 128;
 
 const height = 8;
-export class Sprite_HealthBar extends PIXI.Container {
+export class Sprite_HealthBar extends Container {
 
   // 最後結算時的值
   lastVal: number = 0;
@@ -22,21 +22,21 @@ export class Sprite_HealthBar extends PIXI.Container {
   // 目前動畫剩餘時間
   private animStartVal: number = 0;
   private animTime: number = 0;
-  private graphicVal: PIXI.Graphics;
-  private graphicDelta: PIXI.Graphics;
+  private graphicVal: Graphics;
+  private graphicDelta: Graphics;
 
   battler: Game_Battler;
-  text: PIXI.Text;
+  text: Text;
   constructor(battler?: Game_Battler) {
     super();
     this.battler = battler;
-    this.graphicVal = new PIXI.Graphics();
-    this.graphicDelta = new PIXI.Graphics();
+    this.graphicVal = new Graphics();
+    this.graphicDelta = new Graphics();
 
-    this.text = new PIXI.Text('0', $TextStyle.Sprite_HealthBar);
+    this.text = new Text('0', $TextStyle.Sprite_HealthBar);
     this.text.anchor.set(1, 0);
     this.text.x = width;
-    const bg = new PIXI.Graphics();
+    const bg = new Graphics();
     bg.beginFill(0x222222);
     bg.drawRect(0, 0, width, height);
     bg.endFill();

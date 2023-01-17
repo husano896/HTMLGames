@@ -1,9 +1,11 @@
-import { Howl } from 'howler';
-import $game from './game';
+import { Assets } from 'pixi.js'
+import { sound } from '@pixi/sound'
+
+// TODO: 有些場景自己的資源要分配至各場景自己的Class
 
 const $R = {
   Audio: {
-    jump: new Howl({ src: 'audio/jump.mp3'})
+    jump: 'audio/jump.mp3'
   },
   Image: {
     bg: 'imgs/bg.jpg',
@@ -21,13 +23,16 @@ const $R = {
   }
 }
 
-$game.stop();
-// 圖像處理部分
-Object.entries($R.Image).forEach(([key, path]) => $game.loader.add(key, path));
+export const onResourceReady = new Promise(async (resolve, reject) => {
+  // 聲音處理部分
+  Object.entries($R.Audio).forEach(([key, path]) => sound.add(key, path))
 
-// 圖像處理部分
-Object.entries($R.SpriteSheet).forEach(([key, path]) => $game.loader.add(key, path));
+  // 圖像處理部分
+  await Promise.all(Object.entries($R.Image).map(([key, path]) => Assets.load(path)))
 
-
+  // SpriteSheet處理部分
+  await Promise.all(Object.entries($R.SpriteSheet).map(([key, path]) => Assets.load(path)))
+  resolve(Assets)
+})
 
 export default $R;

@@ -1,10 +1,16 @@
 import { GameConsts } from "./constants";
-import * as PIXI from 'pixi.js';
-
+import { Application } from 'pixi.js'
 // Create the application helper and add its render target to the page
-const $game = new PIXI.Application({ width: GameConsts.width, height: GameConsts.height });
+const $game = new Application({
+  width: GameConsts.width,
+  height: GameConsts.height,
+  autoDensity: true,
+  backgroundColor: 0x333333,
+  resolution: window.devicePixelRatio || 1,
+});
+
 const gameContainer = document.querySelector('#game-container');
-gameContainer.appendChild($game.view);
+gameContainer.appendChild($game.view as HTMLCanvasElement);
 export default $game;
 
 /*

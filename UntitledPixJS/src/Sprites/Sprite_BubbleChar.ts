@@ -1,6 +1,6 @@
-import * as PIXI from 'pixi.js';
+import { AnimatedSprite, Texture } from 'pixi.js';
 
-export class Sprite_BubbleChar extends PIXI.AnimatedSprite {
+export class Sprite_BubbleChar extends AnimatedSprite {
 
   target: { x: number, y: number };
 
@@ -20,7 +20,7 @@ export class Sprite_BubbleChar extends PIXI.AnimatedSprite {
         if (!tex[i]) {
           tex[i] = [];
         }
-        tex[i].push({ texture: PIXI.Texture.from(frameKey), time: 133 });
+        tex[i].push({ texture: Texture.from(frameKey), time: 133 });
       }
     }
     super(tex[2]);

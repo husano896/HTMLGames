@@ -18,7 +18,6 @@ export class Window_MapItem extends PIXI.Container {
         spr.x = 8;
         spr.y = 8;
         spr.interactive = true;
-        spr.buttonMode = true;
         const text = new PIXI.Text('1', $TextStyle.Window_MapItem);
         spr.addChild(text);
         text.anchor.set(1, 1);

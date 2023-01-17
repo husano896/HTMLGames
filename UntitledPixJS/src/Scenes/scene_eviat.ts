@@ -1,22 +1,22 @@
 import { Scene } from './scene';
 import { Sprite_Eviat } from '../Sprites/Sprite_Eviat';
-import * as PIXI from 'pixi.js';
-
-import $R from '../resources';
+import { sound } from '@pixi/sound'
+import { Sprite } from 'pixi.js';
 
 export class Scene_Eviat extends Scene {
-	bg: PIXI.Sprite;
+	bg: Sprite;
 
 	sprite_eviat: Sprite_Eviat;
 
 	holding: boolean;
 
 	lastClickTime: number;
+
 	// 讀取資源區
 	constructor() {
 		super();
 
-		this.bg = PIXI.Sprite.from('imgs/bg.jpg');
+		this.bg = Sprite.from('imgs/bg.jpg');
 		this.addChild(this.bg);
 
 		this.sprite_eviat = new Sprite_Eviat();
@@ -77,7 +77,7 @@ export class Scene_Eviat extends Scene {
 		this.sprite_eviat.startPos = { x: this.sprite_eviat.x, y: this.sprite_eviat.y };
 		this.sprite_eviat.target = { x: x, y: y };
 		this.lastClickTime = new Date().getTime();
-		$R.Audio.jump.play();
+		sound.play('jump')
 	}
 }
 

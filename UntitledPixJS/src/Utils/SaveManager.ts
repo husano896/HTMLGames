@@ -1,6 +1,6 @@
 // 用來處理存檔資訊與格式的Class
 
-const localStorageKey = 'save'
+const localStorageKey = 'untitled_save'
 
 /**
  * 玩RPG遊戲總要有存檔可以累積吧 是否

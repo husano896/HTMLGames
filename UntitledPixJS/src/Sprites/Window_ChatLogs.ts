@@ -1,7 +1,6 @@
-import * as PIXI from 'pixi.js';
-import { $TextStyle } from '../constants';
+import { Container } from 'pixi.js';
 import { Game_Global } from '../Game/Game_Global';
-export class Window_ChatLogs extends PIXI.Container {
+export class Window_ChatLogs extends Container {
 
     constructor() {
         super();
@@ -9,7 +8,5 @@ export class Window_ChatLogs extends PIXI.Container {
 
     update(delta?: number) {
         const logs = Game_Global.ChatLogs;
-
-
     }
 }

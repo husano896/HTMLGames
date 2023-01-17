@@ -1,13 +1,12 @@
-import * as PIXI from 'pixi.js';
+import { Sprite, Texture } from 'pixi.js';
 import $R from '../resources';
 // 關閉父Sprite用的按鈕
 
-export class Sprite_CloseButton extends PIXI.Sprite {
+export class Sprite_CloseButton extends Sprite {
     constructor() {
-        super(PIXI.Texture.from($R.Image.closeBtn));
+        super(Texture.from($R.Image.closeBtn));
         this.interactive = true;
-        this.buttonMode = true;
-		this.on('pointerdown', this.onDown.bind(this));
+        this.on('pointerdown', this.onDown.bind(this));
     }
     onDown() {
         if (this.parent) {

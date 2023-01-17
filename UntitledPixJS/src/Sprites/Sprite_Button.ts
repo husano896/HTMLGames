@@ -1,15 +1,14 @@
-import * as PIXI from 'pixi.js';
+import { Graphics, Text } from 'pixi.js';
 import { $TextStyle } from '../constants';
-import $R from '../resources';
-// 關閉父Sprite用的按鈕
 
+// 關閉父Sprite用的按鈕
 const minWidth = 96;
 const minHeight = 32;
-export class Sprite_Button extends PIXI.Graphics {
+export class Sprite_Button extends Graphics {
     callback: () => void;
     constructor(text: string, callback?: () => void) {
         super();
-        const pixiText = new PIXI.Text(text, $TextStyle.Sprite_Button);
+        const pixiText = new Text(text, $TextStyle.Sprite_Button);
         pixiText.anchor.set(0.5);
         this.beginFill(0x448899, 1);
         this.drawRect(0, 0, Math.max(minWidth, pixiText.width + 16), Math.max(minHeight, pixiText.height + 8))
@@ -17,7 +16,6 @@ export class Sprite_Button extends PIXI.Graphics {
         pixiText.x = this.width / 2;
         pixiText.y = this.height / 2;
         this.interactive = true;
-        this.buttonMode = true;
         this.on('pointerdown', this.onDown.bind(this));
         this.addChild(pixiText);
 
