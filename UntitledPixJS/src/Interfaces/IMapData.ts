@@ -1,5 +1,5 @@
 import { MapEnum } from "../Data/MapEnum";
-import * as PIXI from 'pixi.js';
+import {Sprite} from 'pixi.js';
 import { FederatedPointerEvent } from "pixi.js";
 export interface IMapData {
     // 地圖名稱
@@ -18,9 +18,9 @@ export interface IMapData {
         // 固定在畫面上 (如遠景)
         sticky?: boolean,
         // 碰觸時執行
-        onCollide?: (spr: PIXI.Sprite) => void,
+        onCollide?: (spr: Sprite) => void,
         // 使用者空白鍵 / 點擊時執行
-        onInteract?: (ev: FederatedPointerEvent, spr: PIXI.Sprite) => void,
-        update?: (spr: PIXI.Sprite, delta: number) => void
+        onInteract?: (ev: FederatedPointerEvent, spr: Sprite) => void,
+        update?: (spr: Sprite, delta: number) => void
     }>
 }

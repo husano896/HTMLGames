@@ -1,5 +1,5 @@
 import { Scene } from './scene';
-import * as PIXI from 'pixi.js';
+import { Sprite, Container, Text } from 'pixi.js';
 import $R from '../resources';
 import { Game_Battler } from '../Game/Game_Battler';
 import { Mock_Battler_Player } from '../Mock/Mock_Battler_Player';
@@ -19,7 +19,7 @@ enum Battle_Phase {
 	END
 }
 export class Scene_Battle extends Scene {
-	bg: PIXI.Sprite;
+	bg: Sprite;
 
 	battlerPlayer: Array<Game_Battler>;
 	battlerEnemy: Array<Game_Battler>;
@@ -30,7 +30,7 @@ export class Scene_Battle extends Scene {
 
 		// 借用假的player
 		this.battlerPlayer = [new Mock_Battler_Player()];
-		this.bg = PIXI.Sprite.from($R.Image.bgYellow);
+		this.bg = Sprite.from($R.Image.bgYellow);
 		this.addChild(this.bg);
 	}
 	update(delta: number) {
@@ -38,22 +38,22 @@ export class Scene_Battle extends Scene {
 	}
 }
 
-export class Window_Command extends PIXI.Container {
-	bg: PIXI.Sprite;
+export class Window_Command extends Container {
+	bg: Sprite;
 
-	attackButton: PIXI.Text;
-	defenseButton: PIXI.Text;
-	skillButton: PIXI.Text;
-	itemButton: PIXI.Text;
+	attackButton: Text;
+	defenseButton: Text;
+	skillButton: Text;
+	itemButton: Text;
 
 	afterDecided: (option?: any) => any;
 	constructor() {
 		super();
-		this.bg = PIXI.Sprite.from($R.Image.bgRed);
-		const attackButton = new PIXI.Text('攻擊');
-		const defenseButton = new PIXI.Text('防禦');
-		const skillButton = new PIXI.Text('技能');
-		const itemButton = new PIXI.Text('物品');
+		this.bg = Sprite.from($R.Image.bgRed);
+		const attackButton = new Text('攻擊');
+		const defenseButton = new Text('防禦');
+		const skillButton = new Text('技能');
+		const itemButton = new Text('物品');
 
 		attackButton.interactive = true;
 		defenseButton.interactive = true;

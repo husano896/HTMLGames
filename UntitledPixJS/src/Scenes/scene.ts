@@ -1,11 +1,11 @@
-import * as PIXI from 'pixi.js';
+import { Container, Rectangle } from 'pixi.js';
 import { GameConsts } from '../constants';
 
-export class Scene extends PIXI.Container {
+export class Scene extends Container {
 
 	constructor() {
 		super();
-		this.hitArea = new PIXI.Rectangle(0, 0, GameConsts.width, GameConsts.height);
+		this.hitArea = new Rectangle(0, 0, GameConsts.width, GameConsts.height);
 	}
 
 	onInit() {
@@ -13,7 +13,7 @@ export class Scene extends PIXI.Container {
 	}
 
 	onDestroy() {
-		
+
 	}
 	update(delta: number) { }
 }

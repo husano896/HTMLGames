@@ -1,16 +1,16 @@
 import { Scene } from './scene';
-import * as PIXI from 'pixi.js';
+import {Sprite, Text}  from 'pixi.js';
 
 export class Scene_Credits extends Scene {
-	bg: PIXI.Sprite;
+	bg: Sprite;
 
 	// 讀取資源區
 	constructor() {
 		super();
 
-		this.bg = PIXI.Sprite.from('imgs/bg.jpg');
+		this.bg = Sprite.from('imgs/bg.jpg');
 
-		const text = new PIXI.Text(`
+		const text = new Text(`
 
 		`);
 		this.addChild(this.bg);

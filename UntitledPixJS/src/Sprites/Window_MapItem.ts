@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { Container, Texture, Graphics, Sprite, Text } from 'pixi.js';
 import { $TextStyle } from '../constants';
 import { Sprite_CloseButton } from './Sprite_CloseButton';
 import $R from '../resources';
@@ -6,19 +6,19 @@ import $R from '../resources';
 
 const WIDTH = 320;
 const HEIGHT = 120;
-export class Window_MapItem extends PIXI.Container {
+export class Window_MapItem extends Container {
 
     constructor() {
         super();
-        const bg = new PIXI.Graphics();
+        const bg = new Graphics();
         bg.beginFill(0x555555, 0.5);
         bg.drawRect(0, 0, WIDTH, HEIGHT)
 
-        const spr = PIXI.Sprite.from(PIXI.Texture.from($R.Image.jewelRed));
+        const spr = Sprite.from(Texture.from($R.Image.jewelRed));
         spr.x = 8;
         spr.y = 8;
         spr.interactive = true;
-        const text = new PIXI.Text('1', $TextStyle.Window_MapItem);
+        const text = new Text('1', $TextStyle.Window_MapItem);
         spr.addChild(text);
         text.anchor.set(1, 1);
         text.x = 24;

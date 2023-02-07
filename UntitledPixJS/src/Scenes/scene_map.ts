@@ -10,7 +10,7 @@ import Keyboard from 'pixi.js-keyboard';
 import { Scene } from './scene';
 import { Sprite_Seto } from '../Sprites/Sprite_Seto';
 import { Game_Global } from './../Game/Game_Global';
-import * as PIXI from 'pixi.js';
+import { Container, } from 'pixi.js';
 export class Scene_Map extends Scene {
 
 	sprite_seto: Sprite_Seto;
@@ -22,7 +22,7 @@ export class Scene_Map extends Scene {
 	battler: Game_Battler;
 
 	map: Sprite_Map;
-	windows_container: PIXI.Container;
+	windows_container: Container;
 	// 讀取資源區
 	constructor() {
 		super();
@@ -47,10 +47,10 @@ export class Scene_Map extends Scene {
 
 		this.holding = false;
 		// 視窗應該要在常駐UI層之下
-		this.windows_container = new PIXI.Container();
+		this.windows_container = new Container();
 		this.addChild(this.windows_container);
 
-		
+
 		// 道具視窗
 		this.windows_container.addChild(new Window_MapItem());
 		const window_message = new Window_Message();
@@ -70,8 +70,8 @@ export class Scene_Map extends Scene {
 	update(delta) {
 		const time = new Date().getTime();
 
-		this.children.forEach((c: any)=>c.update?.(delta));
-		this.windows_container.children.forEach((c:any)=>c.update?.(delta));
+		this.children.forEach((c: any) => c.update?.(delta));
+		this.windows_container.children.forEach((c: any) => c.update?.(delta));
 
 		const target = { x: 0, y: 0 };
 		if (Keyboard.isKeyDown('ArrowUp')) {

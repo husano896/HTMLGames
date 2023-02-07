@@ -1,12 +1,12 @@
 
-import * as PIXI from 'pixi.js';
+import {TextStyle}from 'pixi.js';
 
 export const GameConsts = {
     width: 800,
     height: 600
 }
 export const $TextStyle = {
-    Sprite_Window_Title: new PIXI.TextStyle({
+    Sprite_Window_Title: new TextStyle({
         align: 'center',
         fontFamily: 'Arial',
         fontSize: 24,
@@ -16,7 +16,7 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 440,
     }),
-    Window_MapItem: new PIXI.TextStyle({
+    Window_MapItem: new TextStyle({
         align: 'right',
         fontFamily: 'Arial',
         fontSize: 16,
@@ -28,7 +28,7 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 32,
     }),
-    Window_ChatLogs: new PIXI.TextStyle({
+    Window_ChatLogs: new TextStyle({
         align: 'left',
         fontFamily: '微軟正黑體',
         fontSize: 14,
@@ -40,7 +40,7 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 256,
     }),
-    Window_Message: new PIXI.TextStyle({
+    Window_Message: new TextStyle({
         align: 'left',
         fontFamily: '微軟正黑體',
         fontSize: 16,
@@ -52,13 +52,13 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 288,
     }),
-    Sprite_Button: new PIXI.TextStyle({
+    Sprite_Button: new TextStyle({
         align: 'center',
         fontFamily: '微軟正黑體',
         fontSize: 14,
         fill: ['#ffffff'], // gradient
     }),
-    Sprite_HealthBar: new PIXI.TextStyle({
+    Sprite_HealthBar: new TextStyle({
         align: 'center',
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',
@@ -69,7 +69,7 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 128,
     }),
-    Sprite_Damage: new PIXI.TextStyle({
+    Sprite_Damage: new TextStyle({
         align: 'center',
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',
@@ -83,7 +83,7 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 128,
     }),
-    Sprite_Damage_Critical: new PIXI.TextStyle({
+    Sprite_Damage_Critical: new TextStyle({
         align: 'center',
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',
@@ -95,7 +95,7 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 128,
     }),
-    Sprite_Damage_HP: new PIXI.TextStyle({
+    Sprite_Damage_HP: new TextStyle({
         align: 'center',
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',
@@ -107,7 +107,7 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 128,
     }),
-    Sprite_Damage_HP_Critical: new PIXI.TextStyle({
+    Sprite_Damage_HP_Critical: new TextStyle({
         align: 'center',
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',
@@ -119,7 +119,7 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 128,
     }),
-    Sprite_Damage_HP_Plus: new PIXI.TextStyle({
+    Sprite_Damage_HP_Plus: new TextStyle({
         align: 'center',
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',
@@ -130,7 +130,7 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 128,
     }),
-    Sprite_Damage_SP: new PIXI.TextStyle({
+    Sprite_Damage_SP: new TextStyle({
         align: 'center',
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',
@@ -142,7 +142,7 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 128,
     }),
-    Sprite_Damage_SP_Plus: new PIXI.TextStyle({
+    Sprite_Damage_SP_Plus: new TextStyle({
         align: 'center',
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',

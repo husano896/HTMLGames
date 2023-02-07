@@ -1,7 +1,7 @@
 import { GameConsts } from '../constants';
 import { IMapData } from "../Interfaces/IMapData";
 import $R from '../resources';
-import * as PIXI from 'pixi.js';
+import { Sprite } from 'pixi.js';
 import { MapEnum } from './MapEnum';
 export class Map001 implements IMapData {
     name = "Map01"
@@ -24,7 +24,7 @@ export class Map001 implements IMapData {
             texture: $R.Image.jewelBlue,
             x: 400,
             y: 400,
-            update: (spr: PIXI.Sprite, delta: number) => {
+            update: (spr: Sprite, delta: number) => {
 
             }
         }
