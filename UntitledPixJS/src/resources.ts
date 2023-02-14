@@ -17,6 +17,7 @@ const $R = {
     bgBlue: 'imgs/bgblue.jpg',
     bgRed: 'imgs/bgred.jpg',
     bgYellow: 'imgs/bgyellow.jpg',
+    dragon: 'imgs/dragon.png'
   },
   SpriteSheet: {
     li: 'imgs/M.json'

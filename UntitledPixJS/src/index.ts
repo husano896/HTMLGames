@@ -14,6 +14,13 @@ function getGameFromQuery() {
 			return import('./Scenes/scene_eviat').then(m => m.Scene_Eviat);
 		case 'map':
 			return import('./Scenes/scene_map').then(m => m.Scene_Map);
+		case 'map':
+			/** 遊戲自適應視窗的對應 */
+			$game.renderer.resize(document.documentElement.clientWidth, document.documentElement.clientHeight);
+			window.addEventListener("resize", () => {
+				$game.renderer.resize(document.documentElement.clientWidth, document.documentElement.clientHeight);
+			});
+			return import('./Scenes/Scene_Mobile').then(m => m.Scene_Mobile);
 		default:
 			return import('./Scenes/Scene_Bubble').then(m => m.Scene_Bubble);
 	}
