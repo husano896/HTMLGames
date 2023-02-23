@@ -1,5 +1,5 @@
 
-import {TextStyle}from 'pixi.js';
+import { TextStyle } from 'pixi.js';
 
 export const GameConsts = {
     width: 800,
@@ -42,15 +42,18 @@ export const $TextStyle = {
     }),
     Window_Message: new TextStyle({
         align: 'left',
-        fontFamily: '微軟正黑體',
-        fontSize: 16,
+        fontFamily: ['微軟正黑體', '新細明體', 'Arial'],
+        fontSize: 24,
         fill: ['#ffffff'], // gradient
         dropShadow: true,
         dropShadowDistance: 2,
         dropShadowColor: '#333333',
         dropShadowAngle: 180,
+        // 文字過長的自動換行
         wordWrap: true,
-        wordWrapWidth: 288,
+        wordWrapWidth: 320,
+        lineHeight: 32,
+        breakWords: true,
     }),
     Sprite_Button: new TextStyle({
         align: 'center',
