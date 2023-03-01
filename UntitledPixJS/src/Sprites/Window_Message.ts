@@ -29,7 +29,7 @@ export class Window_Message extends Window_Responsive {
 
         this.on('pointerdown', this.onPointerDown.bind(this));
         this.interactive = true;
-
+        this.visible = false;
         this.onWindowResize();
     }
     update(delta?: number) {

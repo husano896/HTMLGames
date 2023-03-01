@@ -45,7 +45,6 @@ export class Sprite_TypingText extends Container {
                 props.texts.forEach(t => this.appendText(t));
             }
         }
-        console.log(this);
     }
 
     update(delta: number) {
@@ -80,7 +79,7 @@ export class Sprite_TypingText extends Container {
             } else {
                 this._text.text = `${this._text.text}${this.bufferText.at(0)}`;
                 this.bufferText = this.bufferText.slice(1);
-                console.log('[Sprite_TypingText] 目前文字', this._text, '剩餘文字', this.bufferText);
+                // console.log('[Sprite_TypingText] 目前文字', this._text, '剩餘文字', this.bufferText);
                 this._nextCharCooldown += TYPING_INTERVAL;
             }
         }
@@ -97,7 +96,7 @@ export class Sprite_TypingText extends Container {
     }
     /** 新增文字到佇列 */
     appendText(text: string) {
-        console.log('[Sprite_TypingText] 加入了文字：', text);
+        // console.log('[Sprite_TypingText] 加入了文字：', text);
         this.bufferTexts.push(text);
         if (!this.typing) {
             this.nextSentence();

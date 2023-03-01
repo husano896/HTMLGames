@@ -72,6 +72,18 @@ export const $TextStyle = {
         wordWrap: true,
         wordWrapWidth: 128,
     }),
+    Sprite_Battery: new TextStyle({
+        align: 'center',
+        fontFamily: 'Sitka Text',
+        fontStyle: 'italic',
+        fontSize: 48,
+        fill: ['#ffffff', '#777777'], // gradient
+        stroke: '#000000',
+        strokeThickness: 2,
+        dropShadowDistance: 2,
+        dropShadowColor: '#4444FF',
+        dropShadowAngle: 180,
+    }),
     Sprite_Damage: new TextStyle({
         align: 'center',
         fontFamily: 'Sitka Text',

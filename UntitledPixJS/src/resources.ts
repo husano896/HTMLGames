@@ -3,9 +3,13 @@ import { sound } from '@pixi/sound'
 
 // TODO: 有些場景自己的資源要分配至各場景自己的Class
 
+
 const $R = {
   Audio: {
-    jump: 'audio/jump.mp3'
+    jump: 'audio/jump.mp3',
+    confirm: '../shared/Audio/SE/F/ok.wav',
+    cancel: '../shared/Audio/SE/F/cancel.wav',
+    cursor: '../shared/Audio/SE/F/cursor.wav',
   },
   Image: {
     bg: 'imgs/bg.jpg',
@@ -22,6 +26,13 @@ const $R = {
   SpriteSheet: {
     li: 'imgs/M.json'
   }
+}
+
+export enum AudioKeys {
+  jump = 'jump',
+  confirm = 'confirm',
+  cancel = 'cancel',
+  cursor = 'cursor'
 }
 
 export const onResourceReady = new Promise(async (resolve, reject) => {
