@@ -1,3 +1,5 @@
+import { Window_HomeStatus } from './../Sprites/Window_HomeStatus';
+import { Window_HomeInvetory } from './../Sprites/Window_HomeInvetory';
 import { Sprite_Button } from './../Sprites/Sprite_Button';
 import { Window_Message } from './../Sprites/Window_Message';
 import { Sprite_TypingText } from './../Sprites/Sprite_TypingText';
@@ -25,6 +27,18 @@ class HomeUIContainer extends Container implements IResizeable {
         this.OpenWorkButton = new Sprite_Button('工作', null, { width: 64, height: 64 });
         this.OpenMapButton = new Sprite_Button('地圖', null, { width: 64, height: 64 });
         this.BatterySprite = new Sprite_Battery();
+
+        this.OpenItemButton.interactive = true;
+        this.OpenItemButton.cursor = 'pointer';
+
+        this.OpenWorkButton.interactive = true;
+        this.OpenWorkButton.cursor = 'pointer';
+
+        this.OpenMapButton.interactive = true;
+        this.OpenMapButton.cursor = 'pointer';
+
+        this.BatterySprite.interactive = true;
+        this.BatterySprite.cursor = 'pointer';
 
         this.addChild(this.OpenItemButton, this.OpenMapButton, this.OpenWorkButton, this.BatterySprite);
         this.onWindowResize();
@@ -57,9 +71,14 @@ export class Scene_Mobile extends Scene implements IResizeable {
 
     window_message: Window_Message;
 
+    window_homeInvetory: Window_HomeInvetory;
+
+    window_homeStatus: Window_HomeStatus;
+
     /** 在家時可使用的按鈕們*/
     homeUIContainer: HomeUIContainer;
 
+    BackButton: Sprite_Button;
     constructor() {
         super();
         // 背景
@@ -72,29 +91,26 @@ export class Scene_Mobile extends Scene implements IResizeable {
         this.window_message = new Window_Message();
         this.window_message.x = 8;
 
+        // 道具視窗
+        this.window_homeInvetory = new Window_HomeInvetory();
+        // 能力視窗
+        this.window_homeStatus = new Window_HomeStatus();
 
         // 滑鼠事件綁定
-        // this.interactive = true;
+
         // this.on('pointerdown', this.onClick.bind(this));
 
         console.log(this);
 
-        /*
-        [
-            '試著說第一句話',
-            '然後說第二句話',
-            '接著說第三句很長很長很長很長很長很長很長很長很長很長很長很長很長很長很長很長的話\n而且是有換行那種'
-        ].forEach(t => this.window_message.appendText(t))
-*/
-
         // 點擊乖龍龍說話
         this.dragon.on('pointerdown', () => {
-            if (this.window_message.typing) {
+            if (!this.homeUIContainer.visible) {
                 return;
             }
             this.window_message.appendText('飛飛乖！\n咕姆姆姆姆姆姆...');
         });
         this.dragon.interactive = true;
+        this.dragon.cursor = 'pointer';
 
         // 在自己家場景時能用的UI
         this.homeUIContainer = new HomeUIContainer();
@@ -102,7 +118,9 @@ export class Scene_Mobile extends Scene implements IResizeable {
             if (this.window_message.typing) {
                 return;
             }
-            this.window_message.appendText('物品選單');
+
+            this.window_homeStatus.visible = true;
+            this.window_homeInvetory.visible = true;
         }).bind(this)
 
         this.homeUIContainer.OpenMapButton.callback = (() => {
@@ -119,7 +137,24 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.window_message.appendText('工作選單');
         }).bind(this)
 
-        this.addChild(this.bg, this.dragon, this.homeUIContainer, this.window_message);
+
+        this.BackButton = new Sprite_Button('返回', null, { width: 64, height: 64 });
+        this.BackButton.interactive = true
+        this.BackButton.cursor = 'pointer'
+        this.BackButton.visible = false
+        this.BackButton.on('pointerdown', () => {
+            // 返回主頁面
+            this.window_homeInvetory.visible = false
+            this.window_homeStatus.visible = false
+        });
+        this.addChild(
+            this.bg,
+            this.dragon,
+            this.homeUIContainer,
+            this.window_homeInvetory,
+            this.window_homeStatus,
+            this.window_message,
+            this.BackButton);
         this.onWindowResize();
     }
     destroy(options?: boolean | IDestroyOptions): void {
@@ -129,14 +164,17 @@ export class Scene_Mobile extends Scene implements IResizeable {
     update(delta: number) {
         super.update(delta);
 
-        /** 目前文字視窗進行中 */
-        if (this.window_message.visible) {
-            this.homeUIContainer.visible = false;
-            this.homeUIContainer.disabled = true;
-        } else {
-            this.homeUIContainer.visible = true;
-            this.homeUIContainer.disabled = false;
-        }
+        /** 目前文字視窗進行中, 或狀態顯示中 */
+        this.homeUIContainer.visible = !(
+            this.window_message.visible ||
+            this.window_homeStatus.visible ||
+            this.window_homeInvetory.visible
+        );
+
+        this.BackButton.visible = (
+            this.window_homeStatus.visible ||
+            this.window_homeInvetory.visible
+        )
     }
 
     /*
@@ -159,5 +197,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
         this.homeUIContainer.y = $game.screen.height - this.homeUIContainer.height;
 
         // this.window_message.y = $game.screen.height - this.window_message.height - 16;
+        this.BackButton.x = $game.screen.width - 8 - this.BackButton.width - 16;
+        this.BackButton.y = $game.screen.height - this.BackButton.height - 16;
     }
 }

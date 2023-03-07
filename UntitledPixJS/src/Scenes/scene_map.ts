@@ -16,8 +16,7 @@ export class Scene_Map extends Scene {
 	sprite_seto: Sprite_Seto;
 
 	holding: boolean;
-
-
+	
 	sprite_healthBar: Sprite_HealthBar;
 	battler: Game_Battler;
 

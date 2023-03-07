@@ -27,11 +27,21 @@ export class Window_Message extends Window_Responsive {
 
         this.addChild(this.downIcon, this.sprite_typingText);
 
+        this.sprite_typingText.on('pointerdown', this.onPointerDown.bind(this));
+        this.sprite_typingText.interactive = true;
+        this.sprite_typingText.cursor = 'pointer';
+        this.downIcon.on('pointerdown', this.onPointerDown.bind(this));
+        this.downIcon.interactive = true;
+        this.downIcon.cursor = 'pointer';
+
         this.on('pointerdown', this.onPointerDown.bind(this));
+        
         this.interactive = true;
+        this.cursor = 'pointer';
         this.visible = false;
         this.onWindowResize();
     }
+
     update(delta?: number) {
         super.update(delta);
         this.animFrame += delta;

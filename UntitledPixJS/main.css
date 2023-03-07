@@ -2,4 +2,5 @@ body {
   text-align: center;
   margin: 0;
   overflow: hidden;
+  touch-action: none;
 }

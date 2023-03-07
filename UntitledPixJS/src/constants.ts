@@ -55,6 +55,36 @@ export const $TextStyle = {
         lineHeight: 32,
         breakWords: true,
     }),
+    Window_HomeWindow_Left: new TextStyle({
+        align: 'left',
+        fontFamily: ['微軟正黑體', '新細明體', 'Arial'],
+        fontSize: 24,
+        fill: ['#fff'], // gradient
+        dropShadow: true,
+        dropShadowDistance: 2,
+        dropShadowColor: '#000',
+        dropShadowAngle: 180,
+        // 文字過長的自動換行
+        wordWrap: true,
+        wordWrapWidth: 304,
+        lineHeight: 32,
+        breakWords: true,
+    }),
+    Window_HomeWindow_Right: new TextStyle({
+        align: 'right',
+        fontFamily: ['微軟正黑體', '新細明體', 'Arial'],
+        fontSize: 16,
+        fill: ['#fff'], // gradient
+        dropShadow: true,
+        dropShadowDistance: 2,
+        dropShadowColor: '#000',
+        dropShadowAngle: 180,
+        // 文字過長的自動換行
+        wordWrap: true,
+        wordWrapWidth: 304,
+        lineHeight: 32,
+        breakWords: true,
+    }),
     Sprite_Button: new TextStyle({
         align: 'center',
         fontFamily: '微軟正黑體',

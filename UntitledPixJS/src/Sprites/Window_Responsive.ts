@@ -10,6 +10,7 @@ export class Window_Responsive extends Container implements IResizeable {
 
     bg: Graphics;
 
+    lastVisible: boolean;
     constructor() {
         super();
         this.bg = new Graphics();
@@ -27,6 +28,15 @@ export class Window_Responsive extends Container implements IResizeable {
 
     update(delta: number) {
         this.children.forEach(child => (child as any).update?.(delta))
+
+        if (this.visible !== this.lastVisible) {
+            this.lastVisible = this.visible;
+        }
+        if (this.visible) {
+            this.alpha = Math.min(1, this.alpha + delta / 10);
+        } else {
+            this.alpha = 0
+        }
     }
 
     // 因為有註冊到window事件, 需以Destroy正確方式解除事件註冊！
