@@ -1,6 +1,7 @@
 import { IResizeable } from './../Interfaces/IResizeable';
 import { Container, Graphics, IDestroyOptions } from 'pixi.js';
-/** 自適應型視窗,  */
+
+/** 自適應型視窗, 其實一般型的引用這個也可以...? */
 export class Window_Responsive extends Container implements IResizeable {
 
     minWidth: number;
@@ -33,7 +34,8 @@ export class Window_Responsive extends Container implements IResizeable {
             this.lastVisible = this.visible;
         }
         if (this.visible) {
-            this.alpha = Math.min(1, this.alpha + delta / 10);
+            // 作為淡入用
+            this.alpha = Math.min(1, (this.alpha + delta * (1 - this.alpha) / 20));
         } else {
             this.alpha = 0
         }

@@ -1,5 +1,6 @@
 import { Graphics, Text } from 'pixi.js';
 import { $TextStyle } from '../constants'
+
 /** 家選單中, 目前剩餘行動值的顯示 */
 export class Sprite_Battery extends Graphics {
     value: number = 24;

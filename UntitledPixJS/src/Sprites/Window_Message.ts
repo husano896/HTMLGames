@@ -4,6 +4,9 @@ import { $TextStyle } from '../constants';
 import { Window_Responsive } from './Window_Responsive'
 import $R from '../resources';
 import $game from '../game';
+
+import Keyboard from 'pixi.js-keyboard';
+
 // 對話視窗
 
 const MAXWIDTH = 640;
@@ -35,7 +38,7 @@ export class Window_Message extends Window_Responsive {
         this.downIcon.cursor = 'pointer';
 
         this.on('pointerdown', this.onPointerDown.bind(this));
-        
+
         this.interactive = true;
         this.cursor = 'pointer';
         this.visible = false;
@@ -51,6 +54,9 @@ export class Window_Message extends Window_Responsive {
             // 提示繼續的Icon動畫
             this.downIcon.y = HEIGHT - 16 + Math.sin(this.animFrame / 8) * 4;
         }
+        if (Keyboard.isKeyPressed('KeyW')) {
+            this.onPointerDown();
+        }
     }
 
     onPointerDown() {
@@ -65,12 +71,12 @@ export class Window_Message extends Window_Responsive {
     get typing() {
         return this.sprite_typingText.typing;
     }
+
     nextSentence() {
         return this.sprite_typingText.nextSentence();
     }
-    /** 新增文字到佇列 */
+    /** 新增文字到佇列, 同時會開啟對話視窗 */
     appendText(text: string) {
-
         this.visible = true;
         return this.sprite_typingText.appendText(text);
     }
@@ -80,9 +86,11 @@ export class Window_Message extends Window_Responsive {
         return this.sprite_typingText.waitForEmpty();
     }
 
+    /** 是否話說完, 佇列中也沒文字了 */
     IsEmpty() {
         return this.sprite_typingText.IsEmpty();
     }
+
     /** 該句話是否說完了 */
     IsSentenceCompleted() {
         return this.sprite_typingText.IsSentenceCompleted();

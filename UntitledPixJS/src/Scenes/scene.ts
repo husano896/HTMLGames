@@ -6,7 +6,6 @@ export class Scene extends Container implements IResizeable {
 
 	constructor() {
 		super();
-		this.hitArea = new Rectangle(0, 0, GameConsts.width, GameConsts.height);
 	}
 
 	onInit() {

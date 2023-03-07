@@ -171,16 +171,13 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.window_homeInvetory.visible
         );
 
+        /** 返回按鈕只在開啟功能選單時顯示 */
         this.BackButton.visible = (
             this.window_homeStatus.visible ||
             this.window_homeInvetory.visible
         )
     }
 
-    /*
-    onClick(event: FederatedPointerEvent) {
-    }
-    */
     /** 遊戲視窗變更大小時 */
     onWindowResize() {
         super.onWindowResize();
