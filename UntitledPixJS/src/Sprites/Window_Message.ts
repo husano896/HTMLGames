@@ -30,13 +30,6 @@ export class Window_Message extends Window_Responsive {
 
         this.addChild(this.downIcon, this.sprite_typingText);
 
-        this.sprite_typingText.on('pointerdown', this.onPointerDown.bind(this));
-        this.sprite_typingText.interactive = true;
-        this.sprite_typingText.cursor = 'pointer';
-        this.downIcon.on('pointerdown', this.onPointerDown);
-        this.downIcon.interactive = true;
-        this.downIcon.cursor = 'pointer';
-
         this.on('pointerdown', this.onPointerDown);
 
         this.interactive = true;
@@ -54,13 +47,9 @@ export class Window_Message extends Window_Responsive {
             // 提示繼續的Icon動畫
             this.downIcon.y = HEIGHT - 16 + Math.sin(this.animFrame / 8) * 4;
         }
-        if (Keyboard.isKeyPressed('KeyW')) {
-            this.onPointerDown();
-        }
     }
 
     onPointerDown() {
-        console.log('down')
         if (this.IsEmpty()) {
             this.visible = false;
         } else {

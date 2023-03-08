@@ -4,6 +4,7 @@ import { Sprite_Map } from './../Sprites/Sprite_Map';
 
 import Keyboard from 'pixi.js-keyboard';
 import { Scene } from './scene';
+
 export class Scene_Bubble extends Scene {
 
 	sprite_seto: Sprite_BubbleChar;

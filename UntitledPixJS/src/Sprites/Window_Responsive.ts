@@ -35,7 +35,7 @@ export class Window_Responsive extends Container implements IResizeable {
         }
         if (this.visible) {
             // 作為淡入用
-            this.alpha = Math.min(1, (this.alpha + delta * (1 - this.alpha) / 20));
+            this.alpha = Math.min(1, (this.alpha + delta * (1 - this.alpha) / 15));
         } else {
             this.alpha = 0
         }

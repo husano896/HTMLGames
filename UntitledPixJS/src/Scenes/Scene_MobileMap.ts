@@ -40,7 +40,6 @@ export class Scene_MobileMap extends Scene {
     /** 遊戲視窗變更大小時 */
     onWindowResize() {
         super.onWindowResize();
-        console.log('resize');
 
         this.bg.x = $game.screen.width / 2;
         this.bg.y = $game.screen.height / 2;

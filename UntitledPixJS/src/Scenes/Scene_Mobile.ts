@@ -45,13 +45,13 @@ class HomeUIContainer extends Container implements IResizeable {
     }
 
     update(delta: number) {
-        // this.OpenItemButton._disabled = this.disabled;
-        // this.OpenMapButton._disabled = this.disabled;
+        this.children.forEach((child => (child as any).update?.(delta)));
     }
 
     // Container內自己的寬度
     onWindowResize() {
 
+        this.children.forEach((child => (child as any).update?.(0)));
         const gap = Math.min(128, Math.max($game.screen.width / (this.children.length - 1) / 2, 16));
 
         // 選單按鈕們
@@ -139,9 +139,18 @@ export class Scene_Mobile extends Scene implements IResizeable {
             if (this.window_message.typing) {
                 return;
             }
-            this.window_message.appendText('工作選單');
+            this.window_message.appendText('工作選單待用, 需消耗2體力');
+            Game_Global_Mobile.energy -= 2;
         })
 
+        this.homeUIContainer.BatterySprite.on('pointerdown', () => {
+            if (this.window_message.typing) {
+                return;
+            }
+            Game_Global_Mobile.energy += 2;
+
+            this.window_message.appendText('能量值, 須等待現實世界中的一小時後才會恢復24單位.');
+        })
 
         this.backButton = new Sprite_Button('返回', null, { width: 64, height: 64 });
         this.backButton.interactive = true
@@ -161,7 +170,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.window_homeStatus,
             this.window_message,
             this.backButton);
-            
+
         this.onWindowResize();
         console.log(this)
     }

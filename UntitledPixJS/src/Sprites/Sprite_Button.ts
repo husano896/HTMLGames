@@ -1,4 +1,4 @@
-import { Graphics, Text } from 'pixi.js';
+import { Graphics, Text, FederatedPointerEvent } from 'pixi.js';
 import { $TextStyle } from '../constants';
 import { AudioKeys } from '../resources';
 
@@ -42,36 +42,44 @@ export class Sprite_Button extends Graphics {
         this.addChild(this.hoverMask);
 
     }
-    onDown() {
+    onDown(ev: FederatedPointerEvent) {
+        console.log(ev)
         if (this._disabled) { return; }
 
         this.hoverMask.alpha = 0;
         if (this.callback) {
             this.callback();
         }
+
         sound.play(AudioKeys.confirm);
+        ev.stopPropagation();
+        ev.preventDefault();
     }
 
-    onUp() {
+    onUp(ev: FederatedPointerEvent) {
         if (this._disabled) { return; }
 
         this.hoverMask.alpha = 0;
-        if (this.callback) {
-            this.callback();
-        }
+
+        ev.stopPropagation();
+        ev.preventDefault();
     }
 
 
     /** 滑鼠指到時的事件 */
-    onEnter() {
+    onEnter(ev: FederatedPointerEvent) {
         if (this._disabled) { return; }
         this.hoverMask.alpha = 0.2;
         sound.play(AudioKeys.cursor);
+        ev.stopPropagation();
+        ev.preventDefault();
     }
 
     /** 滑鼠離開時的事件 */
-    onLeave() {
+    onLeave(ev: FederatedPointerEvent) {
         if (this._disabled) { return; }
         this.hoverMask.alpha = 0;
+        ev.stopPropagation();
+        ev.preventDefault();
     }
 }
