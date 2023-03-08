@@ -45,7 +45,7 @@ export class Sprite_Button extends Graphics {
     onDown() {
         if (this._disabled) { return; }
 
-        this.hoverMask.alpha = 0.4;
+        this.hoverMask.alpha = 0;
         if (this.callback) {
             this.callback();
         }

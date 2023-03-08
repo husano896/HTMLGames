@@ -1,4 +1,4 @@
-import { Game_Battler } from './../Game/Game_Battler';
+import { Game_Battler } from '@/Game/Game_Battler';
 import { Container, Graphics, Text } from 'pixi.js';
 import { $TextStyle } from '../constants';
 

@@ -1,7 +1,7 @@
 import { Window_Responsive } from './Window_Responsive';
 import { Container, Text } from 'pixi.js';
 import { IResizeable } from '../Interfaces/IResizeable';
-import $game from '../game';
+import $game from '@/main';
 import { $TextStyle } from '../constants';
 
 const MAXWIDTH = 320;

@@ -1,6 +1,8 @@
 const path = require('path');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
+  mode: 'production',
   entry: './src/index.ts',
   module: {
     rules: [
@@ -13,6 +15,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    plugins: [new TsconfigPathsPlugin({/* options: see below */ })]
   },
   output: {
     filename: 'bundle.js',
@@ -22,5 +25,9 @@ module.exports = {
   optimization: {
     chunkIds: 'deterministic',
     nodeEnv: 'production',
-  }
+  },
+  performance: {
+    maxEntrypointSize: 1024576,
+    maxAssetSize: 512000
+  },
 };

@@ -3,7 +3,7 @@ import { Container, Sprite, Text, Graphics, Texture } from 'pixi.js';
 import { $TextStyle } from '../constants';
 import { Window_Responsive } from './Window_Responsive'
 import $R from '../resources';
-import $game from '../game';
+import $game from '@/main';
 
 import Keyboard from 'pixi.js-keyboard';
 
@@ -33,11 +33,11 @@ export class Window_Message extends Window_Responsive {
         this.sprite_typingText.on('pointerdown', this.onPointerDown.bind(this));
         this.sprite_typingText.interactive = true;
         this.sprite_typingText.cursor = 'pointer';
-        this.downIcon.on('pointerdown', this.onPointerDown.bind(this));
+        this.downIcon.on('pointerdown', this.onPointerDown);
         this.downIcon.interactive = true;
         this.downIcon.cursor = 'pointer';
 
-        this.on('pointerdown', this.onPointerDown.bind(this));
+        this.on('pointerdown', this.onPointerDown);
 
         this.interactive = true;
         this.cursor = 'pointer';
@@ -60,6 +60,7 @@ export class Window_Message extends Window_Responsive {
     }
 
     onPointerDown() {
+        console.log('down')
         if (this.IsEmpty()) {
             this.visible = false;
         } else {

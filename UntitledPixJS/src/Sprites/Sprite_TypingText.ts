@@ -4,14 +4,14 @@ import { $TextStyle } from '../constants';
 /** 輸入每個字的間格時間 */
 const TYPING_INTERVAL = 1;
 
-/** TODO: 有打字效果的文字框 */
+/** 有打字效果的文字框 */
 export class Sprite_TypingText extends Container {
 
     /**  */
     // autoStart: boolean = true;
 
     /** 是否正在輸入中 */
-    typing: boolean;
+    typing: boolean = false;
 
     /** 等待輸入中的文字佇列 */
     bufferTexts: Array<string> = [];

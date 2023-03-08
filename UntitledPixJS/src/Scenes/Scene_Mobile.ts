@@ -1,15 +1,15 @@
+import { Game_Global_Mobile } from '@/Game';
+import { Container, Sprite, IDestroyOptions } from 'pixi.js'
 import { Window_HomeStatus } from './../Sprites/Window_HomeStatus';
 import { Window_HomeInvetory } from './../Sprites/Window_HomeInvetory';
 import { Sprite_Button } from './../Sprites/Sprite_Button';
 import { Window_Message } from './../Sprites/Window_Message';
-import { Sprite_TypingText } from './../Sprites/Sprite_TypingText';
 import { Sprite_Battery } from '../Sprites/Sprite_Battery';
-
 import { Scene } from "./scene";
-import $game from '../game'
-import { Container, Sprite, FederatedPointerEvent, IDestroyOptions } from 'pixi.js'
-import $R from "../resources";
+
 import { IResizeable } from '../Interfaces/IResizeable';
+import $game from '@/main';
+import $R from "../resources";
 
 /** 在家 */
 class HomeUIContainer extends Container implements IResizeable {
@@ -78,7 +78,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
     /** 在家時可使用的按鈕們*/
     homeUIContainer: HomeUIContainer;
 
-    BackButton: Sprite_Button;
+    backButton: Sprite_Button;
     constructor() {
         super();
         // 背景
@@ -123,26 +123,32 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.window_homeInvetory.visible = true;
         }).bind(this)
 
-        this.homeUIContainer.OpenMapButton.callback = (() => {
+        this.homeUIContainer.OpenMapButton.callback = (async () => {
             if (this.window_message.typing) {
                 return;
             }
-            this.window_message.appendText('地圖選單');
-        }).bind(this)
+
+            const newScene = await import('@/Scenes/Scene_MobileMap').then(m => m.Scene_MobileMap)
+            $game.stage.children.forEach(c => c.destroy({ children: true }));
+            $game.stage.removeChildren()
+            $game.stage.addChild(new newScene())
+
+        })
 
         this.homeUIContainer.OpenWorkButton.callback = (() => {
             if (this.window_message.typing) {
                 return;
             }
             this.window_message.appendText('工作選單');
-        }).bind(this)
+        })
 
 
-        this.BackButton = new Sprite_Button('返回', null, { width: 64, height: 64 });
-        this.BackButton.interactive = true
-        this.BackButton.cursor = 'pointer'
-        this.BackButton.visible = false
-        this.BackButton.on('pointerdown', () => {
+        this.backButton = new Sprite_Button('返回', null, { width: 64, height: 64 });
+        this.backButton.interactive = true
+        this.backButton.cursor = 'pointer'
+        this.backButton.visible = false
+
+        this.backButton.on('pointerdown', () => {
             // 返回主頁面
             this.window_homeInvetory.visible = false
             this.window_homeStatus.visible = false
@@ -154,16 +160,19 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.window_homeInvetory,
             this.window_homeStatus,
             this.window_message,
-            this.BackButton);
+            this.backButton);
+            
         this.onWindowResize();
+        console.log(this)
     }
     destroy(options?: boolean | IDestroyOptions): void {
         document.removeEventListener('resize', this.onWindowResize.bind(this), true);
         super.destroy(options);
     }
+
     update(delta: number) {
         super.update(delta);
-
+        Game_Global_Mobile.update(delta)
         /** 目前文字視窗進行中, 或狀態顯示中 */
         this.homeUIContainer.visible = !(
             this.window_message.visible ||
@@ -172,10 +181,12 @@ export class Scene_Mobile extends Scene implements IResizeable {
         );
 
         /** 返回按鈕只在開啟功能選單時顯示 */
-        this.BackButton.visible = (
+        this.backButton.visible = (
             this.window_homeStatus.visible ||
             this.window_homeInvetory.visible
         )
+
+        Game_Global_Mobile.postUpdate(delta)
     }
 
     /** 遊戲視窗變更大小時 */
@@ -194,7 +205,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
         this.homeUIContainer.y = $game.screen.height - this.homeUIContainer.height;
 
         // this.window_message.y = $game.screen.height - this.window_message.height - 16;
-        this.BackButton.x = $game.screen.width - 8 - this.BackButton.width - 16;
-        this.BackButton.y = $game.screen.height - this.BackButton.height - 16;
+        this.backButton.x = $game.screen.width - this.backButton.width - 16;
+        this.backButton.y = $game.screen.height - this.backButton.height - 16;
     }
 }

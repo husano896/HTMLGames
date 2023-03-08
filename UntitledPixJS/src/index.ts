@@ -1,9 +1,8 @@
 import Keyboard from 'pixi.js-keyboard';
-import $game from "./game";
+import $game from "@/main";
 import { onResourceReady } from './resources';
 import { IResizeable } from './Interfaces/IResizeable';
 
-let $scene = null;
 /**
   * 自URL的QueryString中取得預先開啟的遊戲
   */
@@ -12,9 +11,9 @@ function getGameFromQuery() {
 	let game = params.get("game");
 	switch (game) {
 		case 'eviat':
-			return import('./Scenes/scene_eviat').then(m => m.Scene_Eviat);
+			return import('@/Scenes/Scene_Eviat').then(m => m.Scene_Eviat);
 		case 'map':
-			return import('./Scenes/scene_map').then(m => m.Scene_Map);
+			return import('@/Scenes/Scene_Map').then(m => m.Scene_Map);
 		case 'mobile':
 			/** 
 			 * 遊戲自適應視窗的對應
@@ -26,25 +25,24 @@ function getGameFromQuery() {
 			console.log('add resize listener')
 			window.addEventListener("resize", (ev) => {
 				$game.renderer.resize(document.documentElement.clientWidth, document.documentElement.clientHeight);
-				($scene as IResizeable)?.onWindowResize?.()
+				$game.stage.children.forEach(c=> (c as unknown as IResizeable)?.onWindowResize?.())
 			});
-			return import('./Scenes/Scene_Mobile').then(m => m.Scene_Mobile);
+			return import('@/Scenes/Scene_Mobile').then(m => m.Scene_Mobile);
 		default:
-			return import('./Scenes/Scene_Bubble').then(m => m.Scene_Bubble);
+			return import('@/Scenes/Scene_Bubble').then(m => m.Scene_Bubble);
 	}
 }
 
 onResourceReady.then(async () => {
 	// 初始畫面
-	let scene = getGameFromQuery()
-	$scene = new (await scene)();
-	$game.stage.addChild($scene);
+	let scene = await getGameFromQuery()
+	$game.stage.addChild(new scene());
 
 	$game.ticker.add((delta) => {
 		Keyboard.update();
-		if ($scene) {
-			$scene.update(delta);
-		}
+		
+		$game.stage.children.forEach(c=> (c as any).update(delta));
+		
 	});
 	$game.start();
 })

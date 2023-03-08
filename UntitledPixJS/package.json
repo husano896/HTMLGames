@@ -13,6 +13,7 @@
     "@types/howler": "^2.2.4",
     "@types/lodash-es": "^4.17.6",
     "ts-loader": "^9.2.6",
+    "tsconfig-paths-webpack-plugin": "^4.0.0",
     "typescript": "^4.5.2",
     "webpack": "^5.64.4",
     "webpack-cli": "^4.9.1"

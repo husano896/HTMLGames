@@ -1,4 +1,6 @@
 import _ from 'lodash-es';
+
+// 各種能力的上限
 const MAXHP_LIMIT = 9999;
 const MAXSP_LIMIT = 999;
 const MAXATK_LIMIT = 999;
