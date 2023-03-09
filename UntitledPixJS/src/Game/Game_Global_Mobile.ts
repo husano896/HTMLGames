@@ -1,4 +1,4 @@
-import { IMobileSave } from "@/Interfaces";
+import _ from "lodash-es";
 
 const LOCALSTORAGE_SAVE_KEY = 'untitledpixjs_mobile'
 /** 給Scene_Mobile系列使用的全域參數 */
@@ -23,6 +23,7 @@ export class Game_Global_Mobile {
 
     public static set gold(value: number) {
         this._gold = value;
+        this.SaveToLocalStorage();
         this._goldValueChanged = true;
     }
 
@@ -40,6 +41,7 @@ export class Game_Global_Mobile {
 
     public static set energy(value: number) {
         this._energy = Math.max(0, Math.min(48, value));
+        this.SaveToLocalStorage();
     }
 
     static update(delta?: number) {
@@ -58,18 +60,36 @@ export class Game_Global_Mobile {
         }
 
         try {
-            const dto = JSON.parse(save) as IMobileSave;
+            const dto = JSON.parse(save) as {};
             if (!dto) {
                 return;
             }
+            _.forEach(dto, (value, key) => {
+                this[key] = value;
+            })
         } catch (err) {
             console.warn('[Game_Global_Mobile] 本地存檔讀取失敗.', err)
         } finally {
             // 假如沒有存檔要做的事
         }
     }
+
+    static SaveToLocalStorage() {
+        try {
+            localStorage.setItem(LOCALSTORAGE_SAVE_KEY, this.ToJSON())
+        } catch (err) {
+            console.warn('[Game_Global_Mobile] 本地存檔讀取失敗.', err)
+        } finally {
+            // 假如沒有存檔要做的事
+        }
+    }
+
     /** 如果距離上次離開已經超過一小時, 推進進度 */
     static checkNextProgress() {
         this._progress += 1;
+    }
+
+    static ToJSON() {
+        return JSON.stringify(Object.fromEntries(Object.entries(this)))
     }
 }

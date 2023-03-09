@@ -2,9 +2,12 @@ import { Game_Global_Mobile } from '@/Game';
 import { Container, Sprite, IDestroyOptions } from 'pixi.js'
 import { Window_HomeStatus } from './../Sprites/Window_HomeStatus';
 import { Window_HomeInvetory } from './../Sprites/Window_HomeInvetory';
+import { Window_Gold } from './../Sprites/Window_Gold';
 import { Sprite_Button } from './../Sprites/Sprite_Button';
 import { Window_Message } from './../Sprites/Window_Message';
-import { Sprite_Battery } from '../Sprites/Sprite_Battery';
+import { Sprite_Battery } from './../Sprites/Sprite_Battery';
+
+
 import { Scene } from "./scene";
 
 import { IResizeable } from '../Interfaces/IResizeable';
@@ -75,6 +78,8 @@ export class Scene_Mobile extends Scene implements IResizeable {
 
     window_homeStatus: Window_HomeStatus;
 
+    window_gold: Window_Gold;
+
     /** 在家時可使用的按鈕們*/
     homeUIContainer: HomeUIContainer;
 
@@ -95,7 +100,8 @@ export class Scene_Mobile extends Scene implements IResizeable {
         this.window_homeInvetory = new Window_HomeInvetory();
         // 能力視窗
         this.window_homeStatus = new Window_HomeStatus();
-
+        // 金錢視窗
+        this.window_gold = new Window_Gold();
         // 滑鼠事件綁定
 
         // this.on('pointerdown', this.onClick.bind(this));
@@ -169,6 +175,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.window_homeInvetory,
             this.window_homeStatus,
             this.window_message,
+            this.window_gold,
             this.backButton);
 
         this.onWindowResize();
@@ -188,6 +195,8 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.window_homeStatus.visible ||
             this.window_homeInvetory.visible
         );
+
+        this.window_gold.visible = this.homeUIContainer.visible;
 
         /** 返回按鈕只在開啟功能選單時顯示 */
         this.backButton.visible = (
@@ -212,6 +221,9 @@ export class Scene_Mobile extends Scene implements IResizeable {
         // HomeUI
         this.homeUIContainer.x = $game.screen.width / 2 - this.homeUIContainer.width / 2;
         this.homeUIContainer.y = $game.screen.height - this.homeUIContainer.height;
+
+        this.window_gold.x = Math.max(16, $game.screen.width / 2 - 600);
+        this.window_gold.y = 16
 
         // this.window_message.y = $game.screen.height - this.window_message.height - 16;
         this.backButton.x = $game.screen.width - this.backButton.width - 16;

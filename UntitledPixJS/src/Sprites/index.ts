@@ -16,3 +16,4 @@ export * from './Window_MapUI';
 export * from './Window_Message';
 export * from './Window_Responsive';
 export * from './Window_Skill';
+export * from './Window_Gold';

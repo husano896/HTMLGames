@@ -2,6 +2,7 @@ import Keyboard from 'pixi.js-keyboard';
 import $game from "@/main";
 import { onResourceReady } from './resources';
 import { IResizeable } from './Interfaces/IResizeable';
+import { Game_Global_Mobile } from './Game';
 
 /**
   * 自URL的QueryString中取得預先開啟的遊戲
@@ -27,6 +28,7 @@ function getGameFromQuery() {
 				$game.renderer.resize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 				$game.stage.children.forEach(c=> (c as unknown as IResizeable)?.onWindowResize?.())
 			});
+			Game_Global_Mobile.init()
 			return import('@/Scenes/Scene_Mobile').then(m => m.Scene_Mobile);
 		default:
 			return import('@/Scenes/Scene_Bubble').then(m => m.Scene_Bubble);
