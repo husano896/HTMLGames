@@ -15,7 +15,7 @@ function getGameFromQuery() {
 			return import('@/Scenes/Scene_Eviat').then(m => m.Scene_Eviat);
 		case 'map':
 			return import('@/Scenes/Scene_Map').then(m => m.Scene_Map);
-		case 'mobile':
+		default: // 'mobile':
 			/** 
 			 * 遊戲自適應視窗的對應
 			 * resize之後記得需要對應重新設定pivot, 不然對應的位置仍然會在原始視窗大小 
@@ -30,8 +30,6 @@ function getGameFromQuery() {
 			});
 			Game_Global_Mobile.init()
 			return import('@/Scenes/Scene_Mobile').then(m => m.Scene_Mobile);
-		default:
-			return import('@/Scenes/Scene_Bubble').then(m => m.Scene_Bubble);
 	}
 }
 

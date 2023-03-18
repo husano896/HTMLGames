@@ -98,6 +98,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
 
         // 道具視窗
         this.window_homeInvetory = new Window_HomeInvetory();
+        
         // 能力視窗
         this.window_homeStatus = new Window_HomeStatus();
         // 金錢視窗
@@ -204,7 +205,6 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.window_homeInvetory.visible
         )
 
-        Game_Global_Mobile.postUpdate(delta)
     }
 
     /** 遊戲視窗變更大小時 */
@@ -224,6 +224,10 @@ export class Scene_Mobile extends Scene implements IResizeable {
 
         this.window_gold.x = Math.max(16, $game.screen.width / 2 - 600);
         this.window_gold.y = 16
+
+        this.window_homeInvetory.x = Math.max(16, $game.screen.width / 2 - this.window_homeInvetory.width)
+
+        this.window_homeStatus.x = Math.max($game.screen.width - 16 - this.window_homeStatus.width , $game.screen.width / 2)
 
         // this.window_message.y = $game.screen.height - this.window_message.height - 16;
         this.backButton.x = $game.screen.width - this.backButton.width - 16;

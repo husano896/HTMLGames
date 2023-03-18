@@ -17,6 +17,11 @@ const $R = {
     jewelRed: 'imgs/jewelIcon/jewel1l-4.png',
     jewelBlue: 'imgs/jewelIcon/jewel1a-4.png',
     jewelBlueSmall: 'imgs/jewelIcon/jewel1a-2.png',
+
+    // 地圖地點
+    MapPoint: 'imgs/jewelIcon/jewel1a-5.png',
+    MapPointHome: 'imgs/jewelIcon/jewel1g-5.png',
+
     closeBtn: 'imgs/closeBtn.png',
     bgBlue: 'imgs/bgblue.jpg',
     bgRed: 'imgs/bgred.jpg',
