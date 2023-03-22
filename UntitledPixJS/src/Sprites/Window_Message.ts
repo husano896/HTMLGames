@@ -30,7 +30,7 @@ export class Window_Message extends Window_Responsive {
 
         this.addChild(this.downIcon, this.sprite_typingText);
 
-        this.on('pointerdown', this.onPointerDown);
+        this.on('pointertap', this.onPointerTap);
 
         this.interactive = true;
         this.cursor = 'pointer';
@@ -49,7 +49,7 @@ export class Window_Message extends Window_Responsive {
         }
     }
 
-    onPointerDown() {
+    onPointerTap() {
         if (this.IsEmpty()) {
             this.visible = false;
         } else {

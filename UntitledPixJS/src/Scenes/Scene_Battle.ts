@@ -59,10 +59,10 @@ export class Window_Command extends Container {
 		defenseButton.interactive = true;
 		skillButton.interactive = true;
 		itemButton.interactive = true;
-		attackButton.on('pointerdown', this.onAttackButtonDown.bind(this));
-		defenseButton.on('pointerdown', this.onDefenseButtonDown.bind(this));
-		skillButton.on('pointerdown', this.onSkillButtonDown.bind(this));
-		itemButton.on('pointerdown', this.onItemButtonDown.bind(this));
+		attackButton.on('pointertap', this.onAttackButtonDown.bind(this));
+		defenseButton.on('pointertap', this.onDefenseButtonDown.bind(this));
+		skillButton.on('pointertap', this.onSkillButtonDown.bind(this));
+		itemButton.on('pointertap', this.onItemButtonDown.bind(this));
 
 		attackButton.x = 4;
 		attackButton.y = 4;

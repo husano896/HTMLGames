@@ -31,7 +31,7 @@ export class Sprite_Button extends Graphics {
         this.interactive = true;
         this.on('pointerenter', this.onEnter.bind(this));
         this.on('pointerleave', this.onLeave.bind(this));
-        this.on('pointerdown', this.onDown.bind(this));
+        this.on('pointertap', this.onDown.bind(this));
         this.on('pointerup', this.onUp.bind(this));
         this.addChild(this.text);
         this.hoverMask = new Graphics();

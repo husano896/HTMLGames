@@ -38,7 +38,7 @@ export class Scene_Map extends Scene {
 		this.sprite_healthBar.y = 8;
 		this.addChild(this.sprite_healthBar);
 
-		this.on('pointerdown', this.onDown.bind(this));
+		this.on('pointertap', this.onDown.bind(this));
 		this.on('pointermove', this.onMove.bind(this));
 		this.on('pointerup', this.onUp.bind(this));
 

@@ -55,6 +55,51 @@ export const $TextStyle = {
         lineHeight: 32,
         breakWords: true,
     }),
+    
+    Window_HomeInvetoryItemTitle: new TextStyle({
+        align: 'left',
+        fontFamily: ['微軟正黑體', '新細明體', 'Arial'],
+        fontSize: 18,
+        fill: ['#ffffff'], // gradient
+        dropShadow: true,
+        dropShadowDistance: 2,
+        dropShadowColor: '#333333',
+        dropShadowAngle: 180,
+        // 文字過長的自動換行
+        wordWrap: true,
+        wordWrapWidth: 240,
+        lineHeight: 18,
+        breakWords: true,
+    }),
+    Window_HomeInvetoryItemDescription: new TextStyle({
+        align: 'left',
+        fontFamily: ['微軟正黑體', '新細明體', 'Arial'],
+        fontSize: 14,
+        fill: ['#ffffff'], // gradient
+        dropShadow: true,
+        dropShadowDistance: 2,
+        dropShadowColor: '#333333',
+        dropShadowAngle: 180,
+        // 文字過長的自動換行
+        wordWrap: true,
+        wordWrapWidth: 112,
+        lineHeight: 18,
+        breakWords: true,
+    }),
+    
+    Window_HomeInvetoryItemAmount: new TextStyle({
+        align: 'right',
+        fontFamily: ['微軟正黑體', '新細明體', 'Arial'],
+        fontSize: 16,
+        fill: ['#ffffff'], // gradient
+        dropShadow: true,
+        dropShadowDistance: 2,
+        dropShadowColor: '#333333',
+        dropShadowAngle: 180,
+        // 文字過長的自動換行
+        lineHeight: 18,
+        breakWords: true,
+    }),
     Window_HomeWindow_Left: new TextStyle({
         align: 'left',
         fontFamily: ['微軟正黑體', '新細明體', 'Arial'],

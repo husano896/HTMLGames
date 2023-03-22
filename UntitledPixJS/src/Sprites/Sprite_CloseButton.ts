@@ -6,7 +6,7 @@ export class Sprite_CloseButton extends Sprite {
     constructor() {
         super(Texture.from($R.Image.closeBtn));
         this.interactive = true;
-        this.on('pointerdown', this.onDown.bind(this));
+        this.on('pointertap', this.onDown.bind(this));
     }
     onDown() {
         if (this.parent) {
