@@ -12,7 +12,7 @@ export class Sprite_FlyDragon extends Sprite {
     }
 
     update(delta: number) {
-
+        
     }
 
     changeEmotion() {

@@ -13,6 +13,9 @@ export class Scene_MobileMap extends Scene {
     point: Sprite;
     backButton: Sprite_Button;
 
+    lastPointerX: number;
+    lastPointerY: number;
+
     constructor() {
         super()
 
@@ -58,10 +61,17 @@ export class Scene_MobileMap extends Scene {
 
         this.interactive = true;
 
+        this.on('pointerdown', this.onPointerDown.bind(this))
         this.on('pointermove', this.onPointerMove.bind(this))
 
         sound.stopAll();
         sound.play(AudioKeys.BGM_MobileMap, { loop: true })
+    }
+
+    onDestroy() {
+        this.off('pointerdown', this.onPointerDown.bind(this))
+        this.off('pointermove', this.onPointerMove.bind(this))
+        super.onDestroy();
     }
 
     update(delta: number) {
@@ -69,12 +79,24 @@ export class Scene_MobileMap extends Scene {
     }
 
     /** 滑鼠移動, 用來處理拖移地圖用 */
+
+    onPointerDown(ev: FederatedPointerEvent) {
+        this.lastPointerX = ev.x;
+        this.lastPointerY = ev.y;
+    }
     onPointerMove(ev: FederatedPointerEvent) {
         // 有按下按鈕時
-        if (ev.buttons && ev.isPrimary) {
-            this.bg.x += ev.movementX;
-            this.bg.y += ev.movementY;
+        if (ev.buttons) {
+            this.bg.x += ev.x - this.lastPointerX;
+            this.bg.y += ev.y - this.lastPointerY;
         }
+        this.bg.x = Math.min(0, Math.max(-this.bg.width + $game.screen.width, this.bg.x));
+        this.bg.y = Math.min(0, Math.max(-this.bg.height + $game.screen.height, this.bg.y));
+
+        this.lastPointerX = ev.x;
+        this.lastPointerY = ev.y;
+
+        console.log(ev)
         ev.preventDefault();
     }
 

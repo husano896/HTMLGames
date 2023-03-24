@@ -68,9 +68,13 @@ export class Sprite_Button extends Graphics {
 
     /** 滑鼠指到時的事件 */
     onEnter(ev: FederatedPointerEvent) {
+
         if (this._disabled) { return; }
         this.hoverMask.alpha = 0.2;
-        sound.play(AudioKeys.cursor);
+
+        if (ev.pointerType === 'mouse') {
+            sound.play(AudioKeys.cursor);
+        }
         ev.stopPropagation();
         ev.preventDefault();
     }

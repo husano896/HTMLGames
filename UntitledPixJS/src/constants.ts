@@ -55,6 +55,22 @@ export const $TextStyle = {
         lineHeight: 32,
         breakWords: true,
     }),
+
+    Window_Gold: new TextStyle({
+        align: 'left',
+        fontFamily: ['Sitka Text'],
+        fontSize: 24,
+        fill: ['#ffffff', '#FFF200'], // gradient
+        dropShadow: true,
+        dropShadowDistance: 2,
+        dropShadowColor: '#333333',
+        dropShadowAngle: 180,
+        stroke: '#000000',
+        strokeThickness: 2,
+        // 文字過長的自動換行
+        wordWrap: true,
+        lineHeight: 24,
+    }),
     Window_Progress: new TextStyle({
         align: 'right',
         fontFamily: ['Sitka Text'],
@@ -64,6 +80,8 @@ export const $TextStyle = {
         dropShadowDistance: 2,
         dropShadowColor: '#333333',
         dropShadowAngle: 180,
+        stroke: '#000000',
+        strokeThickness: 2,
         // 文字過長的自動換行
         wordWrap: true,
         lineHeight: 24,
@@ -166,8 +184,8 @@ export const $TextStyle = {
         fontSize: 48,
         fill: ['#ffffff', '#777777'], // gradient
         stroke: '#000000',
-        strokeThickness: 2,
-        dropShadowDistance: 2,
+        strokeThickness: 4,
+        dropShadowDistance: 4,
         dropShadowColor: '#4444FF',
         dropShadowAngle: 180,
     }),

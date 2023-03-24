@@ -195,7 +195,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.progressText);
 
         /** 是否觸發下一個劇情 */
-        this.progressText.text = `${Game_Global_Mobile.progress}/120`
+        this.progressText.text = `Time\n${Game_Global_Mobile.progress}/120`
         if (Game_Global_Mobile.triggerNextProgress) {
             Game_Global_Mobile.triggerNextProgress = false;
             this.triggerNextProgress()
@@ -229,6 +229,9 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.window_homeStatus.visible ||
             this.window_homeInvetory.visible
         )
+
+        // 龍龍的位置更新
+        this.dragon.x = $game.screen.width / 2 + Math.sin(Date.now() / 10000) * 32;
 
     }
     triggerNextProgress() {

@@ -78,9 +78,7 @@ export class HomeInvetoryItem extends Container implements IResizeable {
   }
 }
 /** 在養成畫面使用的道具欄視窗 */
-export class Window_HomeInvetory
-  extends Window_Responsive
-  implements IResizeable {
+export class Window_HomeInvetory extends Window_Responsive implements IResizeable {
   constructor() {
     super();
     this.visible = false;
