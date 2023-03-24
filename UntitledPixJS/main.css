@@ -3,4 +3,18 @@ body {
   margin: 0;
   overflow: hidden;
   touch-action: none;
+  background: black;
+  color: white;
+}
+
+@font-face {
+  font-family: Sitka Text;
+  src: url(./fonts/sitka-small-652.ttf);
+}
+
+.placeholder {
+  font-family: Sitka Text, Arial, Helvetica, sans-serif;
+  width: 100vw;
+  height: 100vh;
+  transform: translate(0%, 50%);
 }

@@ -17,7 +17,7 @@ export class Scene_MobileMap extends Scene {
 
         // 背景
         this.bg = Sprite.from($R.Image.bgRed);
-
+        this.bg.height = $game.screen.height;
         this.addChild(this.bg);
 
         // 地圖上得點

@@ -50,7 +50,7 @@ export class Sprite_Button extends Graphics {
         if (this.callback) {
             this.callback();
         }
-
+        sound.stop(AudioKeys.cursor);
         sound.play(AudioKeys.confirm);
         ev.stopPropagation();
         ev.preventDefault();

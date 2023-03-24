@@ -10,7 +10,14 @@ const $game = new Application({
 });
 
 const gameContainer = document.querySelector('#game-container');
-gameContainer.appendChild($game.view as HTMLCanvasElement);
+const pressStartPlaceHolder = gameContainer.querySelector('.placeholder');
+
+function starter() {
+  gameContainer.removeEventListener('click', starter)
+  gameContainer.removeChild(pressStartPlaceHolder)
+  gameContainer.appendChild($game.view as HTMLCanvasElement)
+}
+gameContainer.addEventListener('click', starter)
 export default $game;
 
 

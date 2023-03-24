@@ -1,3 +1,4 @@
+import { Game_Global_Mobile } from '@/Game';
 import { Window_Responsive } from './Window_Responsive';
 import { Container, Text } from 'pixi.js';
 import { IResizeable } from '../Interfaces/IResizeable';
@@ -19,7 +20,7 @@ export class Window_HomeStatus extends Window_Responsive implements IResizeable 
 
     constructor() {
         super();
-        this.stateTexts = new Text('HP\n力量\n敏捷\n耐力', $TextStyle.Window_HomeWindow_Left)
+        this.stateTexts = new Text('HP\n力量\n耐力\n敏捷', $TextStyle.Window_HomeWindow_Left)
         this.stateValues = new Text('9999/9999\n9999\n9999\n9999', $TextStyle.Window_HomeWindow_Right)
         this.stateTexts.anchor.set(0, 0);
         this.stateValues.anchor.set(1, 0);
@@ -42,7 +43,11 @@ export class Window_HomeStatus extends Window_Responsive implements IResizeable 
         this.onWindowResize();
     }
 
-    update(delta: number) { super.update(delta); }
+    update(delta: number) {
+        super.update(delta);
+        const b = Game_Global_Mobile.battler;
+        this.stateValues.text = `${b.hp}/${b.maxhp}\n${b.atk}\n${b.def}\n${b.spd}`, $TextStyle.Window_HomeWindow_Right
+    }
 
     onWindowResize() {
         if (!this.stateElementTexts || !this.stateElementValues) {
@@ -51,9 +56,9 @@ export class Window_HomeStatus extends Window_Responsive implements IResizeable 
         super.onWindowResize();
         this.bg.width = Math.min(MAXWIDTH, $game.screen.width / 2) - 32;
         this.bg.height = $game.screen.height - padding * 2 - 64;
-        
+
         this.stateValues.x = this.width - padding;
-        this.stateElementTexts.y = this.bg.height- padding;
+        this.stateElementTexts.y = this.bg.height - padding;
         this.stateElementValues.y = this.bg.height - padding;
 
         this.stateElementValues.x = this.width - padding;

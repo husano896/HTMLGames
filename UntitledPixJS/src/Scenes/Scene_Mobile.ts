@@ -1,5 +1,5 @@
 import { Game_Global_Mobile } from '@/Game';
-import { Container, Sprite, IDestroyOptions } from 'pixi.js'
+import { Container, Sprite, Text, IDestroyOptions } from 'pixi.js'
 import { Window_HomeStatus } from './../Sprites/Window_HomeStatus';
 import { Window_HomeInvetory } from './../Sprites/Window_HomeInvetory';
 import { Window_Gold } from './../Sprites/Window_Gold';
@@ -7,12 +7,14 @@ import { Sprite_Button } from './../Sprites/Sprite_Button';
 import { Window_Message } from './../Sprites/Window_Message';
 import { Sprite_Battery } from '@/Sprites/Sprite_Battery';
 import { Sprite_FlyDragon } from '@/Sprites/Sprite_FlyDragon';
-
+import { AudioKeys } from '../resources'
 import { Scene } from "./scene";
 
 import { IResizeable } from '../Interfaces/IResizeable';
 import $game from '@/main';
 import $R from "../resources";
+import { $TextStyle } from '@/constants';
+import { sound } from '@pixi/sound';
 
 /** 在家 */
 class HomeUIContainer extends Container implements IResizeable {
@@ -84,12 +86,16 @@ export class Scene_Mobile extends Scene implements IResizeable {
     homeUIContainer: HomeUIContainer;
 
     backButton: Sprite_Button;
+
+    /** 進度文字 */
+    progressText: Text;
     constructor() {
         super();
         // 背景
         this.bg = Sprite.from($R.Image.bgYellow);
         this.bg.anchor.set(0.5);
-
+        this.bg.width = $game.screen.width;
+        this.bg.scale.set(1)
         // 乖龍龍
         this.dragon = new Sprite_FlyDragon()
         this.dragon.anchor.set(0.5);
@@ -98,13 +104,14 @@ export class Scene_Mobile extends Scene implements IResizeable {
 
         // 道具視窗
         this.window_homeInvetory = new Window_HomeInvetory();
-        
+
         // 能力視窗
         this.window_homeStatus = new Window_HomeStatus();
         // 金錢視窗
         this.window_gold = new Window_Gold();
         // 滑鼠事件綁定
 
+        this.progressText = new Text('', $TextStyle.Sprite_Battery)
         // this.on('pointertap', this.onClick.bind(this));
 
         console.log(this);
@@ -155,7 +162,6 @@ export class Scene_Mobile extends Scene implements IResizeable {
                 return;
             }
             Game_Global_Mobile.energy += 2;
-
             this.window_message.appendText('能量值, 須等待現實世界中的一小時後才會恢復24單位.');
         })
 
@@ -177,10 +183,21 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.window_homeStatus,
             this.window_message,
             this.window_gold,
-            this.backButton);
+            this.backButton,
+            this.progressText);
+
+        /** 是否觸發下一個劇情 */
+        this.progressText.text = `progress\n${Game_Global_Mobile.progress}`
+        if (Game_Global_Mobile.triggerNextProgress) {
+            Game_Global_Mobile.triggerNextProgress = false;
+            this.triggerNextProgress()
+        }
 
         this.onWindowResize();
         console.log(this)
+
+        sound.stopAll();
+        sound.play(AudioKeys.BGM, { loop: true })
     }
     destroy(options?: boolean | IDestroyOptions): void {
         document.removeEventListener('resize', this.onWindowResize.bind(this), true);
@@ -206,9 +223,14 @@ export class Scene_Mobile extends Scene implements IResizeable {
         )
 
     }
+    triggerNextProgress() {
+        this.window_message.appendText(`目前進度：${Game_Global_Mobile.progress}.`);
+    }
 
     /** 遊戲視窗變更大小時 */
     onWindowResize() {
+
+        super.onWindowResize();
         console.log('resize');
 
         this.bg.x = $game.screen.width / 2;
@@ -226,12 +248,14 @@ export class Scene_Mobile extends Scene implements IResizeable {
 
         this.window_homeInvetory.x = 16
 
-        this.window_homeStatus.x = Math.max($game.screen.width - 16 - this.window_homeStatus.width , $game.screen.width / 2)
+        this.window_homeStatus.x = Math.max($game.screen.width - 16 - this.window_homeStatus.width, $game.screen.width / 2)
 
         // this.window_message.y = $game.screen.height - this.window_message.height - 16;
         this.backButton.x = $game.screen.width - this.backButton.width - 16;
         this.backButton.y = $game.screen.height - this.backButton.height - 16;
-        
+
+        this.progressText.x = Math.max($game.screen.width - this.progressText.width - 16, $game.screen.width / 2 - 600);
+        this.progressText.y = 16;
         super.onWindowResize();
     }
 }
