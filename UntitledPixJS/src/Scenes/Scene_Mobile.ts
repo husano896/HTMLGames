@@ -187,7 +187,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.progressText);
 
         /** 是否觸發下一個劇情 */
-        this.progressText.text = `progress\n${Game_Global_Mobile.progress}`
+        this.progressText.text = `${Game_Global_Mobile.progress}/120`
         if (Game_Global_Mobile.triggerNextProgress) {
             Game_Global_Mobile.triggerNextProgress = false;
             this.triggerNextProgress()
@@ -215,7 +215,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
         );
 
         this.window_gold.visible = this.homeUIContainer.visible;
-
+        this.progressText.visible = this.homeUIContainer.visible;
         /** 返回按鈕只在開啟功能選單時顯示 */
         this.backButton.visible = (
             this.window_homeStatus.visible ||
