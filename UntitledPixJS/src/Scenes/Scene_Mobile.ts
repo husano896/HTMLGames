@@ -109,10 +109,18 @@ export class Scene_Mobile extends Scene implements IResizeable {
         this.window_homeStatus = new Window_HomeStatus();
         // 金錢視窗
         this.window_gold = new Window_Gold();
-        // 滑鼠事件綁定
 
-        this.progressText = new Text('', $TextStyle.Sprite_Battery)
-        // this.on('pointertap', this.onClick.bind(this));
+        // 滑鼠事件綁定
+        this.progressText = new Text('', $TextStyle.Window_Progress)
+        this.progressText.interactive = true;
+        this.progressText.cursor = 'pointer';
+        this.progressText.on('pointertap', () => {
+            if (this.window_message.typing) {
+                return;
+            }
+
+            this.window_message.appendText('進行度, 每次經過一個小時的休息後即會推進.');
+        });
 
         console.log(this);
 
@@ -197,7 +205,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
         console.log(this)
 
         sound.stopAll();
-        sound.play(AudioKeys.BGM, { loop: true })
+        sound.play(AudioKeys.BGM_Mobile, { loop: true })
     }
     destroy(options?: boolean | IDestroyOptions): void {
         document.removeEventListener('resize', this.onWindowResize.bind(this), true);

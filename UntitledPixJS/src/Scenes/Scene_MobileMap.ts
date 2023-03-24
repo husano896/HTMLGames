@@ -1,8 +1,9 @@
 import $game from '@/main';
 import { FederatedEvent, FederatedPointerEvent, Sprite } from 'pixi.js';
 import { Scene } from './scene'
-import $R from '../resources';
+import $R, { AudioKeys } from '../resources';
 import { Sprite_Button } from '../Sprites';
+import { sound } from '@pixi/sound';
 
 /** 手機版遊戲地圖 */
 export class Scene_MobileMap extends Scene {
@@ -21,14 +22,14 @@ export class Scene_MobileMap extends Scene {
         this.addChild(this.bg);
 
         // 地圖上得點
-        for (let i = 0;i < 5; i++) {
+        for (let i = 0; i < 5; i++) {
             const p = Sprite.from($R.Image.MapPoint);
-          
+
             p.x = Math.random() * this.bg.width;
             p.y = Math.random() * this.bg.height;
 
-        p.interactive = true;
-        p.cursor = 'pointer';
+            p.interactive = true;
+            p.cursor = 'pointer';
             this.bg.addChild(p)
         }
 
@@ -58,6 +59,9 @@ export class Scene_MobileMap extends Scene {
         this.interactive = true;
 
         this.on('pointermove', this.onPointerMove.bind(this))
+
+        sound.stopAll();
+        sound.play(AudioKeys.BGM_MobileMap, { loop: true })
     }
 
     update(delta: number) {

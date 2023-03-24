@@ -1,6 +1,9 @@
+import Items from "@/Data/Item";
+import { IItem } from "@/Data/Item/IItem";
 import _, { values } from "lodash-es";
 import { Game_Battler_Mobile } from './Game_Battler_Mobile'
 const LOCALSTORAGE_SAVE_KEY = 'untitledpixjs_mobile'
+const LOCALSTORAGE_SAVE_KEY_BACKUP = 'untitledpixjs_mobile_backup'
 
 /** 給Scene_Mobile系列使用的全域參數 */
 export class Game_Global_Mobile {
@@ -55,6 +58,9 @@ export class Game_Global_Mobile {
 
     /** 是否觸發下段劇情 */
     public static triggerNextProgress = true;
+
+    /** 持有中的道具 */
+    private static _items: { [itemId: number]: number } = {};
 
     static init() {
         this.loadFromLocalStorage();
@@ -113,7 +119,10 @@ export class Game_Global_Mobile {
                 this._battler = new Game_Battler_Mobile(dto._battler);
             }
         } catch (err) {
-            console.warn('[Game_Global_Mobile] 本地存檔讀取失敗.', err)
+            console.warn('[Game_Global_Mobile] 本地存檔讀取失敗, 備份後刪除存檔', err)
+            localStorage.setItem(LOCALSTORAGE_SAVE_KEY_BACKUP, save);
+            localStorage.removeItem(LOCALSTORAGE_SAVE_KEY);
+            window.location.reload();
         } finally {
             // 假如沒有存檔要做的事
         }
@@ -124,7 +133,8 @@ export class Game_Global_Mobile {
         try {
             localStorage.setItem(LOCALSTORAGE_SAVE_KEY, this.ToJSON())
         } catch (err) {
-            console.warn('[Game_Global_Mobile] 本地存檔讀取失敗.', err)
+            console.warn('[Game_Global_Mobile] 本地存檔儲存失敗', err)
+
         } finally {
             // 假如沒有存檔要做的事
         }
@@ -135,9 +145,54 @@ export class Game_Global_Mobile {
         const dateNow = Date.now();
         if ((dateNow - this._lastLogin) / 1000 > 3600) {
             this._progress += 1;
+            this.energy += 24;
             // 跟場景說要過劇情了~
             this.triggerNextProgress = true;
         }
+    }
+    /** 目前持有中的道具 */
+    public static get Items() {
+        return Object.entries(this._items).filter(([key, value]) => value > 0);
+    }
+
+    /** 取得道具 */
+    static getItem(id: number, amount: number) {
+        const item = Items[id] as IItem;
+
+        // 道具不存在的場合
+        if (!item) {
+            return
+        }
+        this._items[id] = (this._items[id] || 0) + amount
+        this.SaveToLocalStorage();
+    }
+
+    /** 是否可使用道具 */
+    static canUseItem(id: number) {
+        const item = Items[id] as IItem;
+
+        return Boolean(item?.use)
+    }
+    /** 使用道具 */
+    static useItem(id: number) {
+        const item = Items[id] as IItem;
+
+        // 道具不存在的場合
+        if (!item) {
+            return
+        }
+
+        // 無法使用的場合
+        if (!item.use) {
+            return;
+        }
+
+        // 如果Item使用結果未回傳true時, 道具個數減1
+        if (!item.use()) {
+            this._items[id] = (this._items[id] || 0) - 1;
+        }
+
+        this.SaveToLocalStorage();
     }
 
     static ToJSON() {

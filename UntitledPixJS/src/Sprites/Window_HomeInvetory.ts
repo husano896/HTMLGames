@@ -1,3 +1,4 @@
+import { Game_Global_Mobile } from './../Game/Game_Global_Mobile';
 import { Window_Responsive } from "./Window_Responsive";
 import { Container, Text, Graphics } from "pixi.js";
 import { IResizeable } from "../Interfaces/IResizeable";
@@ -9,17 +10,18 @@ import { IItem } from "@/Data/Item/IItem";
 const MAXWIDTH = 320;
 const padding = 8;
 
-export class HomeInvetoryItem extends Container implements IResizeable{
+export class HomeInvetoryItem extends Container implements IResizeable {
   itemNameText: Text;
   itemDescriptionText: Text;
 
   itemAmountText: Text;
   bg: Graphics;
-  constructor(item: IItem) {
+  constructor(item: IItem, itemKey: number) {
     super();
 
     this.bg = new Graphics();
-    this.bg.beginFill(0x0000aa, 0.25);
+
+    this.bg.beginFill(Game_Global_Mobile.canUseItem(itemKey) ? 0x0000aa : 0x11111, 0.5);
     this.bg.drawRect(0, 0, 128, 128);
     this.bg.endFill();
     this.itemNameText = new Text(
@@ -40,7 +42,7 @@ export class HomeInvetoryItem extends Container implements IResizeable{
     this.itemNameText.x = 8;
     this.itemNameText.y = 8;
 
-    this.itemAmountText.x = this.width - 8 -this.itemAmountText.width;
+    this.itemAmountText.x = this.width - 8 - this.itemAmountText.width;
     this.itemAmountText.y = this.itemNameText.y;
     this.itemDescriptionText.x = this.itemNameText.x;
     this.itemDescriptionText.y = this.itemNameText.y + 24;
@@ -51,6 +53,17 @@ export class HomeInvetoryItem extends Container implements IResizeable{
       this.itemAmountText,
       this.itemDescriptionText
     );
+
+    this.interactive = true;
+    this.on('pointertap', (ev) => {
+
+      ev.preventDefault();
+      if (!Game_Global_Mobile.canUseItem(itemKey)) {
+        alert('無法使用道具')
+        return;
+      }
+      Game_Global_Mobile.useItem(itemKey);
+    })
     this.onWindowResize();
   }
 
@@ -59,7 +72,7 @@ export class HomeInvetoryItem extends Container implements IResizeable{
       this.bg.width = this.parent?.width - padding * 2;
     }
 
-    this.itemAmountText.x = this.width - 8 -this.itemAmountText.width;
+    this.itemAmountText.x = this.width - 8 - this.itemAmountText.width;
     this.itemDescriptionText.style.wordWrapWidth = this.bg.width - 16;
     console.log('item resize')
   }
@@ -67,14 +80,13 @@ export class HomeInvetoryItem extends Container implements IResizeable{
 /** 在養成畫面使用的道具欄視窗 */
 export class Window_HomeInvetory
   extends Window_Responsive
-  implements IResizeable
-{
+  implements IResizeable {
   constructor() {
     super();
     this.visible = false;
 
-    Object.values(Items).forEach((i, index) => {
-      const item = new HomeInvetoryItem(i);
+    Object.entries(Items).forEach(([key, i]: [any, IItem], index: number) => {
+      const item = new HomeInvetoryItem(i, key);
       item.x = 8;
       item.y = 8 + index * (128 + 8);
       this.addChild(item);
@@ -85,10 +97,14 @@ export class Window_HomeInvetory
     super.update(delta);
   }
 
+  // TODO: 使用道具完後的更新道具列表
+  updateItemList() {
+
+  }
   onWindowResize() {
     this.bg.width = Math.min(MAXWIDTH, $game.screen.width / 2) - 32;
     this.bg.height = $game.screen.height - padding * 2 - 64;
-    
+
     super.onWindowResize();
   }
 }

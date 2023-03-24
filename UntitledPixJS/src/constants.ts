@@ -55,7 +55,19 @@ export const $TextStyle = {
         lineHeight: 32,
         breakWords: true,
     }),
-    
+    Window_Progress: new TextStyle({
+        align: 'right',
+        fontFamily: ['Sitka Text'],
+        fontSize: 24,
+        fill: ['#ffffff'], // gradient
+        dropShadow: true,
+        dropShadowDistance: 2,
+        dropShadowColor: '#333333',
+        dropShadowAngle: 180,
+        // 文字過長的自動換行
+        wordWrap: true,
+        lineHeight: 24,
+    }),
     Window_HomeInvetoryItemTitle: new TextStyle({
         align: 'left',
         fontFamily: ['微軟正黑體', '新細明體', 'Arial'],
@@ -86,7 +98,7 @@ export const $TextStyle = {
         lineHeight: 18,
         breakWords: true,
     }),
-    
+
     Window_HomeInvetoryItemAmount: new TextStyle({
         align: 'right',
         fontFamily: ['微軟正黑體', '新細明體', 'Arial'],
