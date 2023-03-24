@@ -5,8 +5,8 @@ import { Window_HomeInvetory } from './../Sprites/Window_HomeInvetory';
 import { Window_Gold } from './../Sprites/Window_Gold';
 import { Sprite_Button } from './../Sprites/Sprite_Button';
 import { Window_Message } from './../Sprites/Window_Message';
-import { Sprite_Battery } from './../Sprites/Sprite_Battery';
-
+import { Sprite_Battery } from '@/Sprites/Sprite_Battery';
+import { Sprite_FlyDragon } from '@/Sprites/Sprite_FlyDragon';
 
 import { Scene } from "./scene";
 
@@ -70,7 +70,7 @@ class HomeUIContainer extends Container implements IResizeable {
 /** 練習做手機版介面用... */
 export class Scene_Mobile extends Scene implements IResizeable {
     bg: Sprite;
-    dragon: Sprite
+    dragon: Sprite_FlyDragon;
 
     window_message: Window_Message;
 
@@ -91,7 +91,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
         this.bg.anchor.set(0.5);
 
         // 乖龍龍
-        this.dragon = Sprite.from($R.Image.dragon);
+        this.dragon = new Sprite_FlyDragon()
         this.dragon.anchor.set(0.5);
         this.window_message = new Window_Message();
         this.window_message.x = 8;

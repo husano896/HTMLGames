@@ -21,7 +21,12 @@ const $R = {
     bgBlue: 'imgs/bgblue.jpg',
     bgRed: 'imgs/bgred.jpg',
     bgYellow: 'imgs/bgyellow.jpg',
-    dragon: 'imgs/dragon.png'
+    dragon: 'imgs/drg_walk.png',
+    dragonSleep: 'imgs/drg_sleep.png',
+    dragonBack: 'imgs/drg_back.png',
+    dragonFlying: 'imgs/drg_flying.png',
+    dragonShy: 'imgs/drg_shy.png',
+    dragonWake: 'imgs/drg_wake.png'
   },
   SpriteSheet: {
     li: 'imgs/M.json'
