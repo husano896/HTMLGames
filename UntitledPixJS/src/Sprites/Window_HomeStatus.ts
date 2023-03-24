@@ -5,7 +5,7 @@ import $game from '@/main';
 import { $TextStyle } from '../constants';
 
 const MAXWIDTH = 320;
-const padding = 16;
+const padding = 8;
 
 /** 在養成畫面使用的能力值視窗 */
 export class Window_HomeStatus extends Window_Responsive implements IResizeable {

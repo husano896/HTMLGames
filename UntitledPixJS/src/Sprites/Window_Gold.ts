@@ -22,7 +22,7 @@ export class Window_Gold extends Window_Responsive  {
         this.onWindowResize();
 
         this.interactive = true;
-        this.on('pointerdown', ()=> {
+        this.on('pointertap', ()=> {
             Game_Global_Mobile.gold++;
         })
     }

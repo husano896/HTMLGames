@@ -24,7 +24,7 @@ export class Sprite_Map extends Container {
             if (i.onInteract) {
                 // 目前先用滑鼠接觸
                 spr.interactive = true;
-                spr.on('pointerdown', (ev: FederatedPointerEvent) => i.onInteract.bind(ev, spr));
+                spr.on('pointertap', (ev: FederatedPointerEvent) => i.onInteract.bind(ev, spr));
             }
             if (i.update) {
                 Object.defineProperty(spr, 'update', ((delta: number) => {

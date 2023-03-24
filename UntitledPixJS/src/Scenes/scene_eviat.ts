@@ -22,7 +22,7 @@ export class Scene_Eviat extends Scene {
 		this.sprite_eviat = new Sprite_Eviat();
 		this.addChild(this.sprite_eviat);
 
-		this.on('pointerdown', this.onDown.bind(this));
+		this.on('pointertap', this.onDown.bind(this));
 		this.on('pointermove', this.onMove.bind(this));
 		this.on('pointerup', this.onUp.bind(this));
 

@@ -98,18 +98,19 @@ export class Scene_Mobile extends Scene implements IResizeable {
 
         // 道具視窗
         this.window_homeInvetory = new Window_HomeInvetory();
+        
         // 能力視窗
         this.window_homeStatus = new Window_HomeStatus();
         // 金錢視窗
         this.window_gold = new Window_Gold();
         // 滑鼠事件綁定
 
-        // this.on('pointerdown', this.onClick.bind(this));
+        // this.on('pointertap', this.onClick.bind(this));
 
         console.log(this);
 
         // 點擊乖龍龍說話
-        this.dragon.on('pointerdown', () => {
+        this.dragon.on('pointertap', () => {
             if (!this.homeUIContainer.visible) {
                 return;
             }
@@ -149,7 +150,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
             Game_Global_Mobile.energy -= 2;
         })
 
-        this.homeUIContainer.BatterySprite.on('pointerdown', () => {
+        this.homeUIContainer.BatterySprite.on('pointertap', () => {
             if (this.window_message.typing) {
                 return;
             }
@@ -163,7 +164,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
         this.backButton.cursor = 'pointer'
         this.backButton.visible = false
 
-        this.backButton.on('pointerdown', () => {
+        this.backButton.on('pointertap', () => {
             // 返回主頁面
             this.window_homeInvetory.visible = false
             this.window_homeStatus.visible = false
@@ -204,12 +205,10 @@ export class Scene_Mobile extends Scene implements IResizeable {
             this.window_homeInvetory.visible
         )
 
-        Game_Global_Mobile.postUpdate(delta)
     }
 
     /** 遊戲視窗變更大小時 */
     onWindowResize() {
-        super.onWindowResize();
         console.log('resize');
 
         this.bg.x = $game.screen.width / 2;
@@ -225,8 +224,14 @@ export class Scene_Mobile extends Scene implements IResizeable {
         this.window_gold.x = Math.max(16, $game.screen.width / 2 - 600);
         this.window_gold.y = 16
 
+        this.window_homeInvetory.x = 16
+
+        this.window_homeStatus.x = Math.max($game.screen.width - 16 - this.window_homeStatus.width , $game.screen.width / 2)
+
         // this.window_message.y = $game.screen.height - this.window_message.height - 16;
         this.backButton.x = $game.screen.width - this.backButton.width - 16;
         this.backButton.y = $game.screen.height - this.backButton.height - 16;
+        
+        super.onWindowResize();
     }
 }
