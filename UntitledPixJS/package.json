@@ -21,7 +21,7 @@
   },
   "scripts": {
     "build": "npx webpack",
-    "serve": "npx http-server .. -o /UntitledPixJS"
+    "serve": "npx http-server .. -o /UntitledPixJS -c 1"
   },
   "author": "xFly_Dragon",
   "license": "ISC"

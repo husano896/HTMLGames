@@ -273,5 +273,11 @@ export const $TextStyle = {
         dropShadowAngle: 180,
         wordWrap: true,
         wordWrapWidth: 128,
-    })
+    }),
+    Sprite_MapMobile: new TextStyle({
+        align: 'center',
+        fontFamily: '微軟正黑體',
+        fontSize: 14,
+        fill: ['#ffffff'], // gradient
+    }),
 }
