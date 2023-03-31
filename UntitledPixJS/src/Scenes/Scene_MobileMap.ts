@@ -21,6 +21,7 @@ class Sprite_MapMobile extends Sprite {
 
   constructor(map: IMapMobile) {
     super();
+
     const image = map.image instanceof Function ? map.image() : map.image;
     this.texture = Texture.from(image || $R.Image.MapPoint);
     this.interactive = true;
@@ -53,13 +54,45 @@ export class Scene_MobileMap extends Scene {
 
   /** 指到的地點的文字 */
   mapNameText: Text;
+
+  dragon: Sprite;
+
+  targetX: number;
+  targetY: number;
+
   constructor() {
     super();
+
+    sound.stopAll();
 
     // 背景
     this.bg = Sprite.from($R.Image.bgRed);
     this.addChild(this.bg);
 
+    // 回家路點
+    this.point = Sprite.from($R.Image.MapPointHome);
+
+    this.point.x = 200;
+    this.point.y = 200;
+
+    this.point.interactive = true;
+    this.point.cursor = "pointer";
+    this.point.on('pointerdown', (ev) => {
+      this.targetX = this.point.x;
+      this.targetY = this.point.y;
+    })
+    // 乖龍龍
+    this.dragon = Sprite.from($R.Image.dragon);
+    this.dragon.anchor.set(0.5);
+    this.dragon.scale.set(0.5);
+    this.dragon.x = this.point.x;
+    this.dragon.y = this.point.y;
+
+    this.targetX = this.point.x;
+    this.targetY = this.point.y;
+
+
+    this.bg.addChild(this.dragon, this.point)
     // 地圖上的點
     for (let map of Maps) {
       const spr = new Sprite_MapMobile(map);
@@ -70,18 +103,13 @@ export class Scene_MobileMap extends Scene {
       spr.y =
         (map.y instanceof Function ? map.y() : map.y) ||
         Math.random() * this.bg.height;
-
+      spr.interactive = true;
+      spr.on('pointerdown', (ev) => {
+        this.targetX = spr.x;
+        this.targetY = spr.y;
+      })
       this.bg.addChild(spr);
     }
-
-    // 回家路點
-    this.point = Sprite.from($R.Image.MapPointHome);
-
-    this.point.x = 200;
-    this.point.y = 200;
-    this.point.interactive = true;
-    this.point.cursor = "pointer";
-    this.bg.addChild(this.point);
 
     // 回家按鈕
     this.backButton = new Sprite_Button("回家", null, {
@@ -99,26 +127,31 @@ export class Scene_MobileMap extends Scene {
     };
     this.addChild(this.backButton);
     this.onWindowResize();
-    console.log(this);
 
-    this.interactive = true;
 
-    this.on("pointerdown", this.onPointerDown.bind(this));
 
-    this.on("pointerup", this.onPointerUp.bind(this));
-    this.on("pointermove", this.onPointerMove.bind(this));
-
-    sound.stopAll();
+    // BGM播放
     sound.play(AudioKeys.BGM_MobileMap, { loop: true });
+
+    // 點擊事件聆聽
+    this.bg.interactive = true;
+    this.bg.on("pointerdown", this.onPointerDown.bind(this));
+
+    this.bg.on("pointerup", this.onPointerUp.bind(this));
+    this.bg.on("pointermove", this.onPointerMove.bind(this));
+
   }
 
   onDestroy() {
-    this.off("pointerdown", this.onPointerDown.bind(this));
-    this.off("pointermove", this.onPointerMove.bind(this));
+    this.bg.off("pointerdown", this.onPointerDown.bind(this));
+    this.bg.off("pointermove", this.onPointerMove.bind(this));
     super.onDestroy();
   }
 
-  update(delta: number) {}
+  update(delta: number) {
+    this.dragon.x += (this.targetX - this.dragon.x) / (Math.max(1, 16 / delta));
+    this.dragon.y += (this.targetY - this.dragon.y) / (Math.max(1, 16 / delta));
+  }
 
   /** 滑鼠移動, 用來處理拖移地圖用 */
 
