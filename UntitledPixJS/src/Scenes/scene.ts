@@ -1,6 +1,5 @@
 import { IResizeable } from './../Interfaces/IResizeable';
 import { Container, Rectangle } from 'pixi.js';
-import { GameConsts } from '../constants';
 
 export class Scene extends Container implements IResizeable {
 

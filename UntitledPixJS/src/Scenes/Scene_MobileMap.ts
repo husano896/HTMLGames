@@ -8,7 +8,7 @@ import {
 } from "pixi.js";
 import { Scene } from "./scene";
 import $R, { AudioKeys } from "../resources";
-import { Sprite_Button } from "../Sprites";
+import { Sprite_Button, Sprite_Loading } from "../Sprites";
 import { sound } from "@pixi/sound";
 import _ from "lodash-es";
 import { $TextStyle } from "@/constants";
@@ -40,25 +40,32 @@ class Sprite_MapMobile extends Sprite {
 
 /** 手機版遊戲地圖 */
 export class Scene_MobileMap extends Scene {
+  /** 背景, 可拖移, 且地圖地點與龍龍寄宿於上面 */
   bg: Sprite;
 
+  /** 回家路點 */
   point: Sprite;
+
+  /** 返回按鈕 */
   backButton: Sprite_Button;
 
+  /** 地圖拖移用 */
   lastPointerX: number;
   lastPointerY: number;
 
-  fingers: { [fingerId: string]: { x; y; startX; startY } } = {};
-
-  maps: Array<Sprite_MapMobile>;
+  /* fingers: { [fingerId: string]: { x; y; startX; startY } } = {}; */
 
   /** 指到的地點的文字 */
   mapNameText: Text;
 
+  /** 乖龍龍 */
   dragon: Sprite;
 
+  /** 要前往的目的地, 作為移動平滑用 */
   targetX: number;
   targetY: number;
+
+  sprite_loading: Sprite_Loading;
 
   constructor() {
     super();
@@ -93,6 +100,7 @@ export class Scene_MobileMap extends Scene {
 
 
     this.bg.addChild(this.dragon, this.point)
+
     // 地圖上的點
     for (let map of Maps) {
       const spr = new Sprite_MapMobile(map);
@@ -104,9 +112,12 @@ export class Scene_MobileMap extends Scene {
         (map.y instanceof Function ? map.y() : map.y) ||
         Math.random() * this.bg.height;
       spr.interactive = true;
+
       spr.on('pointerdown', (ev) => {
+        // 角色移動到地圖上指定的點
         this.targetX = spr.x;
         this.targetY = spr.y;
+        this.sprite_loading.visible = true;
       })
       this.bg.addChild(spr);
     }
@@ -126,9 +137,12 @@ export class Scene_MobileMap extends Scene {
       $game.stage.addChild(new newScene());
     };
     this.addChild(this.backButton);
+
+    this.sprite_loading = new Sprite_Loading();
+    this.sprite_loading.visible = false;
+
+    this.addChild(this.sprite_loading);
     this.onWindowResize();
-
-
 
     // BGM播放
     sound.play(AudioKeys.BGM_MobileMap, { loop: true });
@@ -151,6 +165,7 @@ export class Scene_MobileMap extends Scene {
   update(delta: number) {
     this.dragon.x += (this.targetX - this.dragon.x) / (Math.max(1, 16 / delta));
     this.dragon.y += (this.targetY - this.dragon.y) / (Math.max(1, 16 / delta));
+    super.update(delta);
   }
 
   /** 滑鼠移動, 用來處理拖移地圖用 */
@@ -159,18 +174,6 @@ export class Scene_MobileMap extends Scene {
     this.lastPointerX = ev.x;
     this.lastPointerY = ev.y;
 
-    /*
-    const fingerId = ev.pointerId;
-
-    this.fingers[fingerId] = {
-      x: ev.x,
-      y: ev.y,
-      startX: ev.x,
-      startY: ev.y,
-    };
-
-    ev.preventDefault();
-    */
   }
 
   onPointerUp(ev: FederatedPointerEvent) {

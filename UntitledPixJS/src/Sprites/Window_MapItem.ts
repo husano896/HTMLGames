@@ -3,7 +3,6 @@ import { $TextStyle } from '../constants';
 import { Sprite_CloseButton } from './Sprite_CloseButton';
 import $R from '../resources';
 // 道具視窗
-
 const WIDTH = 320;
 const HEIGHT = 120;
 export class Window_MapItem extends Container {

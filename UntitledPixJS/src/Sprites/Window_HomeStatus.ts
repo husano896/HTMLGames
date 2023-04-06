@@ -5,7 +5,7 @@ import { IResizeable } from '../Interfaces/IResizeable';
 import $game from '@/main';
 import { $TextStyle } from '../constants';
 
-const MAXWIDTH = 320;
+const MAXWIDTH = 480;
 const padding = 8;
 
 /** 在養成畫面使用的能力值視窗 */

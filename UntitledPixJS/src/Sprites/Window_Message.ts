@@ -18,6 +18,8 @@ export class Window_Message extends Window_Responsive {
 
     sprite_typingText: Sprite_TypingText;
 
+    /** 用來計算反饋效果的有效時間 */
+    clickTime: number;
     constructor() {
         super();
 
@@ -47,14 +49,24 @@ export class Window_Message extends Window_Responsive {
             // 提示繼續的Icon動畫
             this.downIcon.y = HEIGHT - 16 + Math.sin(this.animFrame / 8) * 4;
         }
+        /*
+        if (this.clickTime > 0) {
+            this.clickTime -= delta;
+            if (this.clickTime <= 0) {
+                t
+            }
+        }*/
     }
 
     onPointerTap() {
+        this.alpha = 0.8;
         if (this.IsEmpty()) {
             this.visible = false;
         } else {
             this.nextSentence();
             this.visible = true;
+            // this.clickTime = 3.0;
+
         }
     }
     /** 跟Sprite_TypingText 依賴的部分 */

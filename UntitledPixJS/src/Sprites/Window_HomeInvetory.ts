@@ -7,7 +7,7 @@ import { $TextStyle } from "@/constants";
 import Items from "@/Data/Item";
 import { IItem } from "@/Data/Item/IItem";
 
-const MAXWIDTH = 320;
+const MAXWIDTH = 480;
 const padding = 8;
 
 export class HomeInvetoryItem extends Container implements IResizeable {
@@ -73,8 +73,7 @@ export class HomeInvetoryItem extends Container implements IResizeable {
     }
 
     this.itemAmountText.x = this.width - 8 - this.itemAmountText.width;
-    this.itemDescriptionText.style.wordWrapWidth = this.bg.width - 16;
-    console.log('item resize')
+    this.itemDescriptionText.style.wordWrapWidth = this.width - 16;
   }
 }
 /** 在養成畫面使用的道具欄視窗 */
@@ -100,9 +99,13 @@ export class Window_HomeInvetory extends Window_Responsive implements IResizeabl
 
   }
   onWindowResize() {
-    this.bg.width = Math.min(MAXWIDTH, $game.screen.width / 2) - 32;
-    this.bg.height = $game.screen.height - padding * 2 - 64;
-
-    super.onWindowResize();
+    
+    this.bg.clear();
+    // 對Background的重新調整
+    this.bg.beginFill(0x333377, 0.5);
+    this.bg.drawRect(0, 0, Math.min(MAXWIDTH, $game.screen.width / 2) - 32, $game.screen.height - padding * 2 - 64);
+    this.bg.endFill();
+    this.calculateBounds();
+    this.children.forEach((v: any) => v.onWindowResize?.());
   }
 }

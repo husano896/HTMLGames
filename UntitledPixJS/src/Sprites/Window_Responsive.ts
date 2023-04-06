@@ -24,6 +24,8 @@ export class Window_Responsive extends Container implements IResizeable {
     // 對Background的重新調整
     this.bg.beginFill(0x333377, 0.5);
     this.bg.drawRect(0, 0, this.width, this.height);
+    this.bg.endFill();
+    this.calculateBounds();
     this.children.forEach((v: any) => v.onWindowResize?.());
   }
 
