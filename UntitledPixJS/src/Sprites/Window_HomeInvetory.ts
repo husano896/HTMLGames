@@ -16,6 +16,7 @@ export class HomeInvetoryItem extends Container implements IResizeable {
 
   itemAmountText: Text;
   bg: Graphics;
+
   constructor(item: IItem, itemKey: number) {
     super();
 
@@ -76,8 +77,11 @@ export class HomeInvetoryItem extends Container implements IResizeable {
     this.itemDescriptionText.style.wordWrapWidth = this.width - 16;
   }
 }
+
 /** 在養成畫面使用的道具欄視窗 */
 export class Window_HomeInvetory extends Window_Responsive implements IResizeable {
+
+  maxWidth = 480;
   constructor() {
     super();
     this.visible = false;

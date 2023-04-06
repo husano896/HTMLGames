@@ -290,7 +290,7 @@ export const $TextStyle = {
     Dialog_MapConfirm_Description: new TextStyle({
         align: 'left',
         fontFamily: '微軟正黑體',
-        fontSize: 24,
+        fontSize: 16,
         fill: ['#ffffff'], // gradient
         wordWrap: true,
         wordWrapWidth: 320,
@@ -300,7 +300,7 @@ export const $TextStyle = {
         fontFamily: 'Sitka Text',
         fontStyle: 'italic',
         fontSize: 48,
-        fill: ['#777777'], // gradient
+        fill: ['#AAAAAA'], // gradient
         stroke: '#000000',
         strokeThickness: 4,
         dropShadowDistance: 4,

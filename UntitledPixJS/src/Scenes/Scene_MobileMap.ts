@@ -1,3 +1,4 @@
+import { Dialog_MapConfirm } from './../Sprites/Dialog_MapConfirm';
 import $game from "@/main";
 import {
   FederatedEvent,
@@ -43,9 +44,6 @@ export class Scene_MobileMap extends Scene {
   /** 背景, 可拖移, 且地圖地點與龍龍寄宿於上面 */
   bg: Sprite;
 
-  /** 回家路點 */
-  point: Sprite;
-
   /** 返回按鈕 */
   backButton: Sprite_Button;
 
@@ -67,6 +65,7 @@ export class Scene_MobileMap extends Scene {
 
   sprite_loading: Sprite_Loading;
 
+  dialog_MapConfirm: Dialog_MapConfirm;
   constructor() {
     super();
 
@@ -76,30 +75,17 @@ export class Scene_MobileMap extends Scene {
     this.bg = Sprite.from($R.Image.bgRed);
     this.addChild(this.bg);
 
-    // 回家路點
-    this.point = Sprite.from($R.Image.MapPointHome);
-
-    this.point.x = 200;
-    this.point.y = 200;
-
-    this.point.interactive = true;
-    this.point.cursor = "pointer";
-    this.point.on('pointerdown', (ev) => {
-      this.targetX = this.point.x;
-      this.targetY = this.point.y;
-    })
     // 乖龍龍
     this.dragon = Sprite.from($R.Image.dragon);
     this.dragon.anchor.set(0.5);
     this.dragon.scale.set(0.5);
-    this.dragon.x = this.point.x;
-    this.dragon.y = this.point.y;
+    this.dragon.x = 0;
+    this.dragon.y = 0;
 
-    this.targetX = this.point.x;
-    this.targetY = this.point.y;
+    this.targetX = 0;
+    this.targetY = 0;
 
-
-    this.bg.addChild(this.dragon, this.point)
+    this.bg.addChild(this.dragon)
 
     // 地圖上的點
     for (let map of Maps) {
@@ -117,7 +103,36 @@ export class Scene_MobileMap extends Scene {
         // 角色移動到地圖上指定的點
         this.targetX = spr.x;
         this.targetY = spr.y;
-        this.sprite_loading.visible = true;
+
+        sound.play(AudioKeys.cursor);
+
+        this.dialog_MapConfirm.Open(
+          map.name instanceof Function ? map.name() : map.name,
+          map.description instanceof Function ? map.description() : map.description,
+          async (result) => {
+            if (!result) {
+
+              sound.play(AudioKeys.cancel);
+              return;
+            }
+
+            sound.play(AudioKeys.piano);
+
+            // 回家 <3
+            if (map.home) {
+              const newScene = await import("@/Scenes/Scene_Mobile").then(
+                (m) => m.Scene_Mobile
+              );
+
+              $game.stage.children.forEach((c) => c.destroy({ children: true }));
+              $game.stage.removeChildren();
+              $game.stage.addChild(new newScene());
+              return;
+            }
+
+            // 前往下個地點！
+            this.sprite_loading.visible = true;
+          })
       })
       this.bg.addChild(spr);
     }
@@ -138,10 +153,17 @@ export class Scene_MobileMap extends Scene {
     };
     this.addChild(this.backButton);
 
+    // 讀取指示器
     this.sprite_loading = new Sprite_Loading();
     this.sprite_loading.visible = false;
 
     this.addChild(this.sprite_loading);
+
+    // Dialog
+    this.dialog_MapConfirm = new Dialog_MapConfirm()
+    this.addChild(this.dialog_MapConfirm);
+
+    //
     this.onWindowResize();
 
     // BGM播放

@@ -1,5 +1,6 @@
 import { IResizeable } from "./../Interfaces/IResizeable";
 import { Container, Graphics, IDestroyOptions } from "pixi.js";
+import $game from "@/main";
 
 /** 自適應型視窗, 其實一般型的引用這個也可以...? */
 export class Window_Responsive extends Container implements IResizeable {
@@ -19,11 +20,12 @@ export class Window_Responsive extends Container implements IResizeable {
     window.addEventListener("resize", this.onWindowResize.bind(this));
     this.onWindowResize();
   }
+
   onWindowResize() {
     this.bg.clear();
     // 對Background的重新調整
     this.bg.beginFill(0x333377, 0.5);
-    this.bg.drawRect(0, 0, this.width, this.height);
+    this.bg.drawRect(0, 0, Math.max(this.minWidth, this.width), Math.max(this.minHeight, this.height));
     this.bg.endFill();
     this.calculateBounds();
     this.children.forEach((v: any) => v.onWindowResize?.());
@@ -47,5 +49,12 @@ export class Window_Responsive extends Container implements IResizeable {
   destroy(options?: boolean | IDestroyOptions | undefined): void {
     window.removeEventListener("resize", this.onWindowResize.bind(this));
     super.destroy(options);
+
+  }
+
+  /** 將視窗於螢幕置中 */
+  centerWindow() {
+    this.x = ($game.screen.width - this.width) / 2
+    this.y = ($game.screen.height - this.height) / 2
   }
 }
