@@ -24,4 +24,7 @@ export default interface IMapMobile {
     condition: () => boolean;
     payload: () => void;
   }>;
+  
+  /** 是否為家 */
+  home?: boolean;
 }

@@ -8,6 +8,7 @@ export * from './Sprite_HealthBar';
 export * from './Sprite_Map';
 export * from './Sprite_Seto';
 export * from './Sprite_TypingText';
+export * from './Sprite_Loading';
 export * from './Window_ChatLogs';
 export * from './Window_HomeInvetory';
 export * from './Window_HomeStatus';

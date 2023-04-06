@@ -9,6 +9,7 @@ const $R = {
     confirm: '../shared/Audio/SE/F/ok.wav',
     cancel: '../shared/Audio/SE/F/cancel.wav',
     cursor: '../shared/Audio/SE/F/cursor.wav',
+    piano: 'audio/piano.mp3',
     BGM_Mobile: 'audio/bgm/tamhe05.mp3',
     BGM_MobileMap: 'audio/bgm/tamhe10.mp3',
   },
@@ -44,8 +45,10 @@ export enum AudioKeys {
   confirm = 'confirm',
   cancel = 'cancel',
   cursor = 'cursor',
+  piano = 'piano',
   BGM_Mobile = 'BGM_Mobile',
   BGM_MobileMap = 'BGM_MobileMap'
+  
 }
 
 export const onResourceReady = new Promise(async (resolve, reject) => {

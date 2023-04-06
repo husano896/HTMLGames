@@ -13,7 +13,7 @@ import { Scene } from "./scene";
 import { IResizeable } from "../Interfaces/IResizeable";
 import $game from "@/main";
 import $R from "../resources";
-import { $TextStyle } from "@/constants";
+import { $TextStyle, ChangeScene } from "@/constants";
 import { sound } from "@pixi/sound";
 
 /** 在家 */
@@ -111,9 +111,12 @@ export class Scene_Mobile extends Scene implements IResizeable {
     // 背景
     this.bg = Sprite.from($R.Image.bgYellow);
     this.bg.anchor.set(0.5);
+
     // 乖龍龍
     this.dragon = new Sprite_FlyDragon();
     this.dragon.anchor.set(0.5);
+
+    // 文字視窗
     this.window_message = new Window_Message();
     this.window_message.x = 8;
 
@@ -167,12 +170,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
         return;
       }
 
-      const newScene = await import("@/Scenes/Scene_MobileMap").then(
-        (m) => m.Scene_MobileMap
-      );
-      $game.stage.children.forEach((c) => c.destroy({ children: true }));
-      $game.stage.removeChildren();
-      $game.stage.addChild(new newScene());
+      await ChangeScene((await import("@/Scenes/Scene_MobileMap")).default)
     };
 
     this.homeUIContainer.OpenWorkButton.callback = () => {
@@ -257,7 +255,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
       this.window_homeStatus.visible || this.window_homeInvetory.visible;
 
     // 龍龍的位置更新
-    this.dragon.x = $game.screen.width / 2 + Math.sin(Date.now() / 10000) * 32;
+    this.dragon.y = $game.screen.height / 2 + Math.sin(Date.now() / 4096) * 32;
   }
   triggerNextProgress() {
     this.window_message.appendText(`目前進度：${Game_Global_Mobile.progress}.`);
@@ -265,7 +263,6 @@ export class Scene_Mobile extends Scene implements IResizeable {
 
   /** 遊戲視窗變更大小時 */
   onWindowResize() {
-    super.onWindowResize();
     console.log("resize");
 
     this.bg.x = $game.screen.width / 2;
@@ -298,18 +295,21 @@ export class Scene_Mobile extends Scene implements IResizeable {
       $game.screen.width / 2 - 600
     );
     this.progressText.y = 16;
-    super.onWindowResize();
+
     if (
-        $game.screen.width < $game.screen.height ||
-        $game.screen.width / $game.screen.height < 16 / 9
-      ) {
-        // 直向時, 直向填滿
-        this.bg.height = $game.screen.height;
-        this.bg.width = (this.bg.height / 9) * 16;
-      } else {
-        //橫向時, 橫向填滿
-        this.bg.width = $game.screen.width;
-        this.bg.height = (this.bg.width / 16) * 9;
-      }
+      $game.screen.width < $game.screen.height ||
+      $game.screen.width / $game.screen.height < 16 / 9
+    ) {
+      // 直向時, 直向填滿
+      this.bg.height = $game.screen.height;
+      this.bg.width = (this.bg.height / 9) * 16;
+    } else {
+      //橫向時, 橫向填滿
+      this.bg.width = $game.screen.width;
+      this.bg.height = (this.bg.width / 16) * 9;
+    }
+    super.onWindowResize();
   }
+
 }
+export default Scene_Mobile;

@@ -12,12 +12,19 @@ const $game = new Application({
 const gameContainer = document.querySelector('#game-container');
 const pressStartPlaceHolder = gameContainer.querySelector('.placeholder');
 
-function starter() {
-  gameContainer.removeEventListener('click', starter)
+// 如果在PWA模式下執行, 則跳過Press Start畫面, 因為可以直接播音樂
+if (window.matchMedia('(display-mode: standalone)').matches) {
   gameContainer.removeChild(pressStartPlaceHolder)
   gameContainer.appendChild($game.view as HTMLCanvasElement)
+} else {
+  function starter() {
+    gameContainer.removeEventListener('click', starter)
+    gameContainer.removeChild(pressStartPlaceHolder)
+    gameContainer.appendChild($game.view as HTMLCanvasElement)
+  }
+  gameContainer.addEventListener('click', starter)
 }
-gameContainer.addEventListener('click', starter)
+
 export default $game;
 
 

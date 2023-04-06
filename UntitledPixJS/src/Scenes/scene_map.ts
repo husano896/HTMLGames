@@ -1,11 +1,11 @@
-import { Window_Message } from './../Sprites/Window_Message';
-import { Map001 } from './../Data/Map001';
-import { Sprite_Map } from './../Sprites/Sprite_Map';
+import { Window_Message } from '../Sprites/Window_Message';
+import { Map001 } from '../Data/Map001';
+import { Sprite_Map } from '../Sprites/Sprite_Map';
 import { Game_Battler } from '@/Game/Game_Battler';
 
-import { Window_MapItem } from './../Sprites/Window_MapItem';
-import { Sprite_Damage } from './../Sprites/Sprite_Damage';
-import { Sprite_HealthBar } from './../Sprites/Sprite_HealthBar';
+import { Window_MapItem } from '../Sprites/Window_MapItem';
+import { Sprite_Damage } from '../Sprites/Sprite_Damage';
+import { Sprite_HealthBar } from '../Sprites/Sprite_HealthBar';
 import Keyboard from 'pixi.js-keyboard';
 import { Scene } from './scene';
 import { Sprite_Seto } from '../Sprites/Sprite_Seto';

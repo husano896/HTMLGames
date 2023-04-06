@@ -1,5 +1,7 @@
 
-import { TextStyle } from 'pixi.js';
+import { Container, TextStyle } from 'pixi.js';
+import $game from './main';
+import { Scene } from './Scenes/scene';
 
 export const GameConsts = {
     width: 800,
@@ -280,4 +282,38 @@ export const $TextStyle = {
         fontSize: 14,
         fill: ['#ffffff'], // gradient
     }),
+    Dialog_MapConfirm_Title: new TextStyle({
+        align: 'left',
+        fontFamily: '微軟正黑體',
+        fontSize: 24,
+        fill: ['#ffffff'], // gradient
+    }),
+    Dialog_MapConfirm_Description: new TextStyle({
+        align: 'left',
+        fontFamily: '微軟正黑體',
+        fontSize: 16,
+        fill: ['#ffffff'], // gradient
+        wordWrap: true,
+        wordWrapWidth: 320,
+    }),
+    Sprite_Loading: new TextStyle({
+        align: 'center',
+        fontFamily: 'Sitka Text',
+        fontStyle: 'italic',
+        fontSize: 48,
+        fill: ['#AAAAAA'], // gradient
+        stroke: '#000000',
+        strokeThickness: 4,
+        dropShadowDistance: 4,
+        dropShadowColor: '#4444FF',
+        dropShadowAngle: 180,
+    }),
 }
+
+
+export async function ChangeScene<T extends Scene>(newScene: new () => T) {
+    $game.stage.children.forEach((c) => c.destroy({ children: true }));
+    $game.stage.removeChildren();
+    $game.stage.addChild(new newScene());
+}
+
