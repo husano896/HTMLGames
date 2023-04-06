@@ -27,18 +27,24 @@ export class Dialog_MapConfirm extends Window_Responsive implements IResizeable 
         this.titleText.y = 8;
 
         // 內文
-        this.descriptionText = new Text('', $TextStyle.Dialog_MapConfirm_Description)
+        this.descriptionText = new Text('', $TextStyle.Dialog_MapConfirm_Description,)
         this.descriptionText.x = 8;
         this.descriptionText.y = this.titleText.y + Number($TextStyle.Dialog_MapConfirm_Title.fontSize) + 8
 
         // 動作按紐
-        this.OKButton = new Sprite_Button('OK')
+        this.OKButton = new Sprite_Button('OK', null, {
+            width: 48,
+            height: 32,
+        })
         this.OKButton.interactive = true;
         this.OKButton.on('pointerdown', () => {
             this.Close(true);
 
         })
-        this.CancelButton = new Sprite_Button('Cancel')
+        this.CancelButton = new Sprite_Button('Cancel', null, {
+            width: 48,
+            height: 32,
+        })
         this.CancelButton.interactive = true;
         this.CancelButton.on('pointerdown', () => {
             this.Close();

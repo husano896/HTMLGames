@@ -13,7 +13,7 @@ import { Scene } from "./scene";
 import { IResizeable } from "../Interfaces/IResizeable";
 import $game from "@/main";
 import $R from "../resources";
-import { $TextStyle } from "@/constants";
+import { $TextStyle, ChangeScene } from "@/constants";
 import { sound } from "@pixi/sound";
 
 /** 在家 */
@@ -170,12 +170,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
         return;
       }
 
-      const newScene = await import("@/Scenes/Scene_MobileMap").then(
-        (m) => m.Scene_MobileMap
-      );
-      $game.stage.children.forEach((c) => c.destroy({ children: true }));
-      $game.stage.removeChildren();
-      $game.stage.addChild(new newScene());
+      await ChangeScene((await import("@/Scenes/Scene_MobileMap")).default)
     };
 
     this.homeUIContainer.OpenWorkButton.callback = () => {
@@ -317,3 +312,4 @@ export class Scene_Mobile extends Scene implements IResizeable {
   }
 
 }
+export default Scene_Mobile;

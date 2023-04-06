@@ -15,6 +15,7 @@ import _ from "lodash-es";
 import { $TextStyle } from "@/constants";
 import { IMapMobile } from "@/Data/MapMobile";
 import Maps from "@/Data/MapMobile";
+import { ChangeScene } from '../constants';
 
 /** 地圖位置Sprite */
 class Sprite_MapMobile extends Sprite {
@@ -120,13 +121,8 @@ export class Scene_MobileMap extends Scene {
 
             // 回家 <3
             if (map.home) {
-              const newScene = await import("@/Scenes/Scene_Mobile").then(
-                (m) => m.Scene_Mobile
-              );
 
-              $game.stage.children.forEach((c) => c.destroy({ children: true }));
-              $game.stage.removeChildren();
-              $game.stage.addChild(new newScene());
+              await ChangeScene((await import("@/Scenes/Scene_Mobile")).default)
               return;
             }
 
@@ -138,18 +134,12 @@ export class Scene_MobileMap extends Scene {
     }
 
     // 回家按鈕
-    this.backButton = new Sprite_Button("回家", null, {
+    this.backButton = new Sprite_Button("回家", undefined, {
       width: 64,
       height: 64,
     });
     this.backButton.callback = async () => {
-      const newScene = await import("@/Scenes/Scene_Mobile").then(
-        (m) => m.Scene_Mobile
-      );
-
-      $game.stage.children.forEach((c) => c.destroy({ children: true }));
-      $game.stage.removeChildren();
-      $game.stage.addChild(new newScene());
+      await ChangeScene((await import("@/Scenes/Scene_Mobile")).default)
     };
     this.addChild(this.backButton);
 
@@ -310,3 +300,4 @@ export class Scene_MobileMap extends Scene {
     this.bg.y = 0;
   }
 }
+export default Scene_MobileMap;

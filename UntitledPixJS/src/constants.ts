@@ -1,6 +1,7 @@
 
-import { TextStyle } from 'pixi.js';
+import { Container, TextStyle } from 'pixi.js';
 import $game from './main';
+import { Scene } from './Scenes/scene';
 
 export const GameConsts = {
     width: 800,
@@ -310,13 +311,9 @@ export const $TextStyle = {
 }
 
 
-/*
-export async function ChangeScene(sceneName: string) {
-    const newScene = await import(sceneName)
-
+export async function ChangeScene<T extends Scene>(newScene: new () => T) {
     $game.stage.children.forEach((c) => c.destroy({ children: true }));
     $game.stage.removeChildren();
     $game.stage.addChild(new newScene());
 }
 
-*/
