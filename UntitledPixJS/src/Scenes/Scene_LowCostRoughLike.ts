@@ -8,6 +8,73 @@ import {
   TextStyle,
 } from "pixi.js";
 
+/** 用來處理遊戲難度的集合處 */
+class Leveling {
+  /// 玩家側
+  /** 玩家的移動速度 */
+  static playerMoveSpeed(scene: Scene_LowCostRoughLike) {
+    return Math.min(16, (scene.currentTime - scene.startTime) / 60000 + 4);
+  }
+  /** 子彈的冷卻時間 */
+  static shootCoolDown(scene: Scene_LowCostRoughLike) {
+    return Math.max(1, 10 - (scene.currentTime - scene.startTime) / 30000);
+  }
+  /// 敵人側
+  /** 敵人的攻擊力 */
+  static enemyAttackPower(scene: Scene_LowCostRoughLike) {
+    return (scene.currentTime - scene.startTime) / 60000;
+  }
+
+  /** 敵人移動速度 */
+  static enemyMoveSpeed(scene: Scene_LowCostRoughLike) {
+    return Math.min(8, (scene.currentTime - scene.startTime) / 60000 + 1);
+  }
+
+  /** 生怪的冷卻時間 */
+  static spawnCoolDown(scene: Scene_LowCostRoughLike) {
+    return Math.max(10, 20 - (scene.currentTime - scene.startTime) / 60000);
+  }
+
+  /** 生怪的數量 */
+  static spawnCount(scene: Scene_LowCostRoughLike) {
+    return Math.floor(
+      Math.random() * ((scene.currentTime - scene.startTime) / 60000) +
+        1 +
+        (scene.currentTime - scene.startTime) / 180000
+    );
+  }
+
+  /** 玩家評分 */
+  static rank(scene: Scene_LowCostRoughLike) {
+    const aliveTime = (scene.currentTime - scene.startTime) / 1000;
+    if (aliveTime > 240) {
+      return "S";
+    }
+    if (aliveTime > 210) {
+      return "AAA";
+    }
+    if (aliveTime > 180) {
+      return "AA";
+    }
+    if (aliveTime > 150) {
+      return "A";
+    }
+    if (aliveTime > 120) {
+      return "B";
+    }
+    if (aliveTime > 90) {
+      return "C";
+    }
+    if (aliveTime > 60) {
+      return "D";
+    }
+    if (aliveTime > 30) {
+      return "E";
+    }
+    // 實測2000血放死可以撐90秒
+    return "F";
+  }
+}
 /** 文字風格 */
 const fontStyle = new TextStyle({
   align: "center",
@@ -144,8 +211,8 @@ export class Scene_LowCostRoughLike extends Container {
     // 開始玩的時間
     this.startTime = new Date().getTime();
 
-    // 設定為2000滴血
-    this.Life = 2000;
+    // 設定為1000滴血
+    this.Life = 1000;
 
     // 顯示玩家
     this.player.visible = true;
@@ -173,7 +240,7 @@ export class Scene_LowCostRoughLike extends Container {
     this.text_health.y = this.text_playTime.y + this.text_playTime.height + 8;
 
     this.text_gameover.x = $game.screen.width / 2;
-    this.text_gameover.y = $game.screen.height / 4;
+    this.text_gameover.y = ($game.screen.height - this.text_gameover.height)/ 2;
 
     // GG惹
     if (this.life <= 0) {
@@ -199,10 +266,7 @@ export class Scene_LowCostRoughLike extends Container {
       // 生子彈
       this.spawnPlayerAmmo();
       // 然後設定子彈的冷卻時間
-      this.shootCoolDown += Math.max(
-        0.5,
-        3 - (this.currentTime - this.startTime) / 100000
-      );
+      this.shootCoolDown += Leveling.shootCoolDown(this);
     }
 
     // 敵人操作
@@ -220,16 +284,13 @@ export class Scene_LowCostRoughLike extends Container {
 
     // 如果生怪物的冷卻時間已到
     if (this.spawnCoolDown < 0) {
-      const spawnCount = Math.floor(Math.random() * 5 + 1);
+      const spawnCount = Leveling.spawnCount(this);
       // 生隨機數量的怪
       for (let i = 0; i < spawnCount; i++) {
         this.spawnEnemy();
       }
       // 然後設定生怪的冷卻時間
-      this.spawnCoolDown += Math.max(
-        10,
-        20 - (this.currentTime - this.startTime) / 100000
-      );
+      this.spawnCoolDown += Leveling.spawnCoolDown(this);
     }
   }
   /**
@@ -309,10 +370,7 @@ export class Scene_LowCostRoughLike extends Container {
   /** 玩家思考 */
   playerThonk(delta: number) {
     // 玩家移動速度也隨著時間增高
-    const playMoveSpeed = Math.min(
-      16,
-      (this.currentTime - this.startTime) / 100000 + 4
-    );
+    const playMoveSpeed = Leveling.playerMoveSpeed(this);
 
     // 左
     if (Keyboard.isKeyDown("KeyA") || Keyboard.isKeyDown("ArrowLeft")) {
@@ -347,19 +405,22 @@ export class Scene_LowCostRoughLike extends Container {
   /** 敵人思考 */
   enemyThonk(enemy: Container, delta: number) {
     // 敵人移動速度隨遊戲時間增高
-    const enemyMoveSpeed = Math.min(
-      8,
-      (this.currentTime - this.startTime) / 100000 + 1
-    );
+    const enemyMoveSpeed = Leveling.enemyMoveSpeed(this);
 
     // 朝玩家移動
-    enemy.x += enemyMoveSpeed * (this.player.x > enemy.x ? 1 : -1) * delta;
-    enemy.y += enemyMoveSpeed * (this.player.y > enemy.y ? 1 : -1) * delta;
+    enemy.x +=
+      enemyMoveSpeed *
+      (this.player.x + this.player.width / 2 > enemy.x ? 1 : -1) *
+      delta;
+    enemy.y +=
+      enemyMoveSpeed *
+      (this.player.y + this.player.height / 2 > enemy.y ? 1 : -1) *
+      delta;
 
     // 如果玩家和敵人疊在一起了
     if (this.collideCheck(this.player, enemy)) {
       // 扣玩家的血
-      this.Life -= delta;
+      this.Life -= delta * Leveling.enemyAttackPower(this);
     }
   }
 
@@ -402,7 +463,9 @@ export class Scene_LowCostRoughLike extends Container {
       // 不顯示玩家
       this.player.visible = false;
       this.text_gameover.visible = true;
-      this.text_gameover.text = "GAME OVER\nClick to retry";
+      this.text_gameover.text = `GAME OVER\n\nRank: ${Leveling.rank(this)}\n${
+        this.text_playTime.text
+      }\n\nClick to retry`;
       return;
     }
   }
