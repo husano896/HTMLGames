@@ -22,7 +22,7 @@ const HomeEvents: Array<IHomeEvent> = [
     {
         condition: () => Game_Global_Mobile.triggerNextProgress && Game_Global_Mobile.progress === 3,
         payload: async (interpreter) => {
-            interpreter.AddText(`目前在這個世界搭的還喜歡嗎？希望你有把飛飛照顧好！`)
+            interpreter.AddText(`目前在這個世界搭的還喜歡嗎？\n希望你有把飛飛照顧好！`)
             Game_Global_Mobile.triggerNextProgress = false;
         }
     },
@@ -32,10 +32,8 @@ const HomeEvents: Array<IHomeEvent> = [
         payload: async (interpreter) => {
             sound.stopAll();
             sound.play(AudioKeys.BGM_Kaze2_Midnight, { loop: true });
-            interpreter.AddText(`吶吶，是說你有聽過「龍死病」嗎？`);
-            interpreter.AddText(`聽說在別的世界是跟人類的癌症一樣可怕的病，`);
-            interpreter.AddText(`症狀像呼吸困難一樣越來越難呼吸，到最後會窒息而死。`);
-            interpreter.AddText(`在當時帶走了很多像我一樣的龍族同伴`);
+            interpreter.AddText(`吶吶，是說你有聽過「龍死病」嗎？\n聽說在別的世界是跟人類的癌症一樣可怕的病，`);
+            interpreter.AddText(`症狀像呼吸困難一樣越來越難呼吸，到最後會窒息而死。\n在當時帶走了很多像我一樣的龍族同伴。`);
             interpreter.AddText(`不知道在這個世界會不會有一樣的病呢？`);
             Game_Global_Mobile.triggerNextProgress = false;
         }
@@ -47,8 +45,7 @@ const HomeEvents: Array<IHomeEvent> = [
             sound.stopAll();
             sound.play(AudioKeys.BGM_Kaze2_Sakura, { loop: true });
             interpreter.AddText(`吶吶，後來關於「龍死病」，我後來又找到了新的資訊！`);
-            interpreter.AddText(`聽說後來憑藉著龍族跟人類的羈絆，一起尋找到了根治方法，`);
-            interpreter.AddText(`而且當時逃離龍死病的龍族還成為了醫生！`);
+            interpreter.AddText(`聽說後來憑藉著龍族跟人類的羈絆，\n一起尋找到了根治方法，\n而且當時逃離龍死病的龍族還成為了醫生！`);
             interpreter.AddText(`只是後來，雖然方法流傳下來了，但龍醫就像傳說一樣跟著消失了`);
             interpreter.AddText(`希望我們也可以跟他們一樣厲害！`);
             Game_Global_Mobile.triggerNextProgress = false;
@@ -63,10 +60,10 @@ const HomeEvents: Array<IHomeEvent> = [
             sound.play(AudioKeys.BGM_Kaze2_Midnight, { loop: true });
             if (Game_Global_Mobile.cycle === 0) {
                 // 一周目
-                interpreter.AddText(`嗚啊...看起來時間快到了...不知道會發生什麼事呢？`)
+                interpreter.AddText(`嗚啊...看起來時間快到了...\n不知道會發生什麼事呢？`)
             } else {
                 // 二周目以上
-                interpreter.AddText(`時間又快到了呢，這次你會想做出什麼選擇呢？`);
+                interpreter.AddText(`時間又快到了呢，\n這次你會想做出什麼選擇呢？`);
 
             }
             Game_Global_Mobile.triggerNextProgress = false;
@@ -88,19 +85,19 @@ const HomeEvents: Array<IHomeEvent> = [
                 interpreter.AddText(`啊啊...時間到了呢...來吧！不管你的選擇是什麼！`);
             }
 
-            interpreter.AddText(`時間沙漏正在發光著！要接受他所發出的光芒嗎？`);
+            interpreter.AddText(`時間沙漏正在發光著！\n要接受他所發出的光芒嗎？`);
 
             await interpreter.WaitForTextComplete();
             // 選是的場合 - 周目+1
             if (confirm('是否要接受時間沙漏的光芒？')) {
-                interpreter.AddText(`命運的時鐘完成了他的循環，同樣的歷史即將再度上演...`);
+                interpreter.AddText(`命運的時鐘完成了他的循環，\n同樣的歷史即將再度上演...`);
                 await interpreter.WaitForTextComplete();
                 Game_Global_Mobile.NextCycle();
 
             } else {
                 // 事實上, 打破時間沙漏，影響的範圍只有打破他的人
-                interpreter.AddText(`打破時間沙漏後，迎來的是充滿不確定性的時間線。`);
-                interpreter.AddText(`這次，沒有回頭路了，希望你在新的時間線能待得順利！`);
+                interpreter.AddText(`打破時間沙漏後，\n迎來的是充滿不確定性的時間線。`);
+                interpreter.AddText(`這次，沒有回頭路了，\n希望你在新的時間線能待得順利！`);
                 await interpreter.WaitForTextComplete();
                 Game_Global_Mobile.NextCycle(true);
             }
