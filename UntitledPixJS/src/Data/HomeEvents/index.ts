@@ -58,6 +58,9 @@ const HomeEvents: Array<IHomeEvent> = [
     {
         condition: () => Game_Global_Mobile.triggerNextProgress && Game_Global_Mobile.progress === 119,
         payload: async (interpreter) => {
+
+            sound.stopAll();
+            sound.play(AudioKeys.BGM_Kaze2_Midnight, { loop: true });
             if (Game_Global_Mobile.cycle === 0) {
                 // 一周目
                 interpreter.AddText(`嗚啊...看起來時間快到了...不知道會發生什麼事呢？`)
@@ -73,6 +76,9 @@ const HomeEvents: Array<IHomeEvent> = [
     {
         condition: () => Game_Global_Mobile.triggerNextProgress && Game_Global_Mobile.progress === 120,
         payload: async (interpreter) => {
+
+            sound.stopAll();
+            sound.play(AudioKeys.BGM_Kaze2_Sakura, { loop: true });
             // TODO: 友好度判定、時間沙漏持有判定、周目判定
             if (Game_Global_Mobile.cycle === 0) {
                 // 一周目
@@ -84,15 +90,18 @@ const HomeEvents: Array<IHomeEvent> = [
 
             interpreter.AddText(`時間沙漏正在發光著！要接受他所發出的光芒嗎？`);
 
+            await interpreter.WaitForTextComplete();
             // 選是的場合 - 周目+1
             if (confirm('是否要接受時間沙漏的光芒？')) {
                 interpreter.AddText(`命運的時鐘完成了他的循環，同樣的歷史即將再度上演...`);
+                await interpreter.WaitForTextComplete();
                 Game_Global_Mobile.NextCycle();
 
             } else {
                 // 事實上, 打破時間沙漏，影響的範圍只有打破他的人
-                interpreter.AddText(`打破時間沙漏後，迎來的是充滿不確定性的時間線`);
+                interpreter.AddText(`打破時間沙漏後，迎來的是充滿不確定性的時間線。`);
                 interpreter.AddText(`這次，沒有回頭路了，希望你在新的時間線能待得順利！`);
+                await interpreter.WaitForTextComplete();
                 Game_Global_Mobile.NextCycle(true);
             }
             Game_Global_Mobile.triggerNextProgress = false;

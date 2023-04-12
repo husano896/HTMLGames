@@ -11,20 +11,18 @@ const padding = 8;
 /** 金錢視窗 */
 export class Window_Gold extends Window_Responsive {
 
+    minHeight: number = 32;
+    minWidth: number = 192;
+    padding: number = 8;
     goldText: Text;
     previousGold?: number = undefined;
     constructor() {
         super();
-        this.bg.width = 256;
-        this.bg.height = 32;
         this.goldText = new Text('', $TextStyle.Window_Gold)
+        this.goldText.x = this.padding;
+        this.goldText.y = this.padding;
         this.addChild(this.goldText)
         this.onWindowResize();
-
-        this.interactive = true;
-        this.on('pointertap', () => {
-            Game_Global_Mobile.gold++;
-        })
     }
 
     update(delta: number) {

@@ -127,14 +127,22 @@ export class Scene_Mobile extends Scene implements IResizeable {
     this.progressText = new Text("", $TextStyle.Window_Progress);
     this.progressText.interactive = true;
     this.progressText.cursor = "pointer";
-    this.progressText.on("pointertap", () => {
+    this.progressText.on("pointertap", async () => {
       if (this.window_message.typing) {
         return;
       }
 
-      this.window_message.appendText(
-        "進行度, 每次經過一個小時的休息後即會推進."
-      );
+      if (confirm('是否要變更時間?')) {
+        const time = Number(prompt('請輸入要調整到的時間.'))
+        if (time) {
+          this.window_message.appendText(`將時間調整至 ${time}.`);
+          Game_Global_Mobile.setProgress(time);
+          await this.window_message.waitForEmpty();
+          ChangeScene(Scene_Mobile);
+        } else {
+          this.window_message.appendText('未調整時間.');
+        }
+      }
     });
 
     console.log(this);
@@ -317,6 +325,9 @@ export class Scene_Mobile extends Scene implements IResizeable {
   interpreter: IInterpreter = {
     AddText: (text: string) => {
       this.window_message.appendText(text);
+    },
+    WaitForTextComplete: () => {
+      return this.window_message.waitForEmpty()
     }
   }
 }

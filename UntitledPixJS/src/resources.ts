@@ -6,10 +6,10 @@ import { sound } from '@pixi/sound'
 const $R = {
   Audio: {
     jump: 'audio/jump.mp3',
-    confirm: '../shared/Audio/SE/F/ok.wav',
-    cancel: '../shared/Audio/SE/F/cancel.wav',
-    cursor: '../shared/Audio/SE/F/cursor.wav',
-    piano: 'audio/piano.mp3',
+    confirm: {url: '../shared/Audio/SE/F/ok.wav', preload: true},
+    cancel: {url: '../shared/Audio/SE/F/cancel.wav', preload: true},
+    cursor: {url: '../shared/Audio/SE/F/cursor.wav', preload: true},
+    piano: {url: 'audio/piano.mp3', preload: true},
     BGM_Mobile: 'audio/bgm/tamhe05.mp3',
     BGM_MobileMap: 'audio/bgm/tamhe10.mp3',
     BGM_Kaze2_Midnight: 'audio/bgm/midnight.mp3',

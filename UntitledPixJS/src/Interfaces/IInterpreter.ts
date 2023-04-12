@@ -6,4 +6,7 @@ export default interface IInterpreter {
 
     /** 播放音樂 */
     // PlayMusic: (audioName: string) => void
+
+    /** 等待當前文字結束 */
+    WaitForTextComplete: ()=> Promise<void>
 }

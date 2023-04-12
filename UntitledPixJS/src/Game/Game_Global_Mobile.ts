@@ -216,6 +216,11 @@ export class Game_Global_Mobile {
         window.location.reload();
     }
 
+    /** 測試用：時間調整 */
+    static setProgress(value: number): void {
+        this._progress = value;
+        this.triggerNextProgress = true;
+    }
     static ToJSON() {
         return JSON.stringify(Object.fromEntries(Object.entries(this)))
     }
