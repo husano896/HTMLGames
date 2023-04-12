@@ -14,6 +14,9 @@ export class Game_Global_Mobile {
     /** 遊戲進度, 目前預想為 120為終點 */
     private static _progress: number = 0;
 
+    /** 遊戲周回數 */
+    private static _cycle: number = 0;
+
     /** 行動值 */
     private static _energy: number = 24;
 
@@ -79,6 +82,10 @@ export class Game_Global_Mobile {
 
     public static get progress() {
         return this._progress;
+    }
+
+    public static get cycle() {
+        return this._cycle;
     }
 
     public static get energy() {
@@ -193,6 +200,20 @@ export class Game_Global_Mobile {
         }
 
         this.SaveToLocalStorage();
+    }
+
+    /** 前往下個周回！ */
+    static NextCycle(infinite?: boolean) {
+        if (infinite) {
+            // 打破時間沙漏的場合
+            this._progress = 121;
+        } else {
+            this._cycle += 1;
+            this._progress = 0;
+        }
+        this.SaveToLocalStorage();
+        alert('已完成時間循環的處理，期待下次再見到你！')
+        window.location.reload();
     }
 
     static ToJSON() {

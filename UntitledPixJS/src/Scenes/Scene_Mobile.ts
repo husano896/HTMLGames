@@ -1,20 +1,15 @@
-import { Game_Global_Mobile } from "@/Game";
 import { Container, Sprite, Text, IDestroyOptions } from "pixi.js";
-import { Window_HomeStatus } from "./../Sprites/Window_HomeStatus";
-import { Window_HomeInvetory } from "./../Sprites/Window_HomeInvetory";
-import { Window_Gold } from "./../Sprites/Window_Gold";
-import { Sprite_Button } from "./../Sprites/Sprite_Button";
-import { Window_Message } from "./../Sprites/Window_Message";
-import { Sprite_Battery } from "@/Sprites/Sprite_Battery";
-import { Sprite_FlyDragon } from "@/Sprites/Sprite_FlyDragon";
-import { AudioKeys } from "../resources";
-import { Scene } from "./scene";
-
-import { IResizeable } from "../Interfaces/IResizeable";
-import $game from "@/main";
-import $R from "../resources";
-import { $TextStyle, ChangeScene } from "@/constants";
 import { sound } from "@pixi/sound";
+import { Game_Global_Mobile } from "@/Game";
+import { Window_HomeStatus, Window_HomeInvetory, Window_Gold, Window_Message, Sprite_Loading, ShowLoading } from "@/Sprites";
+import { Sprite_Button, Sprite_Battery, Sprite_FlyDragon } from "@/Sprites";
+import { Scene } from "./scene";
+import { IResizeable } from "../Interfaces/IResizeable";
+import { $TextStyle, ChangeScene } from "@/constants";
+import $game from "@/main";
+import $R, { AudioKeys } from "../resources";
+import HomeEvents from '@/Data/HomeEvents'
+import IInterpreter from "@/Interfaces/IInterpreter";
 
 /** 在家 */
 class HomeUIContainer extends Container implements IResizeable {
@@ -169,7 +164,7 @@ export class Scene_Mobile extends Scene implements IResizeable {
       if (this.window_message.typing) {
         return;
       }
-
+      ShowLoading();
       await ChangeScene((await import("@/Scenes/Scene_MobileMap")).default)
     };
 
@@ -177,8 +172,9 @@ export class Scene_Mobile extends Scene implements IResizeable {
       if (this.window_message.typing) {
         return;
       }
-      this.window_message.appendText("工作選單待用, 需消耗2體力");
+      this.window_message.appendText("工作選單待用, 需消耗2體力, 且獲得20金錢");
       Game_Global_Mobile.energy -= 2;
+      Game_Global_Mobile.gold += 20;
     };
 
     this.homeUIContainer.BatterySprite.on("pointertap", () => {
@@ -217,17 +213,15 @@ export class Scene_Mobile extends Scene implements IResizeable {
     );
 
     /** 是否觸發下一個劇情 */
-    this.progressText.text = `Time\n${Game_Global_Mobile.progress}/120`;
-    if (Game_Global_Mobile.triggerNextProgress) {
-      Game_Global_Mobile.triggerNextProgress = false;
-      this.triggerNextProgress();
-    }
-
+    this.progressText.text = `Time\n${Game_Global_Mobile.progress}/${Game_Global_Mobile.progress > 120 ? '∞' : 120}`;
     this.onWindowResize();
     console.log(this);
 
     sound.stopAll();
     sound.play(AudioKeys.BGM_Mobile, { loop: true });
+
+    /** 觸發養成事件 */
+    this.triggerHomeEvents();
   }
   destroy(options?: boolean | IDestroyOptions): void {
     document.removeEventListener(
@@ -257,10 +251,19 @@ export class Scene_Mobile extends Scene implements IResizeable {
     // 龍龍的位置更新
     this.dragon.y = $game.screen.height / 2 + Math.sin(Date.now() / 4096) * 32;
   }
-  triggerNextProgress() {
-    this.window_message.appendText(`目前進度：${Game_Global_Mobile.progress}.`);
-  }
 
+  async triggerHomeEvents() {
+    for (let event of HomeEvents) {
+      if (event.condition()) {
+        // 上方事件還在處理途中時不執行下個事件
+        // 或者只執行一個事件?
+
+        //  return await ...
+        await event.payload(this.interpreter);
+      }
+    }
+    Game_Global_Mobile.triggerNextProgress = false;
+  }
   /** 遊戲視窗變更大小時 */
   onWindowResize() {
     console.log("resize");
@@ -311,5 +314,10 @@ export class Scene_Mobile extends Scene implements IResizeable {
     super.onWindowResize();
   }
 
+  interpreter: IInterpreter = {
+    AddText: (text: string) => {
+      this.window_message.appendText(text);
+    }
+  }
 }
 export default Scene_Mobile;

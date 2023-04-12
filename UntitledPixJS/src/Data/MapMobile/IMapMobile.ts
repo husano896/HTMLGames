@@ -1,3 +1,5 @@
+import IInterpreter from '@/Interfaces/IInterpreter'
+
 /** 地圖資料的格式 */
 export default interface IMapMobile {
   /** 地圖名稱 */
@@ -22,9 +24,9 @@ export default interface IMapMobile {
   events: Array<{
     /** 是否觸發事件, 同時多件事情可觸發時, 以陣列前方的為優先 */
     condition: () => boolean;
-    payload: () => void;
+    payload: (interpreter?: IInterpreter) => void;
   }>;
-  
+
   /** 是否為家 */
   home?: boolean;
 }

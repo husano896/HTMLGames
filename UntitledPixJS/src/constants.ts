@@ -310,7 +310,6 @@ export const $TextStyle = {
     }),
 }
 
-
 export async function ChangeScene<T extends Scene>(newScene: new () => T) {
     $game.stage.children.forEach((c) => c.destroy({ children: true }));
     $game.stage.removeChildren();

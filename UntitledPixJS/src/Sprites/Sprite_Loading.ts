@@ -1,6 +1,6 @@
 import $game from '../main';
 import { $TextStyle } from '../constants';
-import { Container, Text, Graphics } from "pixi.js";
+import { Container, Text, Graphics, FederatedPointerEvent } from "pixi.js";
 import { IResizeable } from '../Interfaces/IResizeable';
 
 export class Sprite_Loading extends Container implements IResizeable {
@@ -28,6 +28,8 @@ export class Sprite_Loading extends Container implements IResizeable {
 
         this.addChild(this.loadingText, this.particles);
         console.log(this);
+        this.interactive = true;
+        this.on('pointerdown', this.onPointerDown)
     }
 
     update(delta: number) {
@@ -48,4 +50,19 @@ export class Sprite_Loading extends Container implements IResizeable {
         this.x = $game.screen.width / 2 - this.width / 2;
         this.y = $game.screen.height / 2 - this.width / 2;
     }
+
+    onPointerDown(ev: FederatedPointerEvent) {
+        //作為最上層把事件全部吃掉
+        ev.stopPropagation();
+        ev.preventDefault();
+    }
+}
+
+export async function ShowLoading() {
+    const loading = new Sprite_Loading();
+    loading.visible = true;
+
+    loading.x = ($game.screen.width - loading.width) / 2;
+    loading.y = ($game.screen.height - loading.height) / 2;
+    $game.stage.addChild(loading);
 }

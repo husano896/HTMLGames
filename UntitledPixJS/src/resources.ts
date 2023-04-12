@@ -12,6 +12,8 @@ const $R = {
     piano: 'audio/piano.mp3',
     BGM_Mobile: 'audio/bgm/tamhe05.mp3',
     BGM_MobileMap: 'audio/bgm/tamhe10.mp3',
+    BGM_Kaze2_Midnight: 'audio/bgm/midnight.mp3',
+    BGM_Kaze2_Sakura: 'audio/bgm/tamsp13.mp3',
   },
   Image: {
     bg: 'imgs/bg.jpg',
@@ -47,8 +49,9 @@ export enum AudioKeys {
   cursor = 'cursor',
   piano = 'piano',
   BGM_Mobile = 'BGM_Mobile',
-  BGM_MobileMap = 'BGM_MobileMap'
-  
+  BGM_MobileMap = 'BGM_MobileMap',
+  BGM_Kaze2_Midnight = 'BGM_Kaze2_Midnight',
+  BGM_Kaze2_Sakura = 'BGM_Kaze2_Sakura'
 }
 
 export const onResourceReady = new Promise(async (resolve, reject) => {

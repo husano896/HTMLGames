@@ -9,7 +9,7 @@ import {
 } from "pixi.js";
 import { Scene } from "./scene";
 import $R, { AudioKeys } from "../resources";
-import { Sprite_Button, Sprite_Loading } from "../Sprites";
+import { ShowLoading, Sprite_Button, Sprite_Loading } from "../Sprites";
 import { sound } from "@pixi/sound";
 import _ from "lodash-es";
 import { $TextStyle } from "@/constants";
@@ -121,7 +121,6 @@ export class Scene_MobileMap extends Scene {
 
             // 回家 <3
             if (map.home) {
-
               await ChangeScene((await import("@/Scenes/Scene_Mobile")).default)
               return;
             }
@@ -139,15 +138,10 @@ export class Scene_MobileMap extends Scene {
       height: 64,
     });
     this.backButton.callback = async () => {
+      ShowLoading();
       await ChangeScene((await import("@/Scenes/Scene_Mobile")).default)
     };
     this.addChild(this.backButton);
-
-    // 讀取指示器
-    this.sprite_loading = new Sprite_Loading();
-    this.sprite_loading.visible = false;
-
-    this.addChild(this.sprite_loading);
 
     // Dialog
     this.dialog_MapConfirm = new Dialog_MapConfirm()
