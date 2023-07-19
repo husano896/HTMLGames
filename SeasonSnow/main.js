@@ -235,7 +235,7 @@ function blockWrong() {
 function addDrug(resultEl) {
     const seasonSnowEl = document.createElement('div');
     seasonSnowEl.className = 'season-snow'
-    seasonSnowEl.addEventListener('click', () => {
+    seasonSnowEl.addEventListener('dblclick', () => {
         seasonSnowEl.remove();
     })
     const highLevelDeerMeatContainer = document.createElement('div')
