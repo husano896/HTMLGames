@@ -1,0 +1,113 @@
+:root {
+    --tempo-1beat: calc(1s * 60 / 125);
+    --tempo-4beat: calc(4s * 60 / 125);
+}
+
+body {
+    width: 100dvw;
+    height: 100dvh;
+    background: gray;
+    overflow: hidden;
+    margin: 0;
+}
+
+div.start {
+    background: green;
+    font-size: large;
+    color: white;
+}
+
+div.wrong {
+    background: black;
+}
+
+div.wrong:hover {
+    background: darkred;
+}
+
+div.goal {
+    background: lightgreen;
+}
+
+div.goal:hover {
+    background: green;
+}
+
+div.block {
+    position: absolute;
+}
+
+div.result {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5dvh;
+    background: rgba(255, 255, 255, 0.25);
+    z-index: 999;
+}
+
+div.season-snow {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(0deg, #c00 0%, #0c0 50%, #00c 100%);
+    animation: var(--tempo-4beat) bg-rainbow-vomit infinite ease-out
+}
+
+div.season-snow img.l {
+    width: 15%;
+    animation: var(--tempo-1beat) img-beat infinite ease-out
+}
+
+div.season-snow img.r {
+    width: 15%;
+    animation: var(--tempo-1beat) img-beat2 infinite ease-out
+}
+
+@keyframes bg-rainbow-vomit {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+
+    to {
+        filter: hue-rotate(360deg);
+    }
+}
+
+@keyframes img-beat {
+    0% {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(4);
+    }
+}
+
+@keyframes img-beat2 {
+    0% {
+        transform: rotateY(180deg) scale(1);
+    }
+
+    to {
+        transform: rotateY(180deg) scale(4);
+    }
+}
+
+@keyframes disappear {
+    0% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}

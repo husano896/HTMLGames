@@ -17,3 +17,9 @@ https://husano896.github.io/HTMLGames/UntitledPixJS/
 https://husano896.github.io/HTMLGames/UntitledPixJS/?game=eviat
 
 https://husano896.github.io/HTMLGames/UntitledPixJS/?game=map
+
+# 養成模擬
+
+已搬移至
+
+https://xFly-Dragon.web.app/

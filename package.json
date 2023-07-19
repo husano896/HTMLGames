@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "electron-s": "electron .",
-    "electron-b": "electron-packager . xFly-HTMLGames"
+    "electron-b": "electron-packager . xFly-HTMLGames",
+    "serve": "npx http-server . -o / -c 1"
   },
   "repository": {
     "type": "git",

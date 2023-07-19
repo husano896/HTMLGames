@@ -1,3 +1,4 @@
+import { ChangeScene } from '@/constants';
 import IMapMobile from './IMapMobile';
 
 const map: IMapMobile = {
@@ -9,8 +10,8 @@ const map: IMapMobile = {
     events: [
         {
             condition: () => true,
-            payload: () => {
-
+            payload: async () => {
+                await ChangeScene((await import("@/Scenes/Scene_Battle")).default)
             }
         }
     ],

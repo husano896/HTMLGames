@@ -127,6 +127,11 @@ export class Scene_MobileMap extends Scene {
 
             // 前往下個地點！
             this.sprite_loading.visible = true;
+            map.events.forEach(e=>{
+              if (e.condition()) {
+                e.payload()
+              }
+            })
           })
       })
       this.bg.addChild(spr);
