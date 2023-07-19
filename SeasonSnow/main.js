@@ -141,7 +141,7 @@ const stages = [
         },
         {
             x: 47.5,
-            y: 0,
+            y: 5,
             w: 5,
             h: 5,
             goal: true
