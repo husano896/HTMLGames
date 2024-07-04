@@ -1,4 +1,5 @@
 const stageEl = document.querySelector('div.stage')
+const musicEl = document.querySelector('audio')
 let stage = 0;
 let start = false;
 const stages = [
@@ -156,24 +157,36 @@ const stages = [
     ]
 ]
 
+/**
+ * 前往關卡
+ * @param {number} stage 
+ */
 function goToStage(stage) {
+    // 停止已有的音樂播放
     stopMusic();
+    // 消除已開始標誌
     start = false;
+    // 移除過關element
     const resultEl = document.querySelectorAll('div.result')
     resultEl.forEach(e => e.remove())
+    // 生成地圖物件
     for (let b of stages[stage]) {
         const blockEl = document.createElement('div');
         blockEl.classList.add('block');
+        // class設定
         if (b.start) {
             blockEl.classList.add('start');
         } else {
             blockEl.classList.add(b.goal ? 'goal' : 'wrong');
         }
+        // 位置與大小設定
         blockEl.style.width = `${b.w}%`;
         blockEl.style.height = `${b.h}%`;
         blockEl.style.left = `${b.x}%`;
         blockEl.style.top = `${b.y}%`;
+        // 起點終點事件設定
         if (b.start) {
+            blockEl.style.textAlign = 'center'
             blockEl.innerText = '按我開始'
             blockEl.addEventListener('click', () => {
                 start = true;
@@ -189,6 +202,7 @@ function goToStage(stage) {
     console.log('關卡方塊', stageEl.children)
 }
 
+/** 摸到終點惹 */
 function blockGoal() {
     if (!start) {
         return;
@@ -211,6 +225,7 @@ function blockGoal() {
     resultEl.appendChild(retryButton);
     document.body.appendChild(resultEl)
 }
+/** 摸到黑黑方塊了 */
 function blockWrong() {
     if (!start) {
         return;
@@ -233,15 +248,21 @@ function blockWrong() {
 }
 
 function addDrug(resultEl) {
+    // 滿版季雪div
     const seasonSnowEl = document.createElement('div');
     seasonSnowEl.className = 'season-snow'
+
+    // 點兩下結束迷因
     seasonSnowEl.addEventListener('dblclick', () => {
         seasonSnowEl.remove();
     })
+
+    // 橫向的季雪圖片
     const highLevelDeerMeatContainer = document.createElement('div')
     highLevelDeerMeatContainer.style.display = 'flex'
     highLevelDeerMeatContainer.style.flexDirection = 'row'
     highLevelDeerMeatContainer.style.justifyContent = 'center'
+
     const left1 = document.createElement('img')
     left1.className = "l"
     left1.src = "imgs/sticker.webp"
@@ -259,21 +280,36 @@ function addDrug(resultEl) {
     highLevelDeerMeatContainer.appendChild(right1);
     highLevelDeerMeatContainer.appendChild(right2);
     seasonSnowEl.appendChild(highLevelDeerMeatContainer);
+
+    // 將
     resultEl.appendChild(seasonSnowEl);
 }
 
+/** TODO: 做更進階的迷因動畫 */
 function update() {
 
 }
 
 function playMusic() {
-    const music = document.querySelector('audio')
-    music.currentTime = 0;
-    music.play()
-}
-function stopMusic() {
-    const music = document.querySelector('audio')
-    music.pause();
+    musicEl.currentTime = 0;
+    musicEl.play()
 }
 
-goToStage(0) 
+/**
+ * 停止音樂
+ */
+function stopMusic() {
+    musicEl.pause();
+}
+
+/**
+ * 阻擋事件
+ * @param {Event} ev 
+ */
+function blockEvent(ev) {
+    ev.preventDefault()
+}
+
+(['contextmenu']).forEach(eventName => document.body.addEventListener('contextmenu', blockEvent))
+
+goToStage(0)

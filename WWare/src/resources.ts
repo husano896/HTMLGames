@@ -3,7 +3,6 @@ import $game from './game';
 
 const $R = {
   Audio: {
-    // music: new Howl({ src: 'audio/opium_and_purple_haze_dwatt.mp3' }),
     // tick: new Howl({ src: 'audio/tick.wav' })
     Success: new Howl({ src: 'audio/decision40.mp3' }),
     Fail: new Howl({ src: 'audio/stupid3.mp3' }),
@@ -11,6 +10,14 @@ const $R = {
     // 逃跑嘎嗚吼 失敗效果音
     anWolfFail: new Howl({ src: 'audio/ah.mp3' }),
     anWolfWow: new Howl({ src: 'audio/wow.mp3' }),
+
+    ME_Success: new Howl({ src: 'audio/success.mp3' }),
+    ME_Fail: new Howl({ src: 'audio/fail.mp3' }),
+    ME_Midgame: new Howl({ src: 'audio/midgame.mp3' }),
+    ME_Gameover: new Howl({ src: 'audio/gameover.mp3' }),
+    ME_result: new Howl({ src: 'audio/result.mp3' }),
+    ME_game1: new Howl({ src: 'audio/game1.mp3' }),
+    ME_game2: new Howl({ src: 'audio/game2.mp3' })
     //https://www.youtube.com/watch?v=PJ_QgB7bAnM
   },
   Image: {
@@ -22,6 +29,8 @@ const $R = {
     timerBomb: 'imgs/timerBomb.webp',
     // 廁所磁磚
     tile: 'imgs/tile.png',
+    // 生命
+    life: 'imgs/life.png',
     // 電梯背景
     lobby: 'imgs/lobby.png',
     // 旋轉寶貝夢夢

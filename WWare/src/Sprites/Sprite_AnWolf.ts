@@ -8,9 +8,6 @@ export class Sprite_AnWolf extends PIXI.Sprite {
     caught: boolean;
     caughtDelta: number;
 
-    // 夢夢的旋轉速度
-    // 每秒180度
-    rotateSpeed = 0.05;
     constructor() {
         // 一開始時是正常狀態
         super(PIXI.Texture.from($R.Image.anWolf));
@@ -26,14 +23,14 @@ export class Sprite_AnWolf extends PIXI.Sprite {
         }
         // 被抓到了之後開始超自然震動
         this.caughtDelta += delta;
-        if (this.caughtDelta > 60) {
+        if (this.caughtDelta > 1000) {
             if (this.texture !== this.texRainbow) {
                 // 震動完彩虹
                 this.texture = this.texRainbow;
                 $R.Audio.anWolfWow.play();
             }
         } else {
-            this.y += this.caughtDelta %2 > 1 ? 4 : -4;
+            this.y += this.caughtDelta %100 > 50 ? 4 : -4;
         }
     }
 

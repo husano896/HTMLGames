@@ -4,11 +4,12 @@ import { EClearMethod, MiniGameBase } from './MiniGameBase';
 import * as PIXI from 'pixi.js';
 import { Graphics } from 'pixi.js';
 import { GameConsts } from '../../constants';
+
 export class Scene_RotateEviat extends MiniGameBase {
     // 過關方式：達成目標
     clearMethod = EClearMethod.TARGET;
     // 小遊戲時間長度
-    timeLength = 300;
+    timeLength = 4000;
     // 目標文字
     targetText = '對準夢夢的臉！';
 
@@ -20,7 +21,7 @@ export class Scene_RotateEviat extends MiniGameBase {
         Bg.beginFill(0xBBBBBB);
         Bg.drawRect(0, 0, GameConsts.WIDTH, GameConsts.HEIGHT);
         Bg.endFill();
-        Bg.alpha = 0.5;
+        Bg.alpha = 0.9;
         this.addChild(Bg);
 
         this.sprEviat = new Sprite_Eviat();

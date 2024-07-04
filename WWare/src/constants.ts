@@ -27,12 +27,35 @@ export const $TextStyle = {
         dropShadow: true,
         lineJoin: 'round',
     }),
+    GameOverText: new PIXI.TextStyle({
+        align: 'center',
+        fontFamily: '微軟正黑體',
+        fontSize: 80,
+        fontWeight: 'bold',
+        fill: ['#333333', '#ffffff'], // gradient
+        stroke: '#454545',
+        strokeThickness: 4,
+        dropShadow: true,
+        lineJoin: 'round',
+    }),
     ScoreText: new PIXI.TextStyle({
         align: 'center',
         fontFamily: 'Arial Black',
         fontSize: 72,
         fontWeight: 'bold',
         fill: '#ffffff', // gradient
+        stroke: '#000000',
+        strokeThickness: 8,
+        padding: 8, 
+        dropShadow: true,
+        lineJoin: 'round',
+    }),
+    ScoreResultText: new PIXI.TextStyle({
+        align: 'center',
+        fontFamily: 'Arial Black',
+        fontSize: 120,
+        fontWeight: 'bold',
+        fill: '#FFFF66', // gradient
         stroke: '#000000',
         strokeThickness: 8,
         padding: 8, 

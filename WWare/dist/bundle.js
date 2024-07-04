@@ -7,105 +7,34 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Scene_Ready": () => (/* binding */ Scene_Ready)
+/* harmony export */   "Scene_Title": () => (/* binding */ Scene_Title)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(52);
-/* harmony import */ var _Sprites_Sprite_HintText__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(53);
-/* harmony import */ var _scene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(54);
-/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(55);
-/* harmony import */ var _MiniGames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(59);
+/* harmony import */ var _scene__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(53);
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(54);
 
 
 
 
-
-
-const ObjectzIndex = {
-    // Index越小越上層
-    ScoreText: 0,
-    HintText: 999,
-    MiniGame: 2,
-};
-class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_3__.Scene {
+class Scene_Title extends _scene__WEBPACK_IMPORTED_MODULE_2__.Scene {
+    // 讀取資源區
     constructor() {
         super();
-        this.score = 0;
-        // 中場休息剩餘時間
-        this.restTimeLeft = 60;
-        // 電梯背景
-        this.lobbySpr = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_4__["default"].Image.lobby));
-        this.addChild(this.lobbySpr);
-        // 關卡指示文字
-        this.hintTextSpr = new _Sprites_Sprite_HintText__WEBPACK_IMPORTED_MODULE_2__.Sprite_HintText('拿到衛生紙！');
-        this.hintTextSpr.zIndex = ObjectzIndex.HintText;
-        // this.addChild(this.hintTextSpr);
-        this.scoreTextSpr = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text(this.score.toString().padStart(3, '0'), _constants__WEBPACK_IMPORTED_MODULE_1__.$TextStyle.ScoreText);
-        this.scoreTextSpr.anchor.set(0.5, 0.5);
-        this.scoreTextSpr.x = _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.WIDTH / 2;
-        this.scoreTextSpr.y = _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.HEIGHT / 10;
-        this.scoreTextSpr.zIndex = ObjectzIndex.ScoreText;
-        this.addChild(this.scoreTextSpr);
-        //
-        this.restTimeLeft = 60;
-        this.lives = 4;
-        // 
-        this.setNextGame();
+        const text = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text('Press to start', _constants__WEBPACK_IMPORTED_MODULE_1__.$TextStyle.GameText);
+        text.setTransform((_game__WEBPACK_IMPORTED_MODULE_3__["default"].screen.width - text.width) / 2, (_game__WEBPACK_IMPORTED_MODULE_3__["default"].screen.height - text.height) / 2);
+        this.on('pointerdown', this.onMouseDown.bind(this));
+        this.interactive = true;
+        this.addChild(text);
     }
     update(delta) {
-        this.hintTextSpr.update(delta);
-        // 目前分數文字
-        this.scoreTextSpr.text = this.score.toString().padStart(3, '0') + `(${this.lives})`;
-        if (this.currentGame && this.miniGameTimeLeft > 0) {
-            this.miniGameTimeLeft -= delta;
-            this.currentGame.update(delta);
-            // 小遊戲進行中
-        }
-        else if (this.restTimeLeft > 0) {
-            if (this.currentGame) {
-                console.log('leave', this.currentGame);
-                this.leaveMiniGame();
-            }
-            // 剩餘3秒內時準備下一場遊戲
-            if (this.restTimeLeft <= 18 && !this.nextGame) {
-                this.setNextGame();
-                console.log('setNext', this.nextGame);
-            }
-            this.restTimeLeft -= delta;
-            // 中場休息進行中
-        }
-        else {
-            // 進入小遊戲
-            this.enterNextGame();
-            this.restTimeLeft = 60;
-            console.log('enterNext', this.currentGame, this.miniGameTimeLeft);
-        }
     }
-    setNextGame() {
-        this.score++;
-        this.nextGame = new _MiniGames__WEBPACK_IMPORTED_MODULE_5__["default"][Math.floor(Math.random() * _MiniGames__WEBPACK_IMPORTED_MODULE_5__["default"].length)];
-    }
-    enterNextGame() {
-        this.currentGame = this.nextGame;
-        // 設定小遊戲剩餘時間
-        this.miniGameTimeLeft = this.nextGame.timeLength;
-        // 並顯示在畫面上
-        this.currentGame.zIndex = ObjectzIndex.MiniGame;
-        this.addChild(this.currentGame);
-        this.nextGame = null;
-        // 顯示目標文字
-        this.hintTextSpr.setText(this.currentGame.targetText);
-        this.removeChild(this.hintTextSpr);
-        this.addChild(this.hintTextSpr);
-    }
-    leaveMiniGame() {
-        if (this.currentGame.Succed) {
-        }
-        else {
-            this.lives--;
-        }
-        this.removeChild(this.currentGame);
-        this.currentGame = null;
+    async onMouseDown() {
+        this.off('pointerdown', this.onMouseDown.bind(this));
+        const scene = await __webpack_require__.e(/* import() */ 1).then(__webpack_require__.bind(__webpack_require__, 58)).then(s => s.Scene_Ready);
+        _game__WEBPACK_IMPORTED_MODULE_3__["default"].stage.removeChildren();
+        const s = new scene();
+        _game__WEBPACK_IMPORTED_MODULE_3__["default"].stage.addChild(s);
     }
 }
 
@@ -43975,12 +43904,35 @@ const $TextStyle = {
         dropShadow: true,
         lineJoin: 'round',
     }),
+    GameOverText: new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+        align: 'center',
+        fontFamily: '微軟正黑體',
+        fontSize: 80,
+        fontWeight: 'bold',
+        fill: ['#333333', '#ffffff'],
+        stroke: '#454545',
+        strokeThickness: 4,
+        dropShadow: true,
+        lineJoin: 'round',
+    }),
     ScoreText: new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
         align: 'center',
         fontFamily: 'Arial Black',
         fontSize: 72,
         fontWeight: 'bold',
         fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 8,
+        padding: 8,
+        dropShadow: true,
+        lineJoin: 'round',
+    }),
+    ScoreResultText: new pixi_js__WEBPACK_IMPORTED_MODULE_0__.TextStyle({
+        align: 'center',
+        fontFamily: 'Arial Black',
+        fontSize: 120,
+        fontWeight: 'bold',
+        fill: '#FFFF66',
         stroke: '#000000',
         strokeThickness: 8,
         padding: 8,
@@ -44018,53 +43970,6 @@ const $TextStyle = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Sprite_HintText": () => (/* binding */ Sprite_HintText)
-/* harmony export */ });
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(52);
-
-
-class Sprite_HintText extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text {
-    constructor(text) {
-        super(text, _constants__WEBPACK_IMPORTED_MODULE_1__.$TextStyle.GameText);
-        // 顯示時間 (秒)
-        this.timeLength = 48;
-        this.anchor.set(0.5, 0.5);
-        this.x = _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.WIDTH / 2;
-        this.y = _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.HEIGHT / 3;
-    }
-    setText(text) {
-        this.text = text;
-        this.timeLength = 48;
-        this.alpha = 1;
-    }
-    update(delta) {
-        // 進入時
-        if (this.timeLength > 32) {
-            this.scale.set((this.timeLength - 32) / 4 + 1);
-        }
-        // 淡出時
-        else if (this.timeLength > 0) {
-            this.scale.set(1);
-            this.alpha = this.timeLength / 32;
-        }
-        else {
-            // 顯示完畢走人
-            this.alpha = 0;
-            return;
-        }
-        this.timeLength -= delta;
-    }
-}
-
-
-/***/ }),
-/* 54 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Scene": () => (/* binding */ Scene)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
@@ -44081,7 +43986,7 @@ class Scene extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -44089,20 +43994,79 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var howler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(56);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(52);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _pixi_gif__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(55);
+/* harmony import */ var _pixi_loaders__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
+
+
+
+
+_pixi_loaders__WEBPACK_IMPORTED_MODULE_3__.Loader.registerPlugin(_pixi_gif__WEBPACK_IMPORTED_MODULE_2__.AnimatedGIFLoader);
+// Create the application helper and add its render target to the page
+const $game = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Application({ width: _constants__WEBPACK_IMPORTED_MODULE_0__.GameConsts.WIDTH, height: _constants__WEBPACK_IMPORTED_MODULE_0__.GameConsts.HEIGHT });
+const gameContainer = document.querySelector('#game-container');
+gameContainer.appendChild($game.view);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ($game);
+
+
+/***/ }),
+/* 55 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AnimatedGIF": () => (/* binding */ C),
+/* harmony export */   "AnimatedGIFLoader": () => (/* binding */ O)
+/* harmony export */ });
+/* harmony import */ var _pixi_loaders__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
+/* harmony import */ var _pixi_sprite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(36);
+/* harmony import */ var _pixi_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(27);
+/* harmony import */ var _pixi_settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
+/* harmony import */ var _pixi_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(20);
+/* harmony import */ var _pixi_ticker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(25);
+/*!
+ * @pixi/gif - v1.0.2
+ * https://github.com/pixijs/gif
+ * Compiled Mon, 07 Feb 2022 16:16:04 UTC
+ *
+ * @pixi/gif is licensed under the MIT license.
+ * http://www.opensource.org/licenses/mit-license
+ */
+var s=function(e,t){return s=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(e,t){e.__proto__=t}||function(e,t){for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(e[r]=t[r])},s(e,t)};var d={},c={},u={};Object.defineProperty(u,"__esModule",{value:!0}),u.loop=u.conditional=u.parse=void 0;u.parse=function e(t,r){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},i=arguments.length>3&&void 0!==arguments[3]?arguments[3]:n;if(Array.isArray(r))r.forEach((function(r){return e(t,r,n,i)}));else if("function"==typeof r)r(t,n,i,e);else{var o=Object.keys(r)[0];Array.isArray(r[o])?(i[o]={},e(t,r[o],n,i[o])):i[o]=r[o](t,n,i,e)}return n};u.conditional=function(e,t){return function(r,n,i,o){t(r,n,i)&&o(r,e,n,i)}};u.loop=function(e,t){return function(r,n,i,o){for(var a=[],s=r.pos;t(r,n,i);){var d={};if(o(r,e,n,d),r.pos===s)break;s=r.pos,a.push(d)}return a}};var p={};Object.defineProperty(p,"__esModule",{value:!0}),p.readBits=p.readArray=p.readUnsigned=p.readString=p.peekBytes=p.readBytes=p.peekByte=p.readByte=p.buildStream=void 0;p.buildStream=function(e){return{data:e,pos:0}};var l=function(){return function(e){return e.data[e.pos++]}};p.readByte=l;p.peekByte=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0;return function(t){return t.data[t.pos+e]}};var h=function(e){return function(t){return t.data.subarray(t.pos,t.pos+=e)}};p.readBytes=h;p.peekBytes=function(e){return function(t){return t.data.subarray(t.pos,t.pos+e)}};p.readString=function(e){return function(t){return Array.from(h(e)(t)).map((function(e){return String.fromCharCode(e)})).join("")}};p.readUnsigned=function(e){return function(t){var r=h(2)(t);return e?(r[1]<<8)+r[0]:(r[0]<<8)+r[1]}};p.readArray=function(e,t){return function(r,n,i){for(var o="function"==typeof t?t(r,n,i):t,a=h(e),s=new Array(o),d=0;d<o;d++)s[d]=a(r);return s}};p.readBits=function(e){return function(t){for(var r=function(e){return e.data[e.pos++]}(t),n=new Array(8),i=0;i<8;i++)n[7-i]=!!(r&1<<i);return Object.keys(e).reduce((function(t,r){var i=e[r];return i.length?t[r]=function(e,t,r){for(var n=0,i=0;i<r;i++)n+=e[t+i]&&Math.pow(2,r-i-1);return n}(n,i.index,i.length):t[r]=n[i.index],t}),{})}},function(e){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0;var t=u,r=p,n={blocks:function(e){for(var t=[],n=e.data.length,i=0,o=(0,r.readByte)()(e);0!==o&&o;o=(0,r.readByte)()(e)){if(e.pos+o>=n){var a=n-e.pos;t.push((0,r.readBytes)(a)(e)),i+=a;break}t.push((0,r.readBytes)(o)(e)),i+=o}for(var s=new Uint8Array(i),d=0,c=0;c<t.length;c++)s.set(t[c],d),d+=t[c].length;return s}},i=(0,t.conditional)({gce:[{codes:(0,r.readBytes)(2)},{byteSize:(0,r.readByte)()},{extras:(0,r.readBits)({future:{index:0,length:3},disposal:{index:3,length:3},userInput:{index:6},transparentColorGiven:{index:7}})},{delay:(0,r.readUnsigned)(!0)},{transparentColorIndex:(0,r.readByte)()},{terminator:(0,r.readByte)()}]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&249===t[1]})),o=(0,t.conditional)({image:[{code:(0,r.readByte)()},{descriptor:[{left:(0,r.readUnsigned)(!0)},{top:(0,r.readUnsigned)(!0)},{width:(0,r.readUnsigned)(!0)},{height:(0,r.readUnsigned)(!0)},{lct:(0,r.readBits)({exists:{index:0},interlaced:{index:1},sort:{index:2},future:{index:3,length:2},size:{index:5,length:3}})}]},(0,t.conditional)({lct:(0,r.readArray)(3,(function(e,t,r){return Math.pow(2,r.descriptor.lct.size+1)}))},(function(e,t,r){return r.descriptor.lct.exists})),{data:[{minCodeSize:(0,r.readByte)()},n]}]},(function(e){return 44===(0,r.peekByte)()(e)})),a=(0,t.conditional)({text:[{codes:(0,r.readBytes)(2)},{blockSize:(0,r.readByte)()},{preData:function(e,t,n){return(0,r.readBytes)(n.text.blockSize)(e)}},n]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&1===t[1]})),s=(0,t.conditional)({application:[{codes:(0,r.readBytes)(2)},{blockSize:(0,r.readByte)()},{id:function(e,t,n){return(0,r.readString)(n.blockSize)(e)}},n]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&255===t[1]})),d=(0,t.conditional)({comment:[{codes:(0,r.readBytes)(2)},n]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&254===t[1]})),c=[{header:[{signature:(0,r.readString)(3)},{version:(0,r.readString)(3)}]},{lsd:[{width:(0,r.readUnsigned)(!0)},{height:(0,r.readUnsigned)(!0)},{gct:(0,r.readBits)({exists:{index:0},resolution:{index:1,length:3},sort:{index:4},size:{index:5,length:3}})},{backgroundColorIndex:(0,r.readByte)()},{pixelAspectRatio:(0,r.readByte)()}]},(0,t.conditional)({gct:(0,r.readArray)(3,(function(e,t){return Math.pow(2,t.lsd.gct.size+1)}))},(function(e,t){return t.lsd.gct.exists})),{frames:(0,t.loop)([i,s,d,o,a],(function(e){var t=(0,r.peekByte)()(e);return 33===t||44===t}))}];e.default=c}(c);var f={};Object.defineProperty(f,"__esModule",{value:!0}),f.deinterlace=void 0;f.deinterlace=function(e,t){for(var r=new Array(e.length),n=e.length/t,i=function(n,i){var o=e.slice(i*t,(i+1)*t);r.splice.apply(r,[n*t,t].concat(o))},o=[0,4,2,1],a=[8,8,4,2],s=0,d=0;d<4;d++)for(var c=o[d];c<n;c+=a[d])i(c,s),s++;return r};var y={};Object.defineProperty(y,"__esModule",{value:!0}),y.lzw=void 0;y.lzw=function(e,t,r){var n,i,o,a,s,d,c,u,p,l,h,f,y,g,m,v,_=4096,x=r,b=new Array(r),w=new Array(_),B=new Array(_),T=new Array(4097);for(s=(i=1<<(l=e))+1,n=i+2,c=-1,o=(1<<(a=l+1))-1,u=0;u<i;u++)w[u]=0,B[u]=u;for(h=f=y=g=m=v=0,p=0;p<x;){if(0===g){if(f<a){h+=t[v]<<f,f+=8,v++;continue}if(u=h&o,h>>=a,f-=a,u>n||u==s)break;if(u==i){o=(1<<(a=l+1))-1,n=i+2,c=-1;continue}if(-1==c){T[g++]=B[u],c=u,y=u;continue}for(d=u,u==n&&(T[g++]=y,u=c);u>i;)T[g++]=B[u],u=w[u];y=255&B[u],T[g++]=y,n<_&&(w[n]=c,B[n]=y,0==(++n&o)&&n<_&&(a++,o+=n)),c=d}g--,b[m++]=T[g],p++}for(p=m;p<x;p++)b[p]=0;return b},Object.defineProperty(d,"__esModule",{value:!0});var g,m=d.decompressFrames=d.decompressFrame=B=d.parseGIF=void 0,v=(g=c)&&g.__esModule?g:{default:g},_=u,x=p,b=f,w=y;var B=d.parseGIF=function(e){var t=new Uint8Array(e);return(0,_.parse)((0,x.buildStream)(t),v.default)},T=function(e,t,r){if(e.image){var n=e.image,i=n.descriptor.width*n.descriptor.height,o=(0,w.lzw)(n.data.minCodeSize,n.data.blocks,i);n.descriptor.lct.interlaced&&(o=(0,b.deinterlace)(o,n.descriptor.width));var a={pixels:o,dims:{top:e.image.descriptor.top,left:e.image.descriptor.left,width:e.image.descriptor.width,height:e.image.descriptor.height}};return n.descriptor.lct&&n.descriptor.lct.exists?a.colorTable=n.lct:a.colorTable=t,e.gce&&(a.delay=10*(e.gce.delay||10),a.disposalType=e.gce.extras.disposal,e.gce.extras.transparentColorGiven&&(a.transparentIndex=e.gce.transparentColorIndex)),r&&(a.patch=function(e){for(var t=e.pixels.length,r=new Uint8ClampedArray(4*t),n=0;n<t;n++){var i=4*n,o=e.pixels[n],a=e.colorTable[o]||[0,0,0];r[i]=a[0],r[i+1]=a[1],r[i+2]=a[2],r[i+3]=o!==e.transparentIndex?255:0}return r}(a)),a}};d.decompressFrame=T;m=d.decompressFrames=function(e,t){return e.frames.filter((function(e){return e.image})).map((function(r){return T(r,e.gct,t)}))};var C=function(e){function t(n,i){var o=this,a=Object.assign({},t.defaultOptions,i),s=a.scaleMode,d=function(e,t){var r={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&t.indexOf(n)<0&&(r[n]=e[n]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(n=Object.getOwnPropertySymbols(e);i<n.length;i++)t.indexOf(n[i])<0&&Object.prototype.propertyIsEnumerable.call(e,n[i])&&(r[n[i]]=e[n[i]])}return r}(a,["scaleMode"]),c=document.createElement("canvas"),u=c.getContext("2d");return c.width=n[0].imageData.width,c.height=n[0].imageData.height,(o=e.call(this,_pixi_core__WEBPACK_IMPORTED_MODULE_2__.Texture.from(c,{scaleMode:s}))||this).duration=n[n.length-1].end,o._frames=n,o._context=u,o._playing=!1,o._currentTime=0,o._isConnectedToTicker=!1,Object.assign(o,d),o.currentFrame=0,o.autoPlay&&o.play(),o}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Class extends value "+String(t)+" is not a constructor or null");function r(){this.constructor=e}s(e,t),e.prototype=null===t?Object.create(t):(r.prototype=t.prototype,new r)}(t,e),t.fromBuffer=function(e,r){if(!e||0===e.byteLength)throw new Error("Invalid buffer");var n=B(e),i=m(n,!0),o=[],a=document.createElement("canvas"),s=a.getContext("2d"),d=document.createElement("canvas"),c=d.getContext("2d");a.width=i[0].dims.width,a.height=i[0].dims.height;for(var u=0,p=1e3/Object.assign({},t.defaultOptions,r).fps,l=0;l<i.length;l++){var h=i[l],f=h.disposalType,y=void 0===f?2:f,g=h.delay,v=void 0===g?p:g,_=h.patch,x=h.dims,b=x.width,w=x.height,T=x.left,C=x.top;d.width=b,d.height=w,c.clearRect(0,0,b,w);var O=c.createImageData(b,w);O.data.set(_),c.putImageData(O,0,0),s.drawImage(d,T,C);var F=s.getImageData(0,0,a.width,a.height);2===y&&s.clearRect(0,0,b,w),o.push({start:u,end:u+v,imageData:F}),u+=v}return a.width=a.height=0,d.width=d.height=0,new t(o,r)},t.prototype.stop=function(){this._playing&&(this._playing=!1,this._autoUpdate&&this._isConnectedToTicker&&(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.remove(this.update,this),this._isConnectedToTicker=!1))},t.prototype.play=function(){this._playing||(this._playing=!0,this._autoUpdate&&!this._isConnectedToTicker&&(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.add(this.update,this,_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.UPDATE_PRIORITY.HIGH),this._isConnectedToTicker=!0),this.loop||this.currentFrame!==this._frames.length-1||(this._currentTime=0))},Object.defineProperty(t.prototype,"progress",{get:function(){return this._currentTime/this.duration},enumerable:!1,configurable:!0}),Object.defineProperty(t.prototype,"playing",{get:function(){return this._playing},enumerable:!1,configurable:!0}),t.prototype.update=function(e){var t,r;if(this._playing){var i=this.animationSpeed*e/_pixi_settings__WEBPACK_IMPORTED_MODULE_3__.settings.TARGET_FPMS,o=this._currentTime+i,a=o%this.duration,s=this._frames.findIndex((function(e){return e.start<=a&&e.end>a}));o>=this.duration?this.loop?(this._currentTime=a,this.updateFrameIndex(s),null===(t=this.onLoop)||void 0===t||t.call(this)):(this._currentTime=this.duration,this.updateFrameIndex(this._frames.length-1),null===(r=this.onComplete)||void 0===r||r.call(this),this.stop()):(this._currentTime=a,this.updateFrameIndex(s))}},t.prototype.updateFrame=function(){if(this.dirty){var e=this._frames[this._currentFrame].imageData;this._context.putImageData(e,0,0),this._context.fillStyle="transparent",this._context.fillRect(0,0,0,1),this.texture.update(),this.dirty=!1}},t.prototype._render=function(t){this.updateFrame(),e.prototype._render.call(this,t)},t.prototype._renderCanvas=function(t){this.updateFrame(),e.prototype._renderCanvas.call(this,t)},Object.defineProperty(t.prototype,"autoUpdate",{get:function(){return this._autoUpdate},set:function(e){e!==this._autoUpdate&&(this._autoUpdate=e,!this._autoUpdate&&this._isConnectedToTicker?(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.remove(this.update,this),this._isConnectedToTicker=!1):this._autoUpdate&&!this._isConnectedToTicker&&this._playing&&(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.add(this.update,this),this._isConnectedToTicker=!0))},enumerable:!1,configurable:!0}),Object.defineProperty(t.prototype,"currentFrame",{get:function(){return this._currentFrame},set:function(e){this.updateFrameIndex(e),this._currentTime=this._frames[e].start},enumerable:!1,configurable:!0}),t.prototype.updateFrameIndex=function(e){var t;if(e<0||e>=this._frames.length)throw new Error("Frame index out of range, expecting 0 to "+this.totalFrames+", got "+e);this._currentFrame!==e&&(this._currentFrame=e,this.dirty=!0,null===(t=this.onFrameChange)||void 0===t||t.call(this,e))},Object.defineProperty(t.prototype,"totalFrames",{get:function(){return this._frames.length},enumerable:!1,configurable:!0}),t.prototype.destroy=function(){this.stop(),e.prototype.destroy.call(this,!0),this._context=null,this._frames=null,this.onComplete=null,this.onFrameChange=null,this.onLoop=null},t.prototype.clone=function(){return new t(function(e,t,r){if(r||2===arguments.length)for(var n,i=0,o=t.length;i<o;i++)!n&&i in t||(n||(n=Array.prototype.slice.call(t,0,i)),n[i]=t[i]);return e.concat(n||Array.prototype.slice.call(t))}([],this._frames,!0),{autoUpdate:this._autoUpdate,loop:this.loop,autoPlay:this.autoPlay,scaleMode:this.texture.baseTexture.scaleMode,animationSpeed:this.animationSpeed,onComplete:this.onComplete,onFrameChange:this.onFrameChange,onLoop:this.onLoop})},t.defaultOptions={scaleMode:_pixi_constants__WEBPACK_IMPORTED_MODULE_4__.SCALE_MODES.LINEAR,fps:_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.FPS,loop:!0,animationSpeed:1,autoPlay:!0,autoUpdate:!0,onComplete:null,onFrameChange:null,onLoop:null},t}(_pixi_sprite__WEBPACK_IMPORTED_MODULE_1__.Sprite),O={add:function(){_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.setExtensionXhrType("gif",_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.XHR_RESPONSE_TYPE.BUFFER),_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.setExtensionLoadType("gif",_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.LOAD_TYPE.XHR)},use:function(e,t){"gif"===e.extension&&(e.animation=C.fromBuffer(e.data)),t()}};
+//# sourceMappingURL=pixi-gif.esm.js.map
+
+
+/***/ }),
+/* 56 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var howler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(57);
 /* harmony import */ var howler__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(howler__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57);
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(54);
 
 
 const $R = {
     Audio: {
-        // music: new Howl({ src: 'audio/opium_and_purple_haze_dwatt.mp3' }),
         // tick: new Howl({ src: 'audio/tick.wav' })
         Success: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/decision40.mp3' }),
         Fail: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/stupid3.mp3' }),
         // 逃跑嘎嗚吼 失敗效果音
         anWolfFail: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/ah.mp3' }),
         anWolfWow: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/wow.mp3' }),
+        ME_Success: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/success.mp3' }),
+        ME_Fail: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/fail.mp3' }),
+        ME_Midgame: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/midgame.mp3' }),
+        ME_Gameover: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/gameover.mp3' }),
+        ME_result: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/result.mp3' }),
+        ME_game1: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/game1.mp3' }),
+        ME_game2: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/game2.mp3' })
         //https://www.youtube.com/watch?v=PJ_QgB7bAnM
     },
     Image: {
@@ -44114,6 +44078,8 @@ const $R = {
         timerBomb: 'imgs/timerBomb.webp',
         // 廁所磁磚
         tile: 'imgs/tile.png',
+        // 生命
+        life: 'imgs/life.png',
         // 電梯背景
         lobby: 'imgs/lobby.png',
         // 旋轉寶貝夢夢
@@ -44133,7 +44099,7 @@ Object.entries($R.Image).forEach(([key, path]) => _game__WEBPACK_IMPORTED_MODULE
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ ((module, exports, __webpack_require__) => {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -47381,482 +47347,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 })();
 
 
-/***/ }),
-/* 57 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(52);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _pixi_gif__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(58);
-/* harmony import */ var _pixi_loaders__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30);
-
-
-
-
-_pixi_loaders__WEBPACK_IMPORTED_MODULE_3__.Loader.registerPlugin(_pixi_gif__WEBPACK_IMPORTED_MODULE_2__.AnimatedGIFLoader);
-// Create the application helper and add its render target to the page
-const $game = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Application({ width: _constants__WEBPACK_IMPORTED_MODULE_0__.GameConsts.WIDTH, height: _constants__WEBPACK_IMPORTED_MODULE_0__.GameConsts.HEIGHT });
-const gameContainer = document.querySelector('#game-container');
-gameContainer.appendChild($game.view);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ($game);
-
-
-/***/ }),
-/* 58 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AnimatedGIF": () => (/* binding */ C),
-/* harmony export */   "AnimatedGIFLoader": () => (/* binding */ O)
-/* harmony export */ });
-/* harmony import */ var _pixi_loaders__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
-/* harmony import */ var _pixi_sprite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(36);
-/* harmony import */ var _pixi_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(27);
-/* harmony import */ var _pixi_settings__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
-/* harmony import */ var _pixi_constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(20);
-/* harmony import */ var _pixi_ticker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(25);
-/*!
- * @pixi/gif - v1.0.2
- * https://github.com/pixijs/gif
- * Compiled Mon, 07 Feb 2022 16:16:04 UTC
- *
- * @pixi/gif is licensed under the MIT license.
- * http://www.opensource.org/licenses/mit-license
- */
-var s=function(e,t){return s=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(e,t){e.__proto__=t}||function(e,t){for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(e[r]=t[r])},s(e,t)};var d={},c={},u={};Object.defineProperty(u,"__esModule",{value:!0}),u.loop=u.conditional=u.parse=void 0;u.parse=function e(t,r){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},i=arguments.length>3&&void 0!==arguments[3]?arguments[3]:n;if(Array.isArray(r))r.forEach((function(r){return e(t,r,n,i)}));else if("function"==typeof r)r(t,n,i,e);else{var o=Object.keys(r)[0];Array.isArray(r[o])?(i[o]={},e(t,r[o],n,i[o])):i[o]=r[o](t,n,i,e)}return n};u.conditional=function(e,t){return function(r,n,i,o){t(r,n,i)&&o(r,e,n,i)}};u.loop=function(e,t){return function(r,n,i,o){for(var a=[],s=r.pos;t(r,n,i);){var d={};if(o(r,e,n,d),r.pos===s)break;s=r.pos,a.push(d)}return a}};var p={};Object.defineProperty(p,"__esModule",{value:!0}),p.readBits=p.readArray=p.readUnsigned=p.readString=p.peekBytes=p.readBytes=p.peekByte=p.readByte=p.buildStream=void 0;p.buildStream=function(e){return{data:e,pos:0}};var l=function(){return function(e){return e.data[e.pos++]}};p.readByte=l;p.peekByte=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0;return function(t){return t.data[t.pos+e]}};var h=function(e){return function(t){return t.data.subarray(t.pos,t.pos+=e)}};p.readBytes=h;p.peekBytes=function(e){return function(t){return t.data.subarray(t.pos,t.pos+e)}};p.readString=function(e){return function(t){return Array.from(h(e)(t)).map((function(e){return String.fromCharCode(e)})).join("")}};p.readUnsigned=function(e){return function(t){var r=h(2)(t);return e?(r[1]<<8)+r[0]:(r[0]<<8)+r[1]}};p.readArray=function(e,t){return function(r,n,i){for(var o="function"==typeof t?t(r,n,i):t,a=h(e),s=new Array(o),d=0;d<o;d++)s[d]=a(r);return s}};p.readBits=function(e){return function(t){for(var r=function(e){return e.data[e.pos++]}(t),n=new Array(8),i=0;i<8;i++)n[7-i]=!!(r&1<<i);return Object.keys(e).reduce((function(t,r){var i=e[r];return i.length?t[r]=function(e,t,r){for(var n=0,i=0;i<r;i++)n+=e[t+i]&&Math.pow(2,r-i-1);return n}(n,i.index,i.length):t[r]=n[i.index],t}),{})}},function(e){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0;var t=u,r=p,n={blocks:function(e){for(var t=[],n=e.data.length,i=0,o=(0,r.readByte)()(e);0!==o&&o;o=(0,r.readByte)()(e)){if(e.pos+o>=n){var a=n-e.pos;t.push((0,r.readBytes)(a)(e)),i+=a;break}t.push((0,r.readBytes)(o)(e)),i+=o}for(var s=new Uint8Array(i),d=0,c=0;c<t.length;c++)s.set(t[c],d),d+=t[c].length;return s}},i=(0,t.conditional)({gce:[{codes:(0,r.readBytes)(2)},{byteSize:(0,r.readByte)()},{extras:(0,r.readBits)({future:{index:0,length:3},disposal:{index:3,length:3},userInput:{index:6},transparentColorGiven:{index:7}})},{delay:(0,r.readUnsigned)(!0)},{transparentColorIndex:(0,r.readByte)()},{terminator:(0,r.readByte)()}]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&249===t[1]})),o=(0,t.conditional)({image:[{code:(0,r.readByte)()},{descriptor:[{left:(0,r.readUnsigned)(!0)},{top:(0,r.readUnsigned)(!0)},{width:(0,r.readUnsigned)(!0)},{height:(0,r.readUnsigned)(!0)},{lct:(0,r.readBits)({exists:{index:0},interlaced:{index:1},sort:{index:2},future:{index:3,length:2},size:{index:5,length:3}})}]},(0,t.conditional)({lct:(0,r.readArray)(3,(function(e,t,r){return Math.pow(2,r.descriptor.lct.size+1)}))},(function(e,t,r){return r.descriptor.lct.exists})),{data:[{minCodeSize:(0,r.readByte)()},n]}]},(function(e){return 44===(0,r.peekByte)()(e)})),a=(0,t.conditional)({text:[{codes:(0,r.readBytes)(2)},{blockSize:(0,r.readByte)()},{preData:function(e,t,n){return(0,r.readBytes)(n.text.blockSize)(e)}},n]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&1===t[1]})),s=(0,t.conditional)({application:[{codes:(0,r.readBytes)(2)},{blockSize:(0,r.readByte)()},{id:function(e,t,n){return(0,r.readString)(n.blockSize)(e)}},n]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&255===t[1]})),d=(0,t.conditional)({comment:[{codes:(0,r.readBytes)(2)},n]},(function(e){var t=(0,r.peekBytes)(2)(e);return 33===t[0]&&254===t[1]})),c=[{header:[{signature:(0,r.readString)(3)},{version:(0,r.readString)(3)}]},{lsd:[{width:(0,r.readUnsigned)(!0)},{height:(0,r.readUnsigned)(!0)},{gct:(0,r.readBits)({exists:{index:0},resolution:{index:1,length:3},sort:{index:4},size:{index:5,length:3}})},{backgroundColorIndex:(0,r.readByte)()},{pixelAspectRatio:(0,r.readByte)()}]},(0,t.conditional)({gct:(0,r.readArray)(3,(function(e,t){return Math.pow(2,t.lsd.gct.size+1)}))},(function(e,t){return t.lsd.gct.exists})),{frames:(0,t.loop)([i,s,d,o,a],(function(e){var t=(0,r.peekByte)()(e);return 33===t||44===t}))}];e.default=c}(c);var f={};Object.defineProperty(f,"__esModule",{value:!0}),f.deinterlace=void 0;f.deinterlace=function(e,t){for(var r=new Array(e.length),n=e.length/t,i=function(n,i){var o=e.slice(i*t,(i+1)*t);r.splice.apply(r,[n*t,t].concat(o))},o=[0,4,2,1],a=[8,8,4,2],s=0,d=0;d<4;d++)for(var c=o[d];c<n;c+=a[d])i(c,s),s++;return r};var y={};Object.defineProperty(y,"__esModule",{value:!0}),y.lzw=void 0;y.lzw=function(e,t,r){var n,i,o,a,s,d,c,u,p,l,h,f,y,g,m,v,_=4096,x=r,b=new Array(r),w=new Array(_),B=new Array(_),T=new Array(4097);for(s=(i=1<<(l=e))+1,n=i+2,c=-1,o=(1<<(a=l+1))-1,u=0;u<i;u++)w[u]=0,B[u]=u;for(h=f=y=g=m=v=0,p=0;p<x;){if(0===g){if(f<a){h+=t[v]<<f,f+=8,v++;continue}if(u=h&o,h>>=a,f-=a,u>n||u==s)break;if(u==i){o=(1<<(a=l+1))-1,n=i+2,c=-1;continue}if(-1==c){T[g++]=B[u],c=u,y=u;continue}for(d=u,u==n&&(T[g++]=y,u=c);u>i;)T[g++]=B[u],u=w[u];y=255&B[u],T[g++]=y,n<_&&(w[n]=c,B[n]=y,0==(++n&o)&&n<_&&(a++,o+=n)),c=d}g--,b[m++]=T[g],p++}for(p=m;p<x;p++)b[p]=0;return b},Object.defineProperty(d,"__esModule",{value:!0});var g,m=d.decompressFrames=d.decompressFrame=B=d.parseGIF=void 0,v=(g=c)&&g.__esModule?g:{default:g},_=u,x=p,b=f,w=y;var B=d.parseGIF=function(e){var t=new Uint8Array(e);return(0,_.parse)((0,x.buildStream)(t),v.default)},T=function(e,t,r){if(e.image){var n=e.image,i=n.descriptor.width*n.descriptor.height,o=(0,w.lzw)(n.data.minCodeSize,n.data.blocks,i);n.descriptor.lct.interlaced&&(o=(0,b.deinterlace)(o,n.descriptor.width));var a={pixels:o,dims:{top:e.image.descriptor.top,left:e.image.descriptor.left,width:e.image.descriptor.width,height:e.image.descriptor.height}};return n.descriptor.lct&&n.descriptor.lct.exists?a.colorTable=n.lct:a.colorTable=t,e.gce&&(a.delay=10*(e.gce.delay||10),a.disposalType=e.gce.extras.disposal,e.gce.extras.transparentColorGiven&&(a.transparentIndex=e.gce.transparentColorIndex)),r&&(a.patch=function(e){for(var t=e.pixels.length,r=new Uint8ClampedArray(4*t),n=0;n<t;n++){var i=4*n,o=e.pixels[n],a=e.colorTable[o]||[0,0,0];r[i]=a[0],r[i+1]=a[1],r[i+2]=a[2],r[i+3]=o!==e.transparentIndex?255:0}return r}(a)),a}};d.decompressFrame=T;m=d.decompressFrames=function(e,t){return e.frames.filter((function(e){return e.image})).map((function(r){return T(r,e.gct,t)}))};var C=function(e){function t(n,i){var o=this,a=Object.assign({},t.defaultOptions,i),s=a.scaleMode,d=function(e,t){var r={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&t.indexOf(n)<0&&(r[n]=e[n]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols){var i=0;for(n=Object.getOwnPropertySymbols(e);i<n.length;i++)t.indexOf(n[i])<0&&Object.prototype.propertyIsEnumerable.call(e,n[i])&&(r[n[i]]=e[n[i]])}return r}(a,["scaleMode"]),c=document.createElement("canvas"),u=c.getContext("2d");return c.width=n[0].imageData.width,c.height=n[0].imageData.height,(o=e.call(this,_pixi_core__WEBPACK_IMPORTED_MODULE_2__.Texture.from(c,{scaleMode:s}))||this).duration=n[n.length-1].end,o._frames=n,o._context=u,o._playing=!1,o._currentTime=0,o._isConnectedToTicker=!1,Object.assign(o,d),o.currentFrame=0,o.autoPlay&&o.play(),o}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Class extends value "+String(t)+" is not a constructor or null");function r(){this.constructor=e}s(e,t),e.prototype=null===t?Object.create(t):(r.prototype=t.prototype,new r)}(t,e),t.fromBuffer=function(e,r){if(!e||0===e.byteLength)throw new Error("Invalid buffer");var n=B(e),i=m(n,!0),o=[],a=document.createElement("canvas"),s=a.getContext("2d"),d=document.createElement("canvas"),c=d.getContext("2d");a.width=i[0].dims.width,a.height=i[0].dims.height;for(var u=0,p=1e3/Object.assign({},t.defaultOptions,r).fps,l=0;l<i.length;l++){var h=i[l],f=h.disposalType,y=void 0===f?2:f,g=h.delay,v=void 0===g?p:g,_=h.patch,x=h.dims,b=x.width,w=x.height,T=x.left,C=x.top;d.width=b,d.height=w,c.clearRect(0,0,b,w);var O=c.createImageData(b,w);O.data.set(_),c.putImageData(O,0,0),s.drawImage(d,T,C);var F=s.getImageData(0,0,a.width,a.height);2===y&&s.clearRect(0,0,b,w),o.push({start:u,end:u+v,imageData:F}),u+=v}return a.width=a.height=0,d.width=d.height=0,new t(o,r)},t.prototype.stop=function(){this._playing&&(this._playing=!1,this._autoUpdate&&this._isConnectedToTicker&&(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.remove(this.update,this),this._isConnectedToTicker=!1))},t.prototype.play=function(){this._playing||(this._playing=!0,this._autoUpdate&&!this._isConnectedToTicker&&(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.add(this.update,this,_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.UPDATE_PRIORITY.HIGH),this._isConnectedToTicker=!0),this.loop||this.currentFrame!==this._frames.length-1||(this._currentTime=0))},Object.defineProperty(t.prototype,"progress",{get:function(){return this._currentTime/this.duration},enumerable:!1,configurable:!0}),Object.defineProperty(t.prototype,"playing",{get:function(){return this._playing},enumerable:!1,configurable:!0}),t.prototype.update=function(e){var t,r;if(this._playing){var i=this.animationSpeed*e/_pixi_settings__WEBPACK_IMPORTED_MODULE_3__.settings.TARGET_FPMS,o=this._currentTime+i,a=o%this.duration,s=this._frames.findIndex((function(e){return e.start<=a&&e.end>a}));o>=this.duration?this.loop?(this._currentTime=a,this.updateFrameIndex(s),null===(t=this.onLoop)||void 0===t||t.call(this)):(this._currentTime=this.duration,this.updateFrameIndex(this._frames.length-1),null===(r=this.onComplete)||void 0===r||r.call(this),this.stop()):(this._currentTime=a,this.updateFrameIndex(s))}},t.prototype.updateFrame=function(){if(this.dirty){var e=this._frames[this._currentFrame].imageData;this._context.putImageData(e,0,0),this._context.fillStyle="transparent",this._context.fillRect(0,0,0,1),this.texture.update(),this.dirty=!1}},t.prototype._render=function(t){this.updateFrame(),e.prototype._render.call(this,t)},t.prototype._renderCanvas=function(t){this.updateFrame(),e.prototype._renderCanvas.call(this,t)},Object.defineProperty(t.prototype,"autoUpdate",{get:function(){return this._autoUpdate},set:function(e){e!==this._autoUpdate&&(this._autoUpdate=e,!this._autoUpdate&&this._isConnectedToTicker?(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.remove(this.update,this),this._isConnectedToTicker=!1):this._autoUpdate&&!this._isConnectedToTicker&&this._playing&&(_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.add(this.update,this),this._isConnectedToTicker=!0))},enumerable:!1,configurable:!0}),Object.defineProperty(t.prototype,"currentFrame",{get:function(){return this._currentFrame},set:function(e){this.updateFrameIndex(e),this._currentTime=this._frames[e].start},enumerable:!1,configurable:!0}),t.prototype.updateFrameIndex=function(e){var t;if(e<0||e>=this._frames.length)throw new Error("Frame index out of range, expecting 0 to "+this.totalFrames+", got "+e);this._currentFrame!==e&&(this._currentFrame=e,this.dirty=!0,null===(t=this.onFrameChange)||void 0===t||t.call(this,e))},Object.defineProperty(t.prototype,"totalFrames",{get:function(){return this._frames.length},enumerable:!1,configurable:!0}),t.prototype.destroy=function(){this.stop(),e.prototype.destroy.call(this,!0),this._context=null,this._frames=null,this.onComplete=null,this.onFrameChange=null,this.onLoop=null},t.prototype.clone=function(){return new t(function(e,t,r){if(r||2===arguments.length)for(var n,i=0,o=t.length;i<o;i++)!n&&i in t||(n||(n=Array.prototype.slice.call(t,0,i)),n[i]=t[i]);return e.concat(n||Array.prototype.slice.call(t))}([],this._frames,!0),{autoUpdate:this._autoUpdate,loop:this.loop,autoPlay:this.autoPlay,scaleMode:this.texture.baseTexture.scaleMode,animationSpeed:this.animationSpeed,onComplete:this.onComplete,onFrameChange:this.onFrameChange,onLoop:this.onLoop})},t.defaultOptions={scaleMode:_pixi_constants__WEBPACK_IMPORTED_MODULE_4__.SCALE_MODES.LINEAR,fps:_pixi_ticker__WEBPACK_IMPORTED_MODULE_5__.Ticker.shared.FPS,loop:!0,animationSpeed:1,autoPlay:!0,autoUpdate:!0,onComplete:null,onFrameChange:null,onLoop:null},t}(_pixi_sprite__WEBPACK_IMPORTED_MODULE_1__.Sprite),O={add:function(){_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.setExtensionXhrType("gif",_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.XHR_RESPONSE_TYPE.BUFFER),_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.setExtensionLoadType("gif",_pixi_loaders__WEBPACK_IMPORTED_MODULE_0__.LoaderResource.LOAD_TYPE.XHR)},use:function(e,t){"gif"===e.extension&&(e.animation=C.fromBuffer(e.data)),t()}};
-//# sourceMappingURL=pixi-gif.esm.js.map
-
-
-/***/ }),
-/* 59 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(60);
-/* harmony import */ var _Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(63);
-/* harmony import */ var _Scene_DaisukeMeow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(65);
-
-
-
-const games = [
-    _Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__.Scene_EscapeDragon,
-    _Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__.Scene_RotateEviat,
-    _Scene_DaisukeMeow__WEBPACK_IMPORTED_MODULE_2__.Scene_DaisukeMeow
-];
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (games);
-
-
-/***/ }),
-/* 60 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Scene_EscapeDragon": () => (/* binding */ Scene_EscapeDragon)
-/* harmony export */ });
-/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(55);
-/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(61);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(52);
-/* harmony import */ var _Sprites_Sprite_AnWolf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(62);
-
-
-
-
-
-
-class Scene_EscapeDragon extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniGameBase {
-    constructor() {
-        super();
-        // 過關方式：達成目標
-        this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.EClearMethod.SURVIVE;
-        // 小遊戲時間長度
-        this.timeLength = 300;
-        // 目標文字
-        this.targetText = '不要被抓到！';
-        // 嘎嗚吼的移動速度
-        this.DraSpeed = 3;
-        // 距離小於一定時判定為被抓到
-        this.CatchDistance = 32;
-        const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Graphics();
-        Bg.beginFill(0xBBBBFF);
-        Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT);
-        Bg.endFill();
-        Bg.alpha = 0.5;
-        this.addChild(Bg);
-        this.sprAnDra = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_2__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_0__["default"].Image.anDra));
-        this.sprAnWolf = new _Sprites_Sprite_AnWolf__WEBPACK_IMPORTED_MODULE_4__.Sprite_AnWolf();
-        this.on('pointermove', this.onMouseMove.bind(this));
-        this.interactive = true;
-        this.addChild(this.sprAnDra);
-        this.addChild(this.sprAnWolf);
-        this.sprAnDra.anchor.set(0.5);
-        this.sprAnWolf.anchor.set(0.5);
-        this.sprAnWolf.x = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH / 2;
-        this.sprAnWolf.y = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT / 2;
-    }
-    update(delta) {
-        if (this.clearFlag) {
-            this.sprAnWolf.update(delta);
-            return;
-        }
-        const dx = this.sprAnWolf.x - this.sprAnDra.x;
-        const dy = this.sprAnWolf.y - this.sprAnDra.y;
-        const distance = Math.sqrt(dx ** 2 + dy ** 2);
-        // 嘎嗚吼的轉向
-        if (dx > 0) {
-            this.sprAnDra.scale.x = -1;
-        }
-        else {
-            // 往左跑時
-            this.sprAnDra.scale.x = 1;
-        }
-        // 被抓到惹
-        if (distance < this.CatchDistance) {
-            this.fail();
-            return;
-        }
-        // 嘎嗚吼的移動
-        const mvx = dx / (distance) * this.DraSpeed;
-        const mvy = dy / (distance) * this.DraSpeed;
-        this.sprAnDra.x += mvx;
-        this.sprAnDra.y += mvy;
-    }
-    onMouseMove(event) {
-        if (this.clearFlag) {
-            return;
-        }
-        const x = event.data.global.x;
-        const y = event.data.global.y;
-        // 嗷嗚處理
-        // 往右跑時
-        if (x >= this.sprAnWolf.x) {
-            this.sprAnWolf.scale.x = -1;
-        }
-        else {
-            // 往左跑時
-            this.sprAnWolf.scale.x = 1;
-        }
-        // 不能跑到畫面外
-        this.sprAnWolf.x = Math.min(_constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH, Math.max(x, 0));
-        this.sprAnWolf.y = Math.min(_constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT, Math.max(y, 0));
-    }
-    fail() {
-        this.clearFlag = true;
-        this.sprAnWolf.catch();
-        // wow!
-        const pinkBg = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Graphics();
-        pinkBg.beginFill(0xFFA0BC);
-        pinkBg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT);
-        pinkBg.endFill();
-        pinkBg.alpha = 0.5;
-        this.addChild(pinkBg);
-        // 啊嗚
-        _resources__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.anWolfFail.play();
-    }
-}
-
-
-/***/ }),
-/* 61 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "EClearMethod": () => (/* binding */ EClearMethod),
-/* harmony export */   "MiniGameBase": () => (/* binding */ MiniGameBase)
-/* harmony export */ });
-/* harmony import */ var _scene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(54);
-
-var EClearMethod;
-(function (EClearMethod) {
-    // 目標達成
-    EClearMethod[EClearMethod["TARGET"] = 0] = "TARGET";
-    // 撐到時間到
-    EClearMethod[EClearMethod["SURVIVE"] = 1] = "SURVIVE";
-})(EClearMethod || (EClearMethod = {}));
-class MiniGameBase extends _scene__WEBPACK_IMPORTED_MODULE_0__.Scene {
-    constructor(option) {
-        super();
-        // 過關方式
-        this.clearMethod = EClearMethod.SURVIVE;
-        // 小遊戲時間長度秒數，設為 -1 則不限時間
-        this.timeLength = 1;
-        // 目標文字
-        this.targetText = 'PlaceHolder';
-    }
-    get Succed() {
-        // 如果是達成目標時, clearFlag須為true
-        if (this.clearMethod === EClearMethod.TARGET) {
-            return this.clearFlag;
-        }
-        // 如果是生存制時, clearFlag須為false
-        else {
-            return !this.clearFlag;
-        }
-    }
-}
-
-
-/***/ }),
-/* 62 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Sprite_AnWolf": () => (/* binding */ Sprite_AnWolf)
-/* harmony export */ });
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(55);
-
-
-class Sprite_AnWolf extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite {
-    constructor() {
-        // 一開始時是正常狀態
-        super(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_1__["default"].Image.anWolf));
-        // 夢夢的旋轉速度
-        // 每秒180度
-        this.rotateSpeed = 0.05;
-        // 被抓到後才是彩虹
-        this.texAAA = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_1__["default"].Image.anWolfAAA);
-        this.texRainbow = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_1__["default"].Image.anWolfRainbow);
-        this.caughtDelta = 0;
-    }
-    update(delta) {
-        if (!this.caught) {
-            return;
-        }
-        // 被抓到了之後開始超自然震動
-        this.caughtDelta += delta;
-        if (this.caughtDelta > 60) {
-            if (this.texture !== this.texRainbow) {
-                // 震動完彩虹
-                this.texture = this.texRainbow;
-                _resources__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.anWolfWow.play();
-            }
-        }
-        else {
-            this.y += this.caughtDelta % 2 > 1 ? 4 : -4;
-        }
-    }
-    // 被抓到了
-    catch() {
-        if (this.caught) {
-            return;
-        }
-        this.caught = true;
-        this.caughtDelta = 0;
-        this.texture = this.texAAA;
-    }
-}
-
-
-/***/ }),
-/* 63 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Scene_RotateEviat": () => (/* binding */ Scene_RotateEviat)
-/* harmony export */ });
-/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(55);
-/* harmony import */ var _Sprites_Sprite_Eviat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(64);
-/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(61);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(52);
-
-
-
-
-
-class Scene_RotateEviat extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_2__.MiniGameBase {
-    constructor() {
-        super();
-        // 過關方式：達成目標
-        this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_2__.EClearMethod.TARGET;
-        // 小遊戲時間長度
-        this.timeLength = 300;
-        // 目標文字
-        this.targetText = '對準夢夢的臉！';
-        const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_3__.Graphics();
-        Bg.beginFill(0xBBBBBB);
-        Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_4__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_4__.GameConsts.HEIGHT);
-        Bg.endFill();
-        Bg.alpha = 0.5;
-        this.addChild(Bg);
-        this.sprEviat = new _Sprites_Sprite_Eviat__WEBPACK_IMPORTED_MODULE_1__.Sprite_Eviat();
-        this.on('pointerdown', this.onMouseDown.bind(this));
-        this.interactive = true;
-        this.addChild(this.sprEviat);
-    }
-    update(delta) {
-        this.sprEviat.update(delta);
-    }
-    onMouseDown() {
-        // 如果夢夢還在旋轉
-        if (!this.sprEviat.locked) {
-            // 鎖定夢夢的旋轉
-            this.sprEviat.lock();
-            // 成功條件取決於夢夢的臉是否對準
-            this.clearFlag = this.sprEviat.Succed;
-            if (this.clearFlag) {
-                _resources__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Success.play();
-            }
-            else {
-                _resources__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Fail.play();
-            }
-        }
-    }
-}
-
-
-/***/ }),
-/* 64 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Sprite_Eviat": () => (/* binding */ Sprite_Eviat)
-/* harmony export */ });
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(52);
-/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(55);
-
-
-
-class Sprite_Eviat extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
-    constructor() {
-        super();
-        // 夢夢的旋轉速度
-        // 每秒180度
-        this.rotateSpeed = 0.05;
-        this.ballSpr = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_2__["default"].Image.eviatBall));
-        this.faceSpr = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_2__["default"].Image.eviatFace));
-        this.ballSpr.anchor.set(0.5);
-        this.faceSpr.anchor.set(0.5);
-        this.ballSpr.rotation = Math.random() * 2 * Math.PI;
-        this.faceSpr.rotation = 0;
-        this.addChild(this.ballSpr);
-        this.addChild(this.faceSpr);
-        this.ballSpr.position.set(_constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.WIDTH / 2, _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.HEIGHT / 2);
-        this.faceSpr.position.set(_constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.WIDTH / 2, _constants__WEBPACK_IMPORTED_MODULE_1__.GameConsts.HEIGHT / 2);
-    }
-    lock() {
-        if (this.locked) {
-            return;
-        }
-        this.locked = true;
-        console.log(this.ballSpr.rotation);
-        if (this.Succed) {
-            // 如果有對準成功時, 將兩邊臉誤差歸0
-            this.ballSpr.rotation = 0;
-        }
-    }
-    update(delta) {
-        if (!this.locked) {
-            this.ballSpr.rotation += delta * this.rotateSpeed;
-        }
-        else if (!this.Succed) {
-            // 失敗時本體掉出去
-            this.ballSpr.y += delta * 4;
-        }
-    }
-    get Succed() {
-        // 2pi = 一圈 = 360度
-        return (this.ballSpr.rotation % (Math.PI * 2)) < Math.PI * 2 / (360 / 15) ||
-            (2 * Math.PI - (this.ballSpr.rotation % (Math.PI * 2))) < Math.PI * 2 / (360 / 15);
-    }
-}
-
-
-/***/ }),
-/* 65 */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Scene_DaisukeMeow": () => (/* binding */ Scene_DaisukeMeow)
-/* harmony export */ });
-/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(55);
-/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(61);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(52);
-/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(57);
-
-
-
-
-
-
-class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniGameBase {
-    constructor() {
-        super();
-        // 過關方式：達成目標
-        this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.EClearMethod.TARGET;
-        // 小遊戲時間長度
-        this.timeLength = 600;
-        // 目標文字
-        this.targetText = '大助貓貓！';
-        // 改判定的時間點
-        this.reverseTime = 50;
-        this.debugText = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Text('');
-        const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Graphics();
-        Bg.beginFill(0xBBBBBB);
-        Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT);
-        Bg.endFill();
-        Bg.alpha = 0.5;
-        this.addChild(Bg);
-        this.sprVideo = _game__WEBPACK_IMPORTED_MODULE_4__["default"].loader.resources.daisukeMeowMeow.animation;
-        this.sprVideo.stop();
-        this.sprVideo.anchor.set(0.5, 0.5);
-        this.sprVideo.x = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH / 2;
-        this.sprVideo.y = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT / 2;
-        this.on('pointermove', this.onMouseMove.bind(this));
-        this.interactive = true;
-        this.addChild(this.sprVideo);
-        this.addChild(this.debugText);
-    }
-    update(delta) {
-    }
-    onMouseMove($event) {
-        const movementY = $event.data.originalEvent.movementY;
-        this.debugText.text = `rev, ${this.reverse}, ${movementY}`;
-        if ((!this.reverse && movementY > 0) || (this.reverse && movementY < 0)) {
-            this.sprVideo.currentFrame = Math.max(0, Math.min(this.sprVideo.totalFrames - 1, this.sprVideo.currentFrame + 1));
-            if (this.sprVideo.currentFrame >= this.sprVideo.totalFrames - 2 && this.reverse) {
-                // 已經做完向下又向上
-                this.reverse = false;
-                this.sprVideo.currentFrame = 0;
-                if (!this.clearFlag) {
-                    _resources__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Success.play();
-                    this.clearFlag = true;
-                }
-            }
-            else if (this.sprVideo.currentFrame > this.reverseTime) {
-                this.reverse = true;
-            }
-        }
-    }
-}
-
-
 /***/ })
 /******/ 	]);
 /************************************************************************/
@@ -47887,6 +47377,9 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -47912,6 +47405,28 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/ensure chunk */
+/******/ 	(() => {
+/******/ 		__webpack_require__.f = {};
+/******/ 		// This file contains only the entry chunk.
+/******/ 		// The chunk loading function for additional chunks
+/******/ 		__webpack_require__.e = (chunkId) => {
+/******/ 			return Promise.all(Object.keys(__webpack_require__.f).reduce((promises, key) => {
+/******/ 				__webpack_require__.f[key](chunkId, promises);
+/******/ 				return promises;
+/******/ 			}, []));
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get javascript chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference async chunks
+/******/ 		__webpack_require__.u = (chunkId) => {
+/******/ 			// return url for filenames based on template
+/******/ 			return "" + chunkId + ".bundle.js";
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -47927,6 +47442,52 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/load script */
+/******/ 	(() => {
+/******/ 		var inProgress = {};
+/******/ 		var dataWebpackPrefix = "wware:";
+/******/ 		// loadScript function to load a script via script tag
+/******/ 		__webpack_require__.l = (url, done, key, chunkId) => {
+/******/ 			if(inProgress[url]) { inProgress[url].push(done); return; }
+/******/ 			var script, needAttach;
+/******/ 			if(key !== undefined) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				for(var i = 0; i < scripts.length; i++) {
+/******/ 					var s = scripts[i];
+/******/ 					if(s.getAttribute("src") == url || s.getAttribute("data-webpack") == dataWebpackPrefix + key) { script = s; break; }
+/******/ 				}
+/******/ 			}
+/******/ 			if(!script) {
+/******/ 				needAttach = true;
+/******/ 				script = document.createElement('script');
+/******/ 		
+/******/ 				script.charset = 'utf-8';
+/******/ 				script.timeout = 120;
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 				script.setAttribute("data-webpack", dataWebpackPrefix + key);
+/******/ 				script.src = url;
+/******/ 			}
+/******/ 			inProgress[url] = [done];
+/******/ 			var onScriptComplete = (prev, event) => {
+/******/ 				// avoid mem leaks in IE.
+/******/ 				script.onerror = script.onload = null;
+/******/ 				clearTimeout(timeout);
+/******/ 				var doneFns = inProgress[url];
+/******/ 				delete inProgress[url];
+/******/ 				script.parentNode && script.parentNode.removeChild(script);
+/******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
+/******/ 				if(prev) return prev(event);
+/******/ 			}
+/******/ 			;
+/******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
+/******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
+/******/ 			script.onload = onScriptComplete.bind(null, script.onload);
+/******/ 			needAttach && document.head.appendChild(script);
+/******/ 		};
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
@@ -47949,25 +47510,142 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript)
+/******/ 				scriptUrl = document.currentScript.src
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) scriptUrl = scripts[scripts.length - 1].src
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			0: 0
+/******/ 		};
+/******/ 		
+/******/ 		__webpack_require__.f.j = (chunkId, promises) => {
+/******/ 				// JSONP chunk loading for javascript
+/******/ 				var installedChunkData = __webpack_require__.o(installedChunks, chunkId) ? installedChunks[chunkId] : undefined;
+/******/ 				if(installedChunkData !== 0) { // 0 means "already installed".
+/******/ 		
+/******/ 					// a Promise means "currently loading".
+/******/ 					if(installedChunkData) {
+/******/ 						promises.push(installedChunkData[2]);
+/******/ 					} else {
+/******/ 						if(true) { // all chunks have JS
+/******/ 							// setup Promise in chunk cache
+/******/ 							var promise = new Promise((resolve, reject) => (installedChunkData = installedChunks[chunkId] = [resolve, reject]));
+/******/ 							promises.push(installedChunkData[2] = promise);
+/******/ 		
+/******/ 							// start chunk loading
+/******/ 							var url = __webpack_require__.p + __webpack_require__.u(chunkId);
+/******/ 							// create error before stack unwound to get useful stacktrace later
+/******/ 							var error = new Error();
+/******/ 							var loadingEnded = (event) => {
+/******/ 								if(__webpack_require__.o(installedChunks, chunkId)) {
+/******/ 									installedChunkData = installedChunks[chunkId];
+/******/ 									if(installedChunkData !== 0) installedChunks[chunkId] = undefined;
+/******/ 									if(installedChunkData) {
+/******/ 										var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 										var realSrc = event && event.target && event.target.src;
+/******/ 										error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/ 										error.name = 'ChunkLoadError';
+/******/ 										error.type = errorType;
+/******/ 										error.request = realSrc;
+/******/ 										installedChunkData[1](error);
+/******/ 									}
+/******/ 								}
+/******/ 							};
+/******/ 							__webpack_require__.l(url, loadingEnded, "chunk-" + chunkId, chunkId);
+/******/ 						} else installedChunks[chunkId] = 0;
+/******/ 					}
+/******/ 				}
+/******/ 		};
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		// no on chunks loaded
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 			}
+/******/ 		
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkwware"] = self["webpackChunkwware"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Scenes_scene_ready__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57);
+/* harmony import */ var _Scenes_scene_title__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(54);
+/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(56);
 
 
 let $resources = {};
+
 _game__WEBPACK_IMPORTED_MODULE_1__["default"].loader.load((loader, resources) => {
     $resources = resources;
-    let $scene = new _Scenes_scene_ready__WEBPACK_IMPORTED_MODULE_0__.Scene_Ready();
+    let $scene = new _Scenes_scene_title__WEBPACK_IMPORTED_MODULE_0__.Scene_Title();
     // 初始畫面
     _game__WEBPACK_IMPORTED_MODULE_1__["default"].stage.addChild($scene);
     _game__WEBPACK_IMPORTED_MODULE_1__["default"].ticker.add((delta) => {
-        if ($scene) {
-            $scene.update(delta);
+        try {
+            // delta若為預設為60fps, 且運行速度也為60fps時, delta = 1, 運行速度為30fps時, delta = 2
+            // elapsedMS為上個frame花費的秒數
+            _game__WEBPACK_IMPORTED_MODULE_1__["default"].stage.children.forEach(c => { var _a, _b; return (_b = (_a = c).update) === null || _b === void 0 ? void 0 : _b.call(_a, _game__WEBPACK_IMPORTED_MODULE_1__["default"].ticker.elapsedMS); });
+        }
+        catch (err) {
+            console.error(err);
         }
     });
 });

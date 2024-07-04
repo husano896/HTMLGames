@@ -3,7 +3,8 @@ import { Graphics } from 'pixi.js';
 
 import { GameConsts, $TextStyle } from '../constants';
 import $R from '../resources';
-
+const fallSpeed = 0.1;
+const rotateSpeed = 0.004;
 export class Sprite_Eviat extends PIXI.Container {
     // 夢夢基座
     ballSpr: PIXI.Sprite;
@@ -14,7 +15,6 @@ export class Sprite_Eviat extends PIXI.Container {
 
     // 夢夢的旋轉速度
     // 每秒180度
-    rotateSpeed = 0.05;
     constructor() {
         super();
         this.ballSpr = PIXI.Sprite.from(PIXI.Texture.from($R.Image.eviatBall));
@@ -42,16 +42,16 @@ export class Sprite_Eviat extends PIXI.Container {
     }
     update(delta: number) {
         if (!this.locked) {
-            this.ballSpr.rotation += delta * this.rotateSpeed;
+            this.ballSpr.rotation += delta * rotateSpeed;
         } else if (!this.Succed) {
             // 失敗時本體掉出去
-            this.ballSpr.y += delta * 4;
+            this.ballSpr.y += delta * fallSpeed;
         }
     }
 
     get Succed() {
         // 2pi = 一圈 = 360度
-        return (this.ballSpr.rotation % (Math.PI * 2)) < Math.PI * 2 / (360 / 15) ||
-            (2 * Math.PI - (this.ballSpr.rotation % (Math.PI*2))) < Math.PI * 2 / (360 / 15);
+        return (this.ballSpr.rotation % (Math.PI * 2)) < Math.PI * 2 / (360 / 20) ||
+            (2 * Math.PI - (this.ballSpr.rotation % (Math.PI*2))) < Math.PI * 2 / (360 / 20);
     }
 }

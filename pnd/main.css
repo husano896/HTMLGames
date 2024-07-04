@@ -1,0 +1,39 @@
+body {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    justify-content: center;
+}
+
+div.game-pnd-container {
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    aspect-ratio: 9 / 16;
+}
+
+div.game-pnd-container div.map {
+    background: darkgreen;
+    width: 100%;
+    height: auto;
+}
+
+div.game-pnd-container div.playfield {
+    aspect-ratio: 6 / 5;
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-flow: row;
+    width: 100%;
+    height: auto;
+    background-size: 20% 20%;
+    background-repeat: repeat;
+}
+
+div.game-pnd-container div.orb {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgba(127,127,127,0.5);
+}

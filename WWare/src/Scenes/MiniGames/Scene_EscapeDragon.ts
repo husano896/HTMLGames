@@ -7,10 +7,11 @@ import { Graphics, InteractionEvent } from 'pixi.js';
 import { GameConsts } from '../../constants';
 import { Sprite_AnWolf } from '../../Sprites/Sprite_AnWolf';
 export class Scene_EscapeDragon extends MiniGameBase {
+
     // 過關方式：達成目標
     clearMethod = EClearMethod.SURVIVE;
     // 小遊戲時間長度
-    timeLength = 300;
+    timeLength = 4000;
     // 目標文字
     targetText = '不要被抓到！';
 
@@ -30,7 +31,7 @@ export class Scene_EscapeDragon extends MiniGameBase {
         Bg.beginFill(0xBBBBFF);
         Bg.drawRect(0, 0, GameConsts.WIDTH, GameConsts.HEIGHT);
         Bg.endFill();
-        Bg.alpha = 0.5;
+        Bg.alpha = 0.9;
         this.addChild(Bg);
         this.sprAnDra = new PIXI.Sprite(PIXI.Texture.from($R.Image.anDra))
         this.sprAnWolf = new Sprite_AnWolf();
@@ -47,6 +48,7 @@ export class Scene_EscapeDragon extends MiniGameBase {
     }
 
     update(delta: number): void {
+        // 被抓到惹
         if (this.clearFlag) {
             this.sprAnWolf.update(delta);
             return;

@@ -9,7 +9,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
     // 過關方式：達成目標
     clearMethod = EClearMethod.TARGET;
     // 小遊戲時間長度
-    timeLength = 600;
+    timeLength = 4000;
     // 目標文字
     targetText = '大助貓貓！';
 
@@ -50,7 +50,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
         this.debugText.text = `rev, ${this.reverse}, ${movementY}`;
         if ((!this.reverse && movementY > 0) || (this.reverse && movementY < 0)) {
             this.sprVideo.currentFrame = Math.max(0, Math.min(this.sprVideo.totalFrames - 1,
-                this.sprVideo.currentFrame + 1));
+                this.sprVideo.currentFrame + Math.abs(movementY)));
 
             if (this.sprVideo.currentFrame >= this.sprVideo.totalFrames - 2 && this.reverse) {
                 // 已經做完向下又向上
