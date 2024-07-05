@@ -1,47 +1,116 @@
 "use strict";
 (self["webpackChunkwware"] = self["webpackChunkwware"] || []).push([[1],{
 
-/***/ 65:
+/***/ 69:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "EClearMethod": () => (/* binding */ EClearMethod),
-/* harmony export */   "MiniGameBase": () => (/* binding */ MiniGameBase)
+/* harmony export */   "Effect_Flash": () => (/* binding */ Effect_Flash)
 /* harmony export */ });
-/* harmony import */ var _scene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(53);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(54);
 
-var EClearMethod;
-(function (EClearMethod) {
-    // 目標達成
-    EClearMethod[EClearMethod["TARGET"] = 0] = "TARGET";
-    // 撐到時間到
-    EClearMethod[EClearMethod["SURVIVE"] = 1] = "SURVIVE";
-})(EClearMethod || (EClearMethod = {}));
-class MiniGameBase extends _scene__WEBPACK_IMPORTED_MODULE_0__.Scene {
-    constructor(option) {
+
+const BASE_LENGTH = 200;
+const MAX_ALPHA = 0.8;
+class Effect_Flash extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
+    constructor(props) {
         super();
-        // 過關方式
-        this.clearMethod = EClearMethod.SURVIVE;
-        // 小遊戲時間長度秒數，設為 -1 則不限時間
-        this.timeLength = 1;
-        // 目標文字
-        this.targetText = 'PlaceHolder';
+        this.frame = 0;
+        this.bg = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+        this.bg.beginFill((props === null || props === void 0 ? void 0 : props.color) || 0xFFFFFF);
+        this.bg.drawRect(0, 0, _game__WEBPACK_IMPORTED_MODULE_1__["default"].screen.width, _game__WEBPACK_IMPORTED_MODULE_1__["default"].screen.height);
+        this.bg.endFill();
+        this.bg.alpha = 0;
+        this.length = (props === null || props === void 0 ? void 0 : props.length) || BASE_LENGTH;
+        this.addChild(this.bg);
+        this.zIndex = 999;
     }
-    get Succed() {
-        // 如果是達成目標時, clearFlag須為true
-        if (this.clearMethod === EClearMethod.TARGET) {
-            return this.clearFlag;
+    update(delta) {
+        if (this.frame > this.length) {
+            this.destroy();
+            return;
         }
-        // 如果是生存制時, clearFlag須為false
-        return !this.clearFlag;
+        this.frame += delta;
+        this.bg.alpha = Math.sin(Math.PI * this.frame / this.length) * MAX_ALPHA;
     }
 }
 
 
 /***/ }),
 
-/***/ 69:
+/***/ 71:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Scene_EatCake": () => (/* binding */ Scene_EatCake)
+/* harmony export */ });
+/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(65);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(52);
+/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(56);
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(54);
+
+
+
+
+
+/** */
+class Scene_EatCake extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameBase {
+    constructor() {
+        super();
+        // 過關方式：達成目標
+        this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.EClearMethod.TARGET;
+        // 小遊戲時間長度
+        this.timeLength = 4000;
+        // 目標文字
+        this.targetText = '吃光蛋糕！';
+        // BGM
+        this.BGM = _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.ME_game3;
+        this.nomPhase = 0;
+        const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Graphics();
+        Bg.beginFill(0xEEEEEE);
+        Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT);
+        Bg.endFill();
+        Bg.alpha = 0.9;
+        this.addChild(Bg);
+        this.cakeTextures = [
+            pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.EatCake1),
+            pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.EatCake2),
+            pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.EatCake3),
+            pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.EatCake4),
+        ];
+        this.sprCake = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from(this.cakeTextures[0]);
+        this.sprCake.anchor.set(0.5);
+        this.sprCake.x = _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.width / 2;
+        this.sprCake.y = _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.height / 2;
+        this.addChild(this.sprCake);
+        this.on('pointerdown', this.onMouseDown.bind(this));
+        this.interactive = true;
+    }
+    update(delta) {
+    }
+    onMouseDown() {
+        if (this.nomPhase >= 4) {
+            return;
+        }
+        _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.SE_Nom.play();
+        this.nomPhase++;
+        this.sprCake.texture = this.cakeTextures[this.nomPhase];
+        if (this.nomPhase >= 4) {
+            this.sprCake.visible = false;
+            this.clearFlag = true;
+            _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.Success.play();
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ 70:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -53,6 +122,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(52);
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(54);
+/* harmony import */ var _Effects_Effect_Flash__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(69);
+
 
 
 
@@ -68,6 +139,8 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
         this.timeLength = 4000;
         // 目標文字
         this.targetText = '大助貓貓！';
+        // BGM
+        this.BGM = _resources__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.ME_game1;
         // 改判定的時間點
         this.reverseTime = 50;
         this.debugText = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Text('');
@@ -88,6 +161,7 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
         this.addChild(this.debugText);
     }
     update(delta) {
+        super.update(delta);
     }
     onMouseMove($event) {
         const movementY = $event.data.originalEvent.movementY;
@@ -102,6 +176,7 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
                 if (!this.clearFlag) {
                     _resources__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Success.play();
                     this.clearFlag = true;
+                    this.addChild(new _Effects_Effect_Flash__WEBPACK_IMPORTED_MODULE_5__.Effect_Flash());
                 }
             }
             else if (this.sprVideo.currentFrame > this.reverseTime) {
@@ -161,6 +236,12 @@ class Scene_EscapeDragon extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.Mini
         this.sprAnWolf.anchor.set(0.5);
         this.sprAnWolf.x = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH / 2;
         this.sprAnWolf.y = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT / 2;
+        if (Math.random() > 0.5) {
+            this.sprAnDra.y = Math.random() * _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT;
+        }
+        else {
+            this.sprAnDra.x = Math.random() * _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH;
+        }
     }
     update(delta) {
         // 被抓到惹
@@ -235,10 +316,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Scene_RotateEviat": () => (/* binding */ Scene_RotateEviat)
 /* harmony export */ });
 /* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(56);
-/* harmony import */ var _Sprites_Sprite_Eviat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(68);
+/* harmony import */ var Sprites_Sprite_Eviat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(68);
 /* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(65);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2);
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(52);
+/* harmony import */ var _Effects_Effect_Flash__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(69);
+
 
 
 
@@ -259,13 +342,13 @@ class Scene_RotateEviat extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_2__.MiniG
         Bg.endFill();
         Bg.alpha = 0.9;
         this.addChild(Bg);
-        this.sprEviat = new _Sprites_Sprite_Eviat__WEBPACK_IMPORTED_MODULE_1__.Sprite_Eviat();
+        this.sprEviat = new Sprites_Sprite_Eviat__WEBPACK_IMPORTED_MODULE_1__.Sprite_Eviat();
         this.on('pointerdown', this.onMouseDown.bind(this));
         this.interactive = true;
         this.addChild(this.sprEviat);
     }
     update(delta) {
-        this.sprEviat.update(delta);
+        super.update(delta);
     }
     onMouseDown() {
         // 如果夢夢還在旋轉
@@ -276,11 +359,188 @@ class Scene_RotateEviat extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_2__.MiniG
             this.clearFlag = this.sprEviat.Succed;
             if (this.clearFlag) {
                 _resources__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Success.play();
+                this.addChild(new _Effects_Effect_Flash__WEBPACK_IMPORTED_MODULE_5__.Effect_Flash());
             }
             else {
                 _resources__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.Fail.play();
             }
         }
+    }
+}
+
+
+/***/ }),
+
+/***/ 65:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "EClearMethod": () => (/* binding */ EClearMethod),
+/* harmony export */   "MiniGameBase": () => (/* binding */ MiniGameBase)
+/* harmony export */ });
+/* harmony import */ var _scene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(53);
+/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(56);
+
+
+var EClearMethod;
+(function (EClearMethod) {
+    // 目標達成
+    EClearMethod[EClearMethod["TARGET"] = 0] = "TARGET";
+    // 撐到時間到
+    EClearMethod[EClearMethod["SURVIVE"] = 1] = "SURVIVE";
+})(EClearMethod || (EClearMethod = {}));
+class MiniGameBase extends _scene__WEBPACK_IMPORTED_MODULE_0__.Scene {
+    constructor(option) {
+        super();
+        /** 過關方式 */
+        this.clearMethod = EClearMethod.SURVIVE;
+        /** 小遊戲時間長度秒數，設為 -1 則不限時間 */
+        this.timeLength = 1;
+        /** 目標文字 */
+        this.targetText = 'PlaceHolder';
+        /** 使用音樂 */
+        this.BGM = _resources__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.ME_game2;
+    }
+    get Succed() {
+        // 如果是達成目標時, clearFlag須為true
+        if (this.clearMethod === EClearMethod.TARGET) {
+            return this.clearFlag;
+        }
+        // 如果是生存制時, clearFlag須為false
+        return !this.clearFlag;
+    }
+    update(delta) {
+        this.children.forEach(c => { var _a, _b; return (_b = (_a = c).update) === null || _b === void 0 ? void 0 : _b.call(_a, delta); });
+    }
+}
+
+
+/***/ }),
+
+/***/ 72:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Scene_MaxmaClass": () => (/* binding */ Scene_MaxmaClass)
+/* harmony export */ });
+/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(65);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(52);
+/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(56);
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(54);
+
+
+
+
+
+const answers = [0, 1, 2, 3, 0, 0, 0];
+/** */
+class Scene_MaxmaClass extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameBase {
+    constructor() {
+        super();
+        // 過關方式：達成目標
+        this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.EClearMethod.TARGET;
+        // 小遊戲時間長度
+        this.timeLength = 8000;
+        // 目標文字
+        this.targetText = '跟著音樂！';
+        // BGM
+        this.BGM = _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.ME_game4;
+        this.buttonsContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
+        this.pressedButtons = [];
+        this.frame = 0;
+        // BG
+        this.bg = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Graphics();
+        this.bg.beginFill(0x777777);
+        this.bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT);
+        this.bg.endFill();
+        this.bg.alpha = 1;
+        this.addChild(this.bg);
+        //Buttons
+        for (let i = 0; i < 4; i++) {
+            const btn = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Graphics();
+            btn.beginFill(0xFFFFFF);
+            btn.drawRoundedRect(0, 0, 64, 64, 8);
+            btn.endFill();
+            btn.interactive = true;
+            btn.on('pointerdown', () => this.onMouseDown(i));
+            btn.x = i * (64 + 16);
+            this.buttonsContainer.addChild(btn);
+        }
+        this.buttonsContainer.x = (_game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.width - this.buttonsContainer.width) / 2;
+        this.buttonsContainer.y = _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.height / 2 + 32;
+        this.addChild(this.buttonsContainer);
+        // Hint
+        this.hintText = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Text('重複！', _constants__WEBPACK_IMPORTED_MODULE_2__.$TextStyle.GameText);
+        this.hintText.anchor.set(0.5);
+        this.hintText.x = _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.width / 2;
+        this.hintText.y = _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.height / 2 - 128;
+        this.hintText.visible = false;
+        this.addChild(this.hintText);
+        //
+        this.on('pointerup', this.onMouseUp.bind(this));
+        this.interactive = true;
+    }
+    update(delta) {
+        super.update(delta);
+        this.frame += delta;
+        this.buttonsContainer.children.forEach(b => b.y = 0);
+        if (this.frame < 500) {
+            this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+        }
+        else if (this.frame < 1000) {
+            this.buttonsContainer.children[1].y = this.frame % 500 / 500 * 32;
+        }
+        else if (this.frame < 1500) {
+            this.buttonsContainer.children[2].y = this.frame % 500 / 500 * 32;
+        }
+        else if (this.frame < 2000) {
+            this.buttonsContainer.children[3].y = this.frame % 500 / 500 * 32;
+        }
+        else if (this.frame < 2500) {
+            this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+        }
+        else if (this.frame < 3000) {
+            this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+        }
+        else if (this.frame < 3500) {
+            this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+        }
+        else {
+            this.hintText.visible = true;
+        }
+    }
+    onMouseDown(btn) {
+        if (this.failed || this.clearFlag) {
+            return;
+        }
+        if (this.frame < 3500) {
+            return;
+        }
+        this.buttonsContainer.children.forEach(b => b.alpha = 1);
+        // 按錯了
+        if (btn !== answers[this.pressedButtons.length]) {
+            this.failed = true;
+            _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.InCorrect.play();
+            this.bg.beginFill(0x222222);
+            this.bg.drawRect(0, 0, _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.width, _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.height);
+            this.bg.endFill();
+            return;
+        }
+        this.buttonsContainer.children.forEach((b, index) => b.alpha = btn === index ? 0.5 : 1);
+        this.pressedButtons.push(btn);
+        // 都按對了
+        if (answers.length === this.pressedButtons.length) {
+            this.clearFlag = true;
+            this.bg.beginFill(0x77BB77);
+            this.bg.drawRect(0, 0, _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.width, _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.height);
+            this.bg.endFill();
+            _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.Correct.play();
+        }
+    }
+    onMouseUp() {
     }
 }
 
@@ -294,16 +554,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(64);
-/* harmony import */ var _Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(67);
-/* harmony import */ var _Scene_DaisukeMeow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(69);
+/* harmony import */ var _KMN_Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(64);
+/* harmony import */ var _KMN_Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(67);
+/* harmony import */ var _KMN_Scene_DaisukeMeow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(70);
+/* harmony import */ var _Brainless_Scene_EatCake__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(71);
+/* harmony import */ var _Rhythm_Scene_MaxmaClass__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(72);
+
+
 
 
 
 const games = [
-    _Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__.Scene_EscapeDragon,
-    _Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__.Scene_RotateEviat,
-    _Scene_DaisukeMeow__WEBPACK_IMPORTED_MODULE_2__.Scene_DaisukeMeow
+    _KMN_Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__.Scene_EscapeDragon,
+    _KMN_Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__.Scene_RotateEviat,
+    _KMN_Scene_DaisukeMeow__WEBPACK_IMPORTED_MODULE_2__.Scene_DaisukeMeow,
+    _Brainless_Scene_EatCake__WEBPACK_IMPORTED_MODULE_3__.Scene_EatCake,
+    _Rhythm_Scene_MaxmaClass__WEBPACK_IMPORTED_MODULE_4__.Scene_MaxmaClass
 ];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (games);
 
@@ -351,7 +617,7 @@ class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_6__.Scene {
     constructor() {
         super();
         this.score = 0;
-        /** 速度，以120為基準速，最高240 */
+        /** 速度，以120為基準速，最高應為240 */
         this.BPM = 120;
         /** 等級, 0~2, 之後為固定Lv2且加速 */
         this.level = 0;
@@ -391,15 +657,33 @@ class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_6__.Scene {
         this.spriteLives.y = (_game__WEBPACK_IMPORTED_MODULE_9__["default"].screen.height) - this.spriteLives.height - 8;
         this.spriteLives.zIndex = ObjectzIndex.Lives;
         this.addChild(this.spriteLives);
+        // 暫停按鈕
+        this.pauseSpr = pixi_js__WEBPACK_IMPORTED_MODULE_0__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_0__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_7__["default"].Image.iconPause));
+        this.pauseSpr.interactive = true;
+        this.pauseSpr.on('pointerdown', this.onPause.bind(this));
+        this.pauseSpr.zIndex = ObjectzIndex.MiniGame + 1;
+        this.addChild(this.pauseSpr);
+        //
         this.sortableChildren = true;
         this.onRetry();
         console.log(this);
     }
     update(delta) {
+        // 出外跳回來太久不算
+        if (delta > 1000) {
+            if (!this.pause) {
+                this.onPause();
+            }
+            return;
+        }
         if (this.gameover) {
             this.gameOverSpr.update(delta);
             return;
         }
+        if (this.pause) {
+            return;
+        }
+        delta *= this.speed;
         this.hintTextSpr.update(delta);
         // 目前分數文字
         this.scoreTextSpr.text = this.score.toString().padStart(3, '0');
@@ -410,16 +694,29 @@ class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_6__.Scene {
         this.spriteLives.lives = this.lives;
         this.timerBombSpr.update(delta);
         this.spriteLives.update(delta);
-        if (this.currentGame && this.miniGameTimeLeft > 0) {
+        if (this.currentGame) {
+            if (this.miniGameTimeLeft <= 0) {
+                console.log('leave', this.currentGame);
+                this.leaveMiniGame();
+                return;
+            }
+            // 進入小遊戲的暖身時間
+            if (this.restTimeLeft > 0) {
+                this.restTimeLeft -= delta;
+                return;
+            }
+            // BGM 播放
+            const bgm = this.currentGame.BGM || _resources__WEBPACK_IMPORTED_MODULE_7__["default"].Audio.ME_game2;
+            // 設定速度
+            bgm.rate(this.speed);
+            if (!bgm.playing()) {
+                bgm.play();
+            }
             this.miniGameTimeLeft -= delta;
             this.currentGame.update(delta);
             // 小遊戲進行中
         }
         else if (this.restTimeLeft > 0) {
-            if (this.currentGame) {
-                console.log('leave', this.currentGame);
-                this.leaveMiniGame();
-            }
             // 剩餘2秒內時準備下一場遊戲
             if (this.restTimeLeft < 2000 && !this.nextGame) {
                 this.setNextGame();
@@ -434,7 +731,7 @@ class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_6__.Scene {
             // 進入小遊戲
             this.enterNextGame();
             this.spriteLives.animate = false;
-            this.restTimeLeft = RestTimeBase;
+            this.restTimeLeft = 250; // 等一個BPM = 120 * 八分拍的長度
             console.log('enterNext', this.currentGame, this.miniGameTimeLeft);
         }
     }
@@ -448,12 +745,18 @@ class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_6__.Scene {
             return;
         }
         this.score++;
-        this.nextGame = new _MiniGames__WEBPACK_IMPORTED_MODULE_8__["default"][Math.floor(Math.random() * _MiniGames__WEBPACK_IMPORTED_MODULE_8__["default"].length)];
+        this.BPM = Math.min(240, 120 + (Math.floor(this.score / 4)) * 8);
+        let nextGameIndex;
+        // 若跟上次遊戲相同，重挑
+        while ((nextGameIndex = Math.floor(Math.random() * _MiniGames__WEBPACK_IMPORTED_MODULE_8__["default"].length)) && nextGameIndex === this.lastGameIndex)
+            ;
+        this.nextGame = new _MiniGames__WEBPACK_IMPORTED_MODULE_8__["default"][nextGameIndex];
+        this.lastGameIndex = nextGameIndex;
+        _resources__WEBPACK_IMPORTED_MODULE_7__["default"].Audio.ME_Midgame.rate(this.speed);
         _resources__WEBPACK_IMPORTED_MODULE_7__["default"].Audio.ME_Midgame.play();
         this.spriteLives.animate = false;
     }
     enterNextGame() {
-        var _a, _b;
         this.currentGame = this.nextGame;
         // 設定小遊戲剩餘時間
         this.miniGameTimeLeft = this.nextGame.timeLength;
@@ -465,26 +768,27 @@ class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_6__.Scene {
         this.hintTextSpr.setText(this.currentGame.targetText);
         this.removeChild(this.hintTextSpr);
         this.addChild(this.hintTextSpr);
-        if ((_a = this.nextGame) === null || _a === void 0 ? void 0 : _a.BGM) {
-            (_b = this.nextGame) === null || _b === void 0 ? void 0 : _b.BGM.play();
-        }
-        else {
-            _resources__WEBPACK_IMPORTED_MODULE_7__["default"].Audio.ME_game2.play();
-        }
+        console.log(this.nextGame);
     }
     leaveMiniGame() {
+        // BGM 播放
+        const bgm = this.currentGame.BGM || _resources__WEBPACK_IMPORTED_MODULE_7__["default"].Audio.ME_game2;
+        bgm.stop();
         if (!this.currentGame.Succed) {
             this.lives--;
+            _resources__WEBPACK_IMPORTED_MODULE_7__["default"].Audio.ME_Fail.rate(this.speed);
             _resources__WEBPACK_IMPORTED_MODULE_7__["default"].Audio.ME_Fail.play();
         }
         else {
+            _resources__WEBPACK_IMPORTED_MODULE_7__["default"].Audio.ME_Success.rate(this.speed);
             _resources__WEBPACK_IMPORTED_MODULE_7__["default"].Audio.ME_Success.play();
         }
         this.spriteLives.animate = true;
+        this.restTimeLeft = RestTimeBase;
         this.removeChild(this.currentGame);
         this.currentGame = null;
     }
-    get soundRate() {
+    get speed() {
         return this.BPM / 120;
     }
     onRetry() {
@@ -495,6 +799,37 @@ class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_6__.Scene {
         this.restTimeLeft = RestTimeBase / 2;
         this.gameover = false;
         this.setNextGame();
+    }
+    onPause() {
+        if (this.pause) {
+            return;
+        }
+        this.pause = true;
+        const fullScreenMask = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+        //#region 背景
+        const bg = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+        bg.beginFill(0x000000);
+        bg.drawRect(0, 0, _game__WEBPACK_IMPORTED_MODULE_9__["default"].screen.width, _game__WEBPACK_IMPORTED_MODULE_9__["default"].screen.height);
+        bg.endFill();
+        bg.alpha = 0.95;
+        //#endregion
+        //#region 文字
+        const textTitle = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Text('PAUSE', _constants__WEBPACK_IMPORTED_MODULE_1__.$TextStyle.PauseTitleText);
+        textTitle.anchor.set(0.5);
+        textTitle.x = _game__WEBPACK_IMPORTED_MODULE_9__["default"].screen.width / 2;
+        textTitle.y = _game__WEBPACK_IMPORTED_MODULE_9__["default"].screen.height / 2;
+        //#endregion
+        //#region 元素加入與事件綁定
+        fullScreenMask.addChild(bg);
+        fullScreenMask.addChild(textTitle);
+        fullScreenMask.zIndex = ObjectzIndex.MiniGame + 1;
+        fullScreenMask.interactive = true;
+        fullScreenMask.on('pointerdown', () => {
+            this.pause = false;
+            fullScreenMask.destroy();
+        });
+        //#endregion
+        this.addChild(fullScreenMask);
     }
 }
 
@@ -714,6 +1049,8 @@ class Sprite_GameOver extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
                 this.scoreText.text = this.score.toString().padStart(3, '0');
                 this.scoreText.visible = true;
             }
+            this.scoreText.x = _game__WEBPACK_IMPORTED_MODULE_2__["default"].screen.width / 2 + Math.sin(Math.PI / 2 * this.frame / 125) * 8;
+            this.scoreText.y = _game__WEBPACK_IMPORTED_MODULE_2__["default"].screen.height / 2 + Math.sin(Math.PI / 2 * this.frame / 250) * 4;
         }
     }
     onRetryClick() {

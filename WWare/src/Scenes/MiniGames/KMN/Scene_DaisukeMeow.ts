@@ -1,10 +1,13 @@
-import $R from '../../resources';
-import { EClearMethod, MiniGameBase } from './MiniGameBase';
+import $R from '@/resources';
+import { EClearMethod, MiniGameBase } from '../MiniGameBase';
 import * as PIXI from 'pixi.js';
 import { Graphics, VideoResource, InteractionEvent } from 'pixi.js';
-import { GameConsts } from '../../constants';
-import Game from '../../game';
+import { GameConsts } from '@/constants';
+import Game from '@/game';
 import { AnimatedGIF } from '@pixi/gif';
+import { Howl } from 'howler';
+import { Effect_Flash } from '@/Effects/Effect_Flash';
+
 export class Scene_DaisukeMeow extends MiniGameBase {
     // 過關方式：達成目標
     clearMethod = EClearMethod.TARGET;
@@ -12,9 +15,9 @@ export class Scene_DaisukeMeow extends MiniGameBase {
     timeLength = 4000;
     // 目標文字
     targetText = '大助貓貓！';
-
+    // BGM
+    BGM: Howl = $R.Audio.ME_game1;
     sprVideo: AnimatedGIF;
-
     // 改判定的時間點
     reverseTime = 50;
     reverse: boolean;
@@ -43,6 +46,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
     }
 
     update(delta: number): void {
+        super.update(delta);
     }
 
     onMouseMove($event: InteractionEvent) {
@@ -60,6 +64,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
                 if (!this.clearFlag) {
                     $R.Audio.Success.play();
                     this.clearFlag = true;
+                    this.addChild(new Effect_Flash());
                 }
             } else if (this.sprVideo.currentFrame > this.reverseTime) {
                 this.reverse = true;

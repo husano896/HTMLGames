@@ -1,11 +1,10 @@
-import $R from '../../resources';
-import { Sprite_Eviat } from './../../Sprites/Sprite_Eviat';
-import { EClearMethod, MiniGameBase } from './MiniGameBase';
+import $R from '@/resources';
+import { EClearMethod, MiniGameBase } from '../MiniGameBase';
 
 import * as PIXI from 'pixi.js';
 import { Graphics, InteractionEvent } from 'pixi.js';
-import { GameConsts } from '../../constants';
-import { Sprite_AnWolf } from '../../Sprites/Sprite_AnWolf';
+import { GameConsts } from '@/constants';
+import { Sprite_AnWolf } from '@/Sprites/Sprite_AnWolf';
 export class Scene_EscapeDragon extends MiniGameBase {
 
     // 過關方式：達成目標
@@ -17,7 +16,7 @@ export class Scene_EscapeDragon extends MiniGameBase {
 
     texAnWolf: PIXI.Texture;
     texAnWolfAAA: PIXI.Texture;
-    
+
     sprAnDra: PIXI.Sprite;
     sprAnWolf: Sprite_AnWolf;
 
@@ -37,7 +36,7 @@ export class Scene_EscapeDragon extends MiniGameBase {
         this.sprAnWolf = new Sprite_AnWolf();
         this.on('pointermove', this.onMouseMove.bind(this));
         this.interactive = true;
-        
+
         this.addChild(this.sprAnDra);
         this.addChild(this.sprAnWolf);
 
@@ -45,6 +44,11 @@ export class Scene_EscapeDragon extends MiniGameBase {
         this.sprAnWolf.anchor.set(0.5);
         this.sprAnWolf.x = GameConsts.WIDTH / 2;
         this.sprAnWolf.y = GameConsts.HEIGHT / 2;
+        if (Math.random() > 0.5) {
+            this.sprAnDra.y = Math.random() * GameConsts.HEIGHT;
+        } else {
+            this.sprAnDra.x = Math.random() * GameConsts.WIDTH;
+        }
     }
 
     update(delta: number): void {

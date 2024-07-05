@@ -1,9 +1,9 @@
-import $R from '../../resources';
-import { Sprite_Eviat } from './../../Sprites/Sprite_Eviat';
-import { EClearMethod, MiniGameBase } from './MiniGameBase';
-import * as PIXI from 'pixi.js';
+import $R from '@/resources';
+import { Sprite_Eviat } from 'Sprites/Sprite_Eviat';
+import { EClearMethod, MiniGameBase } from '../MiniGameBase';
 import { Graphics } from 'pixi.js';
-import { GameConsts } from '../../constants';
+import { GameConsts } from '@/constants';
+import { Effect_Flash } from '@/Effects/Effect_Flash';
 
 export class Scene_RotateEviat extends MiniGameBase {
     // 過關方式：達成目標
@@ -32,7 +32,7 @@ export class Scene_RotateEviat extends MiniGameBase {
     }
 
     update(delta: number): void {
-        this.sprEviat.update(delta);
+        super.update(delta);
     }
 
     onMouseDown() {
@@ -44,6 +44,7 @@ export class Scene_RotateEviat extends MiniGameBase {
             this.clearFlag = this.sprEviat.Succed;
             if (this.clearFlag) {
                 $R.Audio.Success.play();
+                this.addChild(new Effect_Flash());
             } else {
                 $R.Audio.Fail.play();
             }

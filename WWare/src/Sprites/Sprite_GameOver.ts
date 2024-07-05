@@ -110,6 +110,9 @@ export class Sprite_GameOver extends Container {
                 this.scoreText.text = this.score.toString().padStart(3, '0');
                 this.scoreText.visible = true;
             }
+
+            this.scoreText.x = $game.screen.width / 2 + Math.sin(Math.PI / 2 * this.frame / 125) * 8;
+            this.scoreText.y = $game.screen.height / 2 + Math.sin(Math.PI / 2 * this.frame / 250) * 4;
         }
     }
     onRetryClick() {

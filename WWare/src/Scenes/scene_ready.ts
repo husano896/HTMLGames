@@ -35,12 +35,21 @@ export class Scene_Ready extends Scene {
 
     lobbySpr: PIXI.Sprite;
 
-    currentGame: MiniGameBase;
-    nextGame: MiniGameBase;
-
     gameOverSpr: Sprite_GameOver;
 
-    /** 速度，以120為基準速，最高240 */
+    /** 暫停按鈕 */
+    pauseSpr: PIXI.Sprite;
+
+    /** 暫停中 */
+    pause: boolean;
+
+    /** 目前遊戲instance */
+    currentGame: MiniGameBase;
+
+    /** 下個遊戲instance */
+    nextGame: MiniGameBase;
+
+    /** 速度，以120為基準速，最高應為240 */
     BPM: number = 120;
 
     /** 等級, 0~2, 之後為固定Lv2且加速 */
@@ -52,8 +61,10 @@ export class Scene_Ready extends Scene {
     miniGameTimeLeft: number;
     // 中場休息剩餘時間
     restTimeLeft: number = RestTimeBase;
-
+    /** 死去 */
     gameover: boolean;
+    // 避免出現同遊戲
+    lastGameIndex: number;
     constructor() {
         super();
 
@@ -63,9 +74,11 @@ export class Scene_Ready extends Scene {
         this.lobbySpr.setTransform($game.screen.width / 2, $game.screen.height / 2);
         // this.lobbySpr.pivot.set(0.5);
         this.addChild(this.lobbySpr);
+
         // 關卡指示文字
         this.hintTextSpr = new Sprite_HintText('拿到衛生紙！')
         this.hintTextSpr.zIndex = ObjectzIndex.HintText;
+
         // 分數文字
         this.scoreTextSpr = new PIXI.Text(this.score.toString().padStart(3, '0'), $TextStyle.ScoreText);
         this.scoreTextSpr.anchor.set(0.5, 0.5);
@@ -82,11 +95,11 @@ export class Scene_Ready extends Scene {
 
         // 剩餘時間圖案
         this.timerBombSpr = new Sprite_TimerBomb();
-
         this.timerBombSpr.x = 8;
         this.timerBombSpr.y = $game.screen.bottom - this.timerBombSpr.height - 8;
         this.timerBombSpr.zIndex = ObjectzIndex.timerBomb;
         this.addChild(this.timerBombSpr);
+
         // 剩餘生命圖案
         this.spriteLives = new Sprite_Lives();
         this.spriteLives.pivot.set(0.5, 0);
@@ -95,18 +108,38 @@ export class Scene_Ready extends Scene {
         this.spriteLives.zIndex = ObjectzIndex.Lives;
         this.addChild(this.spriteLives);
 
+        // 暫停按鈕
+        this.pauseSpr = PIXI.Sprite.from(PIXI.Texture.from($R.Image.iconPause))
+        this.pauseSpr.interactive = true;
+        this.pauseSpr.on('pointerdown', this.onPause.bind(this))
+        this.pauseSpr.zIndex = ObjectzIndex.MiniGame + 1;
+        this.addChild(this.pauseSpr);
+
+        //
         this.sortableChildren = true;
-
-
         this.onRetry();
         console.log(this);
     }
 
     update(delta: number) {
+        // 出外跳回來太久不算
+        if (delta > 1000) {
+            if (!this.pause) {
+                this.onPause();
+            }
+            return;
+        }
         if (this.gameover) {
             this.gameOverSpr.update(delta);
             return;
         }
+
+        if (this.pause) {
+            return;
+        }
+
+        delta *= this.speed;
+
         this.hintTextSpr.update(delta);
         // 目前分數文字
         this.scoreTextSpr.text = this.score.toString().padStart(3, '0');
@@ -121,15 +154,32 @@ export class Scene_Ready extends Scene {
         this.timerBombSpr.update(delta);
         this.spriteLives.update(delta);
 
-        if (this.currentGame && this.miniGameTimeLeft > 0) {
+        if (this.currentGame) {
+            if (this.miniGameTimeLeft <= 0) {
+                console.log('leave', this.currentGame);
+                this.leaveMiniGame();
+                return;
+            }
+            // 進入小遊戲的暖身時間
+            if (this.restTimeLeft > 0) {
+                this.restTimeLeft -= delta;
+                return;
+            }
+
+            // BGM 播放
+            const bgm = this.currentGame.BGM || $R.Audio.ME_game2;
+            // 設定速度
+            bgm.rate(this.speed);
+            if (!bgm.playing()) {
+                bgm.play()
+            }
+
             this.miniGameTimeLeft -= delta;
             this.currentGame.update(delta);
             // 小遊戲進行中
+
         } else if (this.restTimeLeft > 0) {
-            if (this.currentGame) {
-                console.log('leave', this.currentGame);
-                this.leaveMiniGame();
-            }
+
             // 剩餘2秒內時準備下一場遊戲
             if (this.restTimeLeft < 2000 && !this.nextGame) {
                 this.setNextGame();
@@ -143,7 +193,7 @@ export class Scene_Ready extends Scene {
             // 進入小遊戲
             this.enterNextGame();
             this.spriteLives.animate = false;
-            this.restTimeLeft = RestTimeBase;
+            this.restTimeLeft = 250; // 等一個BPM = 120 * 八分拍的長度
 
             console.log('enterNext', this.currentGame, this.miniGameTimeLeft);
         }
@@ -159,7 +209,13 @@ export class Scene_Ready extends Scene {
             return;
         }
         this.score++;
-        this.nextGame = new MiniGameScenes[Math.floor(Math.random() * MiniGameScenes.length)];
+        this.BPM = Math.min(240, 120 + (Math.floor(this.score / 4)) * 8);
+        let nextGameIndex: number;
+        // 若跟上次遊戲相同，重挑
+        while ((nextGameIndex = Math.floor(Math.random() * MiniGameScenes.length)) && nextGameIndex === this.lastGameIndex);
+        this.nextGame = new MiniGameScenes[nextGameIndex];
+        this.lastGameIndex = nextGameIndex;
+        $R.Audio.ME_Midgame.rate(this.speed);
         $R.Audio.ME_Midgame.play();
         this.spriteLives.animate = false;
     }
@@ -177,27 +233,30 @@ export class Scene_Ready extends Scene {
         this.removeChild(this.hintTextSpr);
         this.addChild(this.hintTextSpr);
 
-        if (this.nextGame?.BGM) {
-            this.nextGame?.BGM.play()
-        } else {
-            $R.Audio.ME_game2.play();
-        }
+        console.log(this.nextGame);
+
     }
 
     leaveMiniGame() {
+        // BGM 播放
+        const bgm = this.currentGame.BGM || $R.Audio.ME_game2;
+        bgm.stop();
         if (!this.currentGame.Succed) {
             this.lives--;
+            $R.Audio.ME_Fail.rate(this.speed);
             $R.Audio.ME_Fail.play()
         } else {
+            $R.Audio.ME_Success.rate(this.speed);
             $R.Audio.ME_Success.play()
         }
 
         this.spriteLives.animate = true;
+        this.restTimeLeft = RestTimeBase;
         this.removeChild(this.currentGame);
         this.currentGame = null;
     }
 
-    get soundRate() {
+    get speed() {
         return this.BPM / 120;
     }
 
@@ -209,5 +268,41 @@ export class Scene_Ready extends Scene {
         this.restTimeLeft = RestTimeBase / 2;
         this.gameover = false;
         this.setNextGame();
+    }
+
+    onPause() {
+        if (this.pause) {
+            return;
+        }
+        this.pause = true;
+        const fullScreenMask = new PIXI.Container();
+
+        //#region 背景
+        const bg = new PIXI.Graphics();
+        bg.beginFill(0x000000)
+        bg.drawRect(0, 0, $game.screen.width, $game.screen.height);
+        bg.endFill();
+        bg.alpha = 0.95;
+        //#endregion
+
+        //#region 文字
+        const textTitle = new PIXI.Text('PAUSE', $TextStyle.PauseTitleText);
+        textTitle.anchor.set(0.5);
+        textTitle.x = $game.screen.width / 2;
+        textTitle.y = $game.screen.height / 2;
+        //#endregion
+
+        //#region 元素加入與事件綁定
+        fullScreenMask.addChild(bg);
+        fullScreenMask.addChild(textTitle);
+        fullScreenMask.zIndex = ObjectzIndex.MiniGame + 1;
+        fullScreenMask.interactive = true;
+        fullScreenMask.on('pointerdown', () => {
+            this.pause = false;
+            fullScreenMask.destroy();
+        })
+        //#endregion
+
+        this.addChild(fullScreenMask);
     }
 }

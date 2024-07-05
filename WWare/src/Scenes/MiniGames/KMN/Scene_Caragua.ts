@@ -1,6 +1,6 @@
-import { EClearMethod, MiniGameBase } from './MiniGameBase';
+import { EClearMethod, MiniGameBase } from '../MiniGameBase';
 import { Graphics } from 'pixi.js';
-import { GameConsts } from '../../constants';
+import { GameConsts } from '@/constants';
 
 /** 小卡-100 */
 export class Scene_Caragua100 extends MiniGameBase {
@@ -25,6 +25,7 @@ export class Scene_Caragua100 extends MiniGameBase {
     }
 
     update(delta: number): void {
+        super.update(delta);
     }
 
     onMouseDown() {

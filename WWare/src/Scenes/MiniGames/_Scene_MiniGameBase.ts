@@ -18,12 +18,12 @@ export class Scene_MiniGameBase extends MiniGameBase {
         Bg.endFill();
         Bg.alpha = 0.9;
         this.addChild(Bg);
-
         this.on('pointerdown', this.onMouseDown.bind(this));
         this.interactive = true;
     }
 
     update(delta: number): void {
+        this.children.forEach(c => (c as any).update?.(delta));
     }
 
     onMouseDown() {

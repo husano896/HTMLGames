@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 
-import { GameConsts, $TextStyle } from '../constants';
+import { GameConsts, $TextStyle } from '@/constants';
 
 const SHOWLENGTH = 1000;
 export class Sprite_HintText extends PIXI.Text {

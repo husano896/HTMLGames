@@ -6,7 +6,8 @@ const $R = {
     // tick: new Howl({ src: 'audio/tick.wav' })
     Success: new Howl({ src: 'audio/decision40.mp3' }),
     Fail: new Howl({ src: 'audio/stupid3.mp3' }),
-
+    Correct: new Howl({ src: 'audio/SEcorrect.mp3' }),
+    InCorrect: new Howl({ src: 'audio/SEincorrect.mp3' }),
     // 逃跑嘎嗚吼 失敗效果音
     anWolfFail: new Howl({ src: 'audio/ah.mp3' }),
     anWolfWow: new Howl({ src: 'audio/wow.mp3' }),
@@ -16,23 +17,35 @@ const $R = {
     ME_Midgame: new Howl({ src: 'audio/midgame.mp3' }),
     ME_Gameover: new Howl({ src: 'audio/gameover.mp3' }),
     ME_result: new Howl({ src: 'audio/result.mp3' }),
+    // 輕快型：手風琴
     ME_game1: new Howl({ src: 'audio/game1.mp3' }),
-    ME_game2: new Howl({ src: 'audio/game2.mp3' })
+    // 謹慎型：Kick + 電吉他
+    ME_game2: new Howl({ src: 'audio/game2.mp3' }),
+    // 輕快型：Steel Drums
+    ME_game3: new Howl({ src: 'audio/game3.mp3' }),
+    // 音樂節奏 Listen Go：Drum + Piano + synth
+    ME_game4: new Howl({ src: 'audio/game4.mp3' }),
+    // 輕快型：Flute
+    ME_game5: new Howl({ src: 'audio/game5.mp3' }),
+    //
+    SE_Nom: new Howl({ src: 'audio/SEnom.mp3' })
     //https://www.youtube.com/watch?v=PJ_QgB7bAnM
   },
   Image: {
-    iconPause: 'imgs/pause_white.png',
-    // 歪狗狗
-    whygogo: 'imgs/whygogo.webp',
-    whygogoR: 'imgs/whygogor.webp',
+    //#region 遊戲基礎資源 
     // 時間炸彈
     timerBomb: 'imgs/timerBomb.webp',
-    // 廁所磁磚
-    tile: 'imgs/tile.png',
+    //暫停
+    iconPause: 'imgs/pause_white.png',
     // 生命
     life: 'imgs/life.png',
     // 電梯背景
     lobby: 'imgs/lobby.png',
+    //#endregion
+
+    // 歪狗狗
+    whygogo: 'imgs/whygogo.webp',
+    whygogoR: 'imgs/whygogor.webp',
     // 旋轉寶貝夢夢
     eviatBall: 'imgs/eviat_ball.png',
     eviatFace: 'imgs/eviat_face.png',
@@ -41,7 +54,14 @@ const $R = {
     anWolf: 'imgs/anWolf.webp',
     anWolfAAA: 'imgs/anWolfAAA.webp',
     anWolfRainbow: 'imgs/anWolfR.webp',
-    daisukeMeowMeow: 'imgs/daisukeMeowMeow.gif'
+    // 大助貓貓
+    daisukeMeowMeow: 'imgs/daisukeMeowMeow.gif',
+
+    // 蛋糕
+    EatCake1: 'imgs/EatCake/cake1.png',
+    EatCake2: 'imgs/EatCake/cake2.png',
+    EatCake3: 'imgs/EatCake/cake3.png',
+    EatCake4: 'imgs/EatCake/cake4.png',
   }
 }
 // 圖像處理部分

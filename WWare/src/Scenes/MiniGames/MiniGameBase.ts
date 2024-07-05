@@ -1,5 +1,6 @@
 import { Howl } from 'howler';
 import { Scene } from './../scene';
+import $R from '@/resources';
 export enum EClearMethod {
 	// 目標達成
 	TARGET = 0,
@@ -13,16 +14,22 @@ export interface MiniGameOption {
 }
 
 export class MiniGameBase extends Scene {
-	// 過關flag
+
+	/** 過關flag */
 	clearFlag: boolean;
-	// 過關方式
+
+	/** 過關方式 */
 	clearMethod: EClearMethod = EClearMethod.SURVIVE;
-	// 小遊戲時間長度秒數，設為 -1 則不限時間
+
+	/** 小遊戲時間長度秒數，設為 -1 則不限時間 */
 	timeLength: number = 1;
-	// 目標文字
+
+	/** 目標文字 */
 	targetText: string = 'PlaceHolder';
 
-	BGM: Howl;
+	/** 使用音樂 */
+	BGM: Howl = $R.Audio.ME_game2;
+	
 	constructor(option?: MiniGameOption) { super(); }
 
 	get Succed() {
@@ -33,5 +40,7 @@ export class MiniGameBase extends Scene {
 		// 如果是生存制時, clearFlag須為false
 		return !this.clearFlag;
 	}
-
+    update(delta: number): void {
+        this.children.forEach(c => (c as any).update?.(delta));
+    }
 }
