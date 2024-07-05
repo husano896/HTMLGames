@@ -1,6 +1,6 @@
 # WWare
 
-https://husano896.github.io/HTMLGames/WWare/
+https://xFlyDragon.cc/HTMLGames/WWare/
 
 以壞O歐工坊為藍本的小遊戲合輯
 
