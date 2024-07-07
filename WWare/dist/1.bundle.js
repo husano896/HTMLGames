@@ -40,7 +40,7 @@ class Effect_Flash extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
-/***/ 71:
+/***/ 72:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -110,6 +110,103 @@ class Scene_EatCake extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameB
 
 /***/ }),
 
+/***/ 71:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Scene_Caragua100": () => (/* binding */ Scene_Caragua100)
+/* harmony export */ });
+/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(65);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(52);
+/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(56);
+/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(54);
+
+
+
+
+
+/** 小卡-100 */
+class Scene_Caragua100 extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameBase {
+    constructor() {
+        super();
+        // 過關方式：達成目標
+        this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.EClearMethod.TARGET;
+        // 小遊戲時間長度
+        this.timeLength = 4000;
+        // 目標文字
+        this.targetText = '小卡+100！';
+        // BGM
+        this.BGM = _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.ME_game5;
+        // 小卡伸長度
+        this.length = 1;
+        // 背景
+        const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Graphics();
+        Bg.beginFill(0xBBBBBB);
+        Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT);
+        Bg.endFill();
+        Bg.alpha = 0.9;
+        this.addChild(Bg);
+        // 設定小卡
+        this.sprTop = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.CaraguaTop));
+        this.sprBottom = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.CaraguaBottom));
+        this.sprM100 = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.CaraguaM100));
+        this.sprTop.anchor.set(0.5, 1);
+        this.sprBottom.anchor.set(0.5, 1);
+        this.sprM100.anchor.set(0.5, 1);
+        this.addChild(this.sprTop, this.sprBottom, this.sprM100);
+        // 顯示的最下範圍
+        this.bottom = _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.bottom;
+        this.sprM100.x = _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.width / 2;
+        this.sprM100.y = this.bottom;
+        this.sprBottom.x = _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.width / 2;
+        this.sprBottom.y = this.bottom;
+        this.sprTop.x = _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.width / 2;
+        this.sprTop.y = this.sprBottom.y - this.sprBottom.height;
+        this.sprM100.visible = false;
+        this.on('pointerdown', this.onMouseDown.bind(this));
+        this.interactive = true;
+    }
+    update(delta) {
+        super.update(delta);
+        // 過關
+        if (this.clearFlag) {
+            this.sprBottom.scale.y = 2;
+            this.sprTop.y = this.sprBottom.y - this.sprBottom.height;
+            return;
+        }
+        if (this.pressed) {
+            this.sprBottom.visible = false;
+            this.sprTop.visible = false;
+            this.sprM100.visible = true;
+            return;
+        }
+        this.length = Math.sin(Math.PI * (this.frame % 1000) / 1000);
+        this.sprBottom.scale.y = 1 + this.length * 1;
+        this.sprTop.y = this.sprBottom.y - this.sprBottom.height;
+    }
+    onMouseDown() {
+        if (this.pressed) {
+            return;
+        }
+        this.pressed = true;
+        // 伸的夠長即過關
+        this.clearFlag = this.sprBottom.scale.y > 1.75;
+        _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.SE_Decision39.play();
+        if (this.clearFlag) {
+            const text = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Text('+100', _constants__WEBPACK_IMPORTED_MODULE_2__.$TextStyle.GameText);
+            text.anchor.set(0.5);
+            this.addChild(text);
+            text.y = 128;
+            text.x = _game__WEBPACK_IMPORTED_MODULE_4__["default"].screen.width / 2;
+        }
+    }
+}
+
+
+/***/ }),
+
 /***/ 70:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -138,7 +235,7 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
         // 小遊戲時間長度
         this.timeLength = 4000;
         // 目標文字
-        this.targetText = '大助貓貓！';
+        this.targetText = '膜拜大助貓貓！';
         // BGM
         this.BGM = _resources__WEBPACK_IMPORTED_MODULE_0__["default"].Audio.ME_game1;
         // 改判定的時間點
@@ -308,6 +405,205 @@ class Scene_EscapeDragon extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.Mini
 
 /***/ }),
 
+/***/ 75:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Scene_KC": () => (/* binding */ Scene_KC)
+/* harmony export */ });
+/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(65);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(52);
+/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(56);
+
+
+
+
+/** 小卡-100 */
+class Scene_KC extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameBase {
+    constructor() {
+        super();
+        // 過關方式：達成目標
+        this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.EClearMethod.TARGET;
+        // 小遊戲時間長度
+        this.timeLength = 4000;
+        // 目標文字
+        this.targetText = '面向同一邊！';
+        // BGM
+        this.BGM = _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.ME_game5;
+        // 背景
+        const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Graphics();
+        Bg.beginFill(0xBBBBBB);
+        Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT);
+        Bg.endFill();
+        Bg.alpha = 0.9;
+        this.addChild(Bg);
+        this.KCcontainer = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
+        // 設定KC
+        for (let i = 0; i < 5; i++) {
+            const newKC = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.KC1));
+            newKC.anchor.set(0.5);
+            newKC.interactive = true;
+            newKC.on('pointerdown', () => this.onMouseDown(i));
+            newKC.x = 144 * i + 80;
+            newKC.y = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT / 2 + 64;
+            newKC.scale.x = Math.random() > 0.5 ? 1 : -1;
+            this.KCcontainer.addChild(newKC);
+        }
+        // 過關KC
+        this.addChild(this.KCcontainer);
+        this.KCVictoryContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
+        this.KCVictoryContainer.visible = false;
+        this.KCVictoryContainer.pivot.set(0.5);
+        this.kcL = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.KC2));
+        this.kcR = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.KC2));
+        this.kcL.anchor.set(0.5);
+        this.kcR.anchor.set(0.5);
+        this.kcL.angle = 45;
+        this.kcR.angle = -45;
+        this.kcL.x = 144;
+        this.kcL.y = 144;
+        this.kcR.x = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH - 144;
+        this.kcR.y = 144;
+        this.kcL.scale.x = -1;
+        this.KCVictoryContainer.addChild(this.kcL, this.kcR);
+        this.addChild(this.KCVictoryContainer);
+        //
+        this.on('pointerdown', this.onMouseDown.bind(this));
+        this.interactive = true;
+    }
+    update(delta) {
+        super.update(delta);
+        // 過關
+        if (this.clearFlag) {
+            for (let i = 0; i < 5; i++) {
+                this.KCcontainer.children[i].y = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT / 2 + 64 + Math.sin(Math.PI / 2 * (this.frame + i * 200) / 250) * 64;
+            }
+            this.KCVictoryContainer.visible = true;
+            this.kcL.scale.x = -(1 + 0.5 * (this.frame % 500 / 500));
+            this.kcL.scale.y = 1 + 0.5 * (this.frame % 500 / 500);
+            this.kcR.scale.x = 1 + 0.5 * (this.frame % 500 / 500);
+            this.kcR.scale.y = 1 + 0.5 * (this.frame % 500 / 500);
+        }
+    }
+    onMouseDown(index) {
+        if (this.clearFlag) {
+            return;
+        }
+        _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.SE_Decision39.play();
+        this.KCcontainer.children[index].scale.x *= -1;
+        if (this.KCcontainer.children.every(c => c.scale.x === this.KCcontainer.children[0].scale.x)) {
+            this.clearFlag = true;
+            _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.Correct.play();
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ 74:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Scene_KuanKuan": () => (/* binding */ Scene_KuanKuan)
+/* harmony export */ });
+/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(65);
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(52);
+/* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(56);
+
+
+
+
+/** 框框寬寬 */
+class Scene_KuanKuan extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameBase {
+    constructor() {
+        super();
+        // 過關方式：達成目標
+        this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.EClearMethod.SURVIVE;
+        // 小遊戲時間長度
+        this.timeLength = 4000;
+        // 目標文字
+        this.targetText = '避開食物！';
+        // BGM
+        this.BGM = _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.ME_game5;
+        // 背景
+        const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Graphics();
+        Bg.beginFill(0xBBBBBB);
+        Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT);
+        Bg.endFill();
+        Bg.alpha = 0.9;
+        this.addChild(Bg);
+        // 寬寬
+        this.sprKuan = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.KuangKuan1));
+        this.sprKuan.anchor.set(0.5, 1);
+        this.sprKuan.x = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH / 2;
+        this.sprKuan.y = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT;
+        this.addChild(this.sprKuan);
+        // 食物容器
+        this.foodsContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
+        this.addChild(this.foodsContainer);
+        this.on('pointermove', this.onMouseMove.bind(this));
+        this.interactive = true;
+    }
+    update(delta) {
+        if (this.clearFlag) {
+            return;
+        }
+        super.update(delta);
+        // 畫面上應該要有的食物數量
+        const foods = Math.ceil(this.frame / 2000);
+        console.log(foods);
+        // 食物不夠 產生食物
+        if (this.foodsContainer.children.length < foods) {
+            const newFood = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.EatCake1));
+            newFood.anchor.set(0.5, 1);
+            newFood.scale.set(0.5);
+            newFood.x = Math.random() * (_constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH - newFood.width / 2) + newFood.width / 2;
+            newFood.y = 0;
+            this.foodsContainer.addChild(newFood);
+        }
+        // 食物掉落
+        this.foodsContainer.children.forEach(c => {
+            c.y += delta * 0.5;
+            const bounds1 = c.getBounds();
+            const bounds2 = this.sprKuan.getBounds();
+            // 碰到惹
+            if (bounds1.x < bounds2.x + bounds2.width
+                && bounds1.x + bounds1.width > bounds2.x
+                && bounds1.y < bounds2.y + bounds2.height
+                && bounds1.y + bounds1.height > bounds2.y) {
+                this.clearFlag = true;
+                _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.SE_Decision39.play();
+                // 變寬
+                this.sprKuan.texture = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.KuangKuan2);
+                this.sprKuan.scale.x = 3;
+                // BUFFET!
+                const buffet = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite.from(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.KuangKuanBuffet));
+                buffet.anchor.set(0.5);
+                buffet.scale.set(2);
+                buffet.x = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH / 2;
+                buffet.y = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT / 2 - 128;
+                this.addChild(buffet);
+            }
+        });
+    }
+    onMouseMove(event) {
+        if (this.clearFlag) {
+            return;
+        }
+        const x = event.data.global.x;
+        // 不能跑到畫面外
+        this.sprKuan.x = Math.min(_constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH - this.sprKuan.width / 2, Math.max(x, this.sprKuan.width / 2));
+    }
+}
+
+
+/***/ }),
+
 /***/ 67:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -335,7 +631,7 @@ class Scene_RotateEviat extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_2__.MiniG
         // 小遊戲時間長度
         this.timeLength = 4000;
         // 目標文字
-        this.targetText = '對準夢夢的臉！';
+        this.targetText = '對準！';
         const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_3__.Graphics();
         Bg.beginFill(0xBBBBBB);
         Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_4__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_4__.GameConsts.HEIGHT);
@@ -401,6 +697,7 @@ class MiniGameBase extends _scene__WEBPACK_IMPORTED_MODULE_0__.Scene {
         this.targetText = 'PlaceHolder';
         /** 使用音樂 */
         this.BGM = _resources__WEBPACK_IMPORTED_MODULE_1__["default"].Audio.ME_game2;
+        this.frame = 0;
     }
     get Succed() {
         // 如果是達成目標時, clearFlag須為true
@@ -411,6 +708,7 @@ class MiniGameBase extends _scene__WEBPACK_IMPORTED_MODULE_0__.Scene {
         return !this.clearFlag;
     }
     update(delta) {
+        this.frame += delta;
         this.children.forEach(c => { var _a, _b; return (_b = (_a = c).update) === null || _b === void 0 ? void 0 : _b.call(_a, delta); });
     }
 }
@@ -418,7 +716,7 @@ class MiniGameBase extends _scene__WEBPACK_IMPORTED_MODULE_0__.Scene {
 
 /***/ }),
 
-/***/ 72:
+/***/ 73:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -435,6 +733,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+/**
+ * Lv1: [0,x,1,x,3,x,3,x] (4下)
+ * Lv2: [1,x,2,x,0,0,0,x] (5下)
+ * Lv3: [0,1,2,3,0,0,0,x] (7下)
+ */
 const answers = [0, 1, 2, 3, 0, 0, 0];
 /** */
 class Scene_MaxmaClass extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameBase {
@@ -445,12 +748,11 @@ class Scene_MaxmaClass extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGa
         // 小遊戲時間長度
         this.timeLength = 8000;
         // 目標文字
-        this.targetText = '跟著音樂！';
+        this.targetText = '跟著順序按！';
         // BGM
         this.BGM = _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.ME_game4;
         this.buttonsContainer = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
         this.pressedButtons = [];
-        this.frame = 0;
         // BG
         this.bg = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Graphics();
         this.bg.beginFill(0x777777);
@@ -485,28 +787,39 @@ class Scene_MaxmaClass extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGa
     }
     update(delta) {
         super.update(delta);
-        this.frame += delta;
-        this.buttonsContainer.children.forEach(b => b.y = 0);
+        this.buttonsContainer.children.forEach(b => {
+            b.y = 0;
+            if (this.frame < 3500) {
+                b.alpha = 1;
+            }
+        });
         if (this.frame < 500) {
             this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[0].alpha = 0.5;
         }
         else if (this.frame < 1000) {
             this.buttonsContainer.children[1].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[1].alpha = 0.5;
         }
         else if (this.frame < 1500) {
             this.buttonsContainer.children[2].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[2].alpha = 0.5;
         }
         else if (this.frame < 2000) {
             this.buttonsContainer.children[3].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[3].alpha = 0.5;
         }
         else if (this.frame < 2500) {
             this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[0].alpha = 0.5;
         }
         else if (this.frame < 3000) {
             this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[0].alpha = 0.5;
         }
         else if (this.frame < 3500) {
             this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[0].alpha = 0.5;
         }
         else {
             this.hintText.visible = true;
@@ -557,8 +870,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _KMN_Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(64);
 /* harmony import */ var _KMN_Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(67);
 /* harmony import */ var _KMN_Scene_DaisukeMeow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(70);
-/* harmony import */ var _Brainless_Scene_EatCake__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(71);
-/* harmony import */ var _Rhythm_Scene_MaxmaClass__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(72);
+/* harmony import */ var _KMN_Scene_Caragua__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(71);
+/* harmony import */ var _Brainless_Scene_EatCake__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(72);
+/* harmony import */ var _Rhythm_Scene_MaxmaClass__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(73);
+/* harmony import */ var _KMN_Scene_KuanKuan__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(74);
+/* harmony import */ var _KMN_Scene_KC__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(75);
+
+
+
 
 
 
@@ -568,8 +887,11 @@ const games = [
     _KMN_Scene_EscapeDragon__WEBPACK_IMPORTED_MODULE_0__.Scene_EscapeDragon,
     _KMN_Scene_RotateEviat__WEBPACK_IMPORTED_MODULE_1__.Scene_RotateEviat,
     _KMN_Scene_DaisukeMeow__WEBPACK_IMPORTED_MODULE_2__.Scene_DaisukeMeow,
-    _Brainless_Scene_EatCake__WEBPACK_IMPORTED_MODULE_3__.Scene_EatCake,
-    _Rhythm_Scene_MaxmaClass__WEBPACK_IMPORTED_MODULE_4__.Scene_MaxmaClass
+    _Brainless_Scene_EatCake__WEBPACK_IMPORTED_MODULE_4__.Scene_EatCake,
+    _Rhythm_Scene_MaxmaClass__WEBPACK_IMPORTED_MODULE_5__.Scene_MaxmaClass,
+    _KMN_Scene_Caragua__WEBPACK_IMPORTED_MODULE_3__.Scene_Caragua100,
+    _KMN_Scene_KuanKuan__WEBPACK_IMPORTED_MODULE_6__.Scene_KuanKuan,
+    _KMN_Scene_KC__WEBPACK_IMPORTED_MODULE_7__.Scene_KC
 ];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (games);
 
@@ -745,7 +1067,7 @@ class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_6__.Scene {
             return;
         }
         this.score++;
-        this.BPM = Math.min(240, 120 + (Math.floor(this.score / 4)) * 8);
+        this.BPM = Math.min(240, 120 + (Math.floor(this.score / 2)) * 8);
         let nextGameIndex;
         // 若跟上次遊戲相同，重挑
         while ((nextGameIndex = Math.floor(Math.random() * _MiniGames__WEBPACK_IMPORTED_MODULE_8__["default"].length)) && nextGameIndex === this.lastGameIndex)

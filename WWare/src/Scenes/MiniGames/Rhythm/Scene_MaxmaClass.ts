@@ -5,7 +5,13 @@ import $R from '@/resources';
 import $game from '@/game';
 import { Howl } from 'howler';
 
+/**
+ * Lv1: [0,x,1,x,3,x,3,x] (4下)
+ * Lv2: [1,x,2,x,0,0,0,x] (5下)
+ * Lv3: [0,1,2,3,0,0,0,x] (7下)
+ */
 const answers = [0, 1, 2, 3, 0, 0, 0]
+
 /** */
 export class Scene_MaxmaClass extends MiniGameBase {
     // 過關方式：達成目標
@@ -13,7 +19,7 @@ export class Scene_MaxmaClass extends MiniGameBase {
     // 小遊戲時間長度
     timeLength = 8000;
     // 目標文字
-    targetText = '跟著音樂！';
+    targetText = '跟著順序按！';
     // BGM
     BGM: Howl = $R.Audio.ME_game4;
 
@@ -22,8 +28,6 @@ export class Scene_MaxmaClass extends MiniGameBase {
     pressedButtons: Array<number> = [];
 
     failed: boolean;
-
-    frame: number = 0;
 
     bg: Graphics;
     hintText: Text;
@@ -66,22 +70,34 @@ export class Scene_MaxmaClass extends MiniGameBase {
 
     update(delta: number): void {
         super.update(delta);
-        this.frame += delta;
-        this.buttonsContainer.children.forEach(b => b.y = 0);
+        this.buttonsContainer.children.forEach(b => {
+            b.y = 0;
+            if (this.frame < 3500) {
+                b.alpha = 1;
+            }
+        });
+
         if (this.frame < 500) {
             this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[0].alpha = 0.5;
         } else if (this.frame < 1000) {
             this.buttonsContainer.children[1].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[1].alpha = 0.5;
         } else if (this.frame < 1500) {
             this.buttonsContainer.children[2].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[2].alpha = 0.5;
         } else if (this.frame < 2000) {
             this.buttonsContainer.children[3].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[3].alpha = 0.5;
         } else if (this.frame < 2500) {
             this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[0].alpha = 0.5;
         } else if (this.frame < 3000) {
             this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[0].alpha = 0.5;
         } else if (this.frame < 3500) {
             this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
+            this.buttonsContainer.children[0].alpha = 0.5;
         } else {
             this.hintText.visible = true;
         }

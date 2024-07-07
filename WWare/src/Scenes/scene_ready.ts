@@ -209,7 +209,7 @@ export class Scene_Ready extends Scene {
             return;
         }
         this.score++;
-        this.BPM = Math.min(240, 120 + (Math.floor(this.score / 4)) * 8);
+        this.BPM = Math.min(240, 120 + (Math.floor(this.score / 2)) * 8);
         let nextGameIndex: number;
         // 若跟上次遊戲相同，重挑
         while ((nextGameIndex = Math.floor(Math.random() * MiniGameScenes.length)) && nextGameIndex === this.lastGameIndex);

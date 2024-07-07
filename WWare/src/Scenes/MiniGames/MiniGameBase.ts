@@ -29,7 +29,9 @@ export class MiniGameBase extends Scene {
 
 	/** 使用音樂 */
 	BGM: Howl = $R.Audio.ME_game2;
-	
+
+	frame: number = 0;
+
 	constructor(option?: MiniGameOption) { super(); }
 
 	get Succed() {
@@ -40,7 +42,8 @@ export class MiniGameBase extends Scene {
 		// 如果是生存制時, clearFlag須為false
 		return !this.clearFlag;
 	}
-    update(delta: number): void {
-        this.children.forEach(c => (c as any).update?.(delta));
-    }
+	update(delta: number): void {
+		this.frame += delta;
+		this.children.forEach(c => (c as any).update?.(delta));
+	}
 }

@@ -14,7 +14,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
     // 小遊戲時間長度
     timeLength = 4000;
     // 目標文字
-    targetText = '大助貓貓！';
+    targetText = '膜拜大助貓貓！';
     // BGM
     BGM: Howl = $R.Audio.ME_game1;
     sprVideo: AnimatedGIF;

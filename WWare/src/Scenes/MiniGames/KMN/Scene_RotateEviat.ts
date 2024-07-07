@@ -11,7 +11,7 @@ export class Scene_RotateEviat extends MiniGameBase {
     // 小遊戲時間長度
     timeLength = 4000;
     // 目標文字
-    targetText = '對準夢夢的臉！';
+    targetText = '對準！';
 
     sprEviat: Sprite_Eviat;
 

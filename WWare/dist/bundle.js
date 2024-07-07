@@ -44075,8 +44075,12 @@ const $R = {
         ME_game3: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/game3.mp3' }),
         // 音樂節奏 Listen Go：Drum + Piano + synth
         ME_game4: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/game4.mp3' }),
+        // 輕快型：Flute
+        ME_game5: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/game5.mp3' }),
         //
-        SE_Nom: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/SEnom.mp3' })
+        SE_Nom: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/SEnom.mp3' }),
+        //
+        SE_Decision39: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/decision39.mp3' })
         //https://www.youtube.com/watch?v=PJ_QgB7bAnM
     },
     Image: {
@@ -44108,6 +44112,17 @@ const $R = {
         EatCake2: 'imgs/EatCake/cake2.png',
         EatCake3: 'imgs/EatCake/cake3.png',
         EatCake4: 'imgs/EatCake/cake4.png',
+        // 小卡-100
+        CaraguaTop: 'imgs/Caragua/top.png',
+        CaraguaBottom: 'imgs/Caragua/bottom.png',
+        CaraguaM100: 'imgs/Caragua/m100.png',
+        // 寬寬
+        KuangKuan1: 'imgs/KuangKuan/1.png',
+        KuangKuan2: 'imgs/KuangKuan/2.png',
+        KuangKuanBuffet: 'imgs/KuangKuan/buffet.png',
+        // KC
+        KC1: 'imgs/KC/1.png',
+        KC2: 'imgs/KC/2.png'
     }
 };
 // 圖像處理部分
