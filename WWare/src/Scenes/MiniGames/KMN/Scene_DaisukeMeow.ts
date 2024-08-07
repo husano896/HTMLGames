@@ -23,6 +23,8 @@ export class Scene_DaisukeMeow extends MiniGameBase {
     reverse: boolean;
 
     debugText: PIXI.Text = new PIXI.Text('');
+
+    lastPointerEvent: InteractionEvent;
     constructor() {
         super();
         const Bg = new Graphics();
@@ -39,7 +41,9 @@ export class Scene_DaisukeMeow extends MiniGameBase {
 
         this.sprVideo.x = GameConsts.WIDTH / 2;
         this.sprVideo.y = GameConsts.HEIGHT / 2;
+        this.on('pointerdown', this.onMouseDown.bind(this));
         this.on('pointermove', this.onMouseMove.bind(this));
+        this.on('pointerup', this.onMouseUp.bind(this));
         this.interactive = true;
         this.addChild(this.sprVideo);
         this.addChild(this.debugText);
@@ -49,8 +53,14 @@ export class Scene_DaisukeMeow extends MiniGameBase {
         super.update(delta);
     }
 
+    onMouseDown($event: InteractionEvent) {
+        this.lastPointerEvent = $event;
+    }
     onMouseMove($event: InteractionEvent) {
-        const movementY = ($event.data.originalEvent as PointerEvent).movementY;
+        if (this.lastPointerEvent) {
+            
+        const newY = ($event.data.originalEvent as PointerEvent).clientY
+        const movementY = newY - (this.lastPointerEvent.data.originalEvent as PointerEvent).clientY;
         this.debugText.text = `rev, ${this.reverse}, ${movementY}`;
         if ((!this.reverse && movementY > 0) || (this.reverse && movementY < 0)) {
             this.sprVideo.currentFrame = Math.max(0, Math.min(this.sprVideo.totalFrames - 1,
@@ -70,5 +80,10 @@ export class Scene_DaisukeMeow extends MiniGameBase {
                 this.reverse = true;
             }
         }
+        }
+        this.lastPointerEvent = $event;
+    }
+    onMouseUp($event: InteractionEvent) {
+        this.lastPointerEvent = null;
     }
 }
