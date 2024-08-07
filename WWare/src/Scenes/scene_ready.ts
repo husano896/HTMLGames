@@ -1,15 +1,12 @@
 import * as PIXI from 'pixi.js';
-
 import { GameConsts, $TextStyle } from '../constants';
-import { Sprite_HintText } from '../Sprites/Sprite_HintText';
-import { MiniGameBase } from './MiniGames/MiniGameBase';
-import { Sprite_TimerBomb, } from '../Sprites/Sprite_TimerBomb';
-import { Sprite_Lives } from '../Sprites/Sprite_Lives';
-import { Sprite_GameOver } from '../Sprites/Sprite_GameOver';
+import { EClearMethod, MiniGameBase } from './MiniGames/MiniGameBase';
+import { Sprite_Lives, Sprite_GameOver, Sprite_TimerBomb, Sprite_HintText } from '@/Sprites/UI';
 import { Scene } from './scene';
 import $R from '../resources';
 import MiniGameScenes from './MiniGames';
 import $game from '../game';
+import _ from 'lodash';
 
 const ObjectzIndex = {
     // Index越小越上層
@@ -49,6 +46,8 @@ export class Scene_Ready extends Scene {
     /** 下個遊戲instance */
     nextGame: MiniGameBase;
 
+    nextGameIndexs: Array<number>;
+
     /** 速度，以120為基準速，最高應為240 */
     BPM: number = 120;
 
@@ -63,8 +62,7 @@ export class Scene_Ready extends Scene {
     restTimeLeft: number = RestTimeBase;
     /** 死去 */
     gameover: boolean;
-    // 避免出現同遊戲
-    lastGameIndex: number;
+
     constructor() {
         super();
 
@@ -72,11 +70,10 @@ export class Scene_Ready extends Scene {
         this.lobbySpr = PIXI.Sprite.from(PIXI.Texture.from($R.Image.lobby));
         this.lobbySpr.anchor.set(0.5);
         this.lobbySpr.setTransform($game.screen.width / 2, $game.screen.height / 2);
-        // this.lobbySpr.pivot.set(0.5);
         this.addChild(this.lobbySpr);
 
         // 關卡指示文字
-        this.hintTextSpr = new Sprite_HintText('拿到衛生紙！')
+        this.hintTextSpr = new Sprite_HintText('')
         this.hintTextSpr.zIndex = ObjectzIndex.HintText;
 
         // 分數文字
@@ -117,11 +114,19 @@ export class Scene_Ready extends Scene {
 
         //
         this.sortableChildren = true;
+
+        // 各個參數初始化用重新開始推（？）
         this.onRetry();
         console.log(this);
     }
 
     update(delta: number) {
+        // 死了
+        if (this.gameover) {
+            this.gameOverSpr.update(delta);
+            return;
+        }
+
         // 出外跳回來太久不算
         if (delta > 1000) {
             if (!this.pause) {
@@ -129,11 +134,8 @@ export class Scene_Ready extends Scene {
             }
             return;
         }
-        if (this.gameover) {
-            this.gameOverSpr.update(delta);
-            return;
-        }
 
+        // 暫停中
         if (this.pause) {
             return;
         }
@@ -147,15 +149,15 @@ export class Scene_Ready extends Scene {
         // 目前剩餘時間
         this.timerBombSpr.timeLength = this.currentGame ? this.currentGame.timeLength : 0;
         this.timerBombSpr.timeLeft = Math.max(0, this.miniGameTimeLeft);
+        this.timerBombSpr.update(delta);
 
         // 剩餘生命
         this.spriteLives.lives = this.lives;
-
-        this.timerBombSpr.update(delta);
         this.spriteLives.update(delta);
 
         if (this.currentGame) {
-            if (this.miniGameTimeLeft <= 0) {
+            if (this.miniGameTimeLeft <= 0 ||
+                (this.currentGame.clearMethod == EClearMethod.BOSS && this.currentGame.clearFlag !== undefined)) {
                 console.log('leave', this.currentGame);
                 this.leaveMiniGame();
                 return;
@@ -166,20 +168,22 @@ export class Scene_Ready extends Scene {
                 return;
             }
 
+            this.currentGame.interactive = true;
             // BGM 播放
             const bgm = this.currentGame.BGM || $R.Audio.ME_game2;
-            // 設定速度
             bgm.rate(this.speed);
             if (!bgm.playing()) {
                 bgm.play()
             }
 
-            this.miniGameTimeLeft -= delta;
+            // 若為BOSS戰，不走剩餘時間
+            if ((this.currentGame.clearMethod !== EClearMethod.BOSS)) {
+                this.miniGameTimeLeft -= delta;
+            }
             this.currentGame.update(delta);
             // 小遊戲進行中
 
         } else if (this.restTimeLeft > 0) {
-
             // 剩餘2秒內時準備下一場遊戲
             if (this.restTimeLeft < 2000 && !this.nextGame) {
                 this.setNextGame();
@@ -193,7 +197,7 @@ export class Scene_Ready extends Scene {
             // 進入小遊戲
             this.enterNextGame();
             this.spriteLives.animate = false;
-            this.restTimeLeft = 250; // 等一個BPM = 120 * 八分拍的長度
+            this.restTimeLeft = 500; // 等一個BPM = 120 * 八分拍的長度
 
             console.log('enterNext', this.currentGame, this.miniGameTimeLeft);
         }
@@ -202,19 +206,23 @@ export class Scene_Ready extends Scene {
     setNextGame() {
         if (this.lives <= 0) {
             this.gameover = true;
-            $R.Audio.ME_Gameover.play();
             this.gameOverSpr.visible = true;
             this.gameOverSpr.zIndex = ObjectzIndex.GameOver;
             this.gameOverSpr.gameover(this.score);
+            this.pauseSpr.alpha = 0;
+            this.pauseSpr.interactive = false;
+            $R.Audio.ME_Gameover.play();
             return;
         }
+        if (!this.nextGameIndexs?.length) {
+            this.nextGameIndexs = _.shuffle(_.range(MiniGameScenes.length));
+        }
         this.score++;
-        this.BPM = Math.min(240, 120 + (Math.floor(this.score / 2)) * 8);
-        let nextGameIndex: number;
-        // 若跟上次遊戲相同，重挑
-        while ((nextGameIndex = Math.floor(Math.random() * MiniGameScenes.length)) && nextGameIndex === this.lastGameIndex);
+        this.BPM = Math.min(240, 120 + (Math.floor((this.score - 1) / 2)) * 8);
+        const nextGameIndex: number = this.nextGameIndexs.shift();
         this.nextGame = new MiniGameScenes[nextGameIndex];
-        this.lastGameIndex = nextGameIndex;
+
+        this.nextGame.interactive = false;
         $R.Audio.ME_Midgame.rate(this.speed);
         $R.Audio.ME_Midgame.play();
         this.spriteLives.animate = false;
@@ -222,6 +230,7 @@ export class Scene_Ready extends Scene {
 
     enterNextGame() {
         this.currentGame = this.nextGame;
+
         // 設定小遊戲剩餘時間
         this.miniGameTimeLeft = this.nextGame.timeLength;
         // 並顯示在畫面上
@@ -241,18 +250,19 @@ export class Scene_Ready extends Scene {
         // BGM 播放
         const bgm = this.currentGame.BGM || $R.Audio.ME_game2;
         bgm.stop();
+
+        // SE播放
+        const resultSE = this.currentGame.Succed ? $R.Audio.ME_Success : $R.Audio.ME_Fail;
         if (!this.currentGame.Succed) {
             this.lives--;
-            $R.Audio.ME_Fail.rate(this.speed);
-            $R.Audio.ME_Fail.play()
-        } else {
-            $R.Audio.ME_Success.rate(this.speed);
-            $R.Audio.ME_Success.play()
         }
+        resultSE.rate(this.speed);
+        resultSE.play()
 
         this.spriteLives.animate = true;
         this.restTimeLeft = RestTimeBase;
         this.removeChild(this.currentGame);
+        this.currentGame.destroy();
         this.currentGame = null;
     }
 
@@ -267,11 +277,14 @@ export class Scene_Ready extends Scene {
         this.score = 0;
         this.restTimeLeft = RestTimeBase / 2;
         this.gameover = false;
+
+        this.pauseSpr.interactive = true;
+        this.pauseSpr.alpha = 1;
         this.setNextGame();
     }
 
     onPause() {
-        if (this.pause) {
+        if (this.pause || this.gameover) {
             return;
         }
         this.pause = true;
