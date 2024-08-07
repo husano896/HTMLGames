@@ -1,8 +1,14 @@
-import { EClearMethod, MiniGameBase } from './MiniGameBase';
+import { EClearMethod, MiniGameBase } from '../MiniGameBase';
 import { Graphics } from 'pixi.js';
-import { GameConsts } from '../../constants';
+import { GameConsts } from '@/constants';
 
-export class Scene_MiniGameBase extends MiniGameBase {
+/**
+ * 俄羅斯方塊PC挑戰
+ * Lv1: 兩方塊
+ * Lv2: 三方塊
+ * Lv3: 四方塊且須旋轉
+ */
+export class Scene_Tetris1 extends MiniGameBase {
     // 過關方式：達成目標
     clearMethod = EClearMethod.TARGET;
     // 小遊戲時間長度
@@ -16,14 +22,13 @@ export class Scene_MiniGameBase extends MiniGameBase {
         Bg.beginFill(0xBBBBBB);
         Bg.drawRect(0, 0, GameConsts.WIDTH, GameConsts.HEIGHT);
         Bg.endFill();
-        Bg.alpha = 0.9;
+        Bg.alpha = 1;
         this.addChild(Bg);
-        this.on('pointerdown', this.onMouseDown.bind(this));
         this.interactive = true;
     }
 
     update(delta: number): void {
-        this.children.forEach(c => (c as any).update?.(delta));
+        super.update(delta);
     }
 
     onMouseDown() {

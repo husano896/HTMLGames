@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import $R from '../resources';
-import { $TextStyle } from '../constants';
+import $R from '@/resources';
+import { $TextStyle } from '@/constants';
 
 export class Sprite_TimerBomb extends PIXI.Container {
 

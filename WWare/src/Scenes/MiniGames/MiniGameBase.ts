@@ -1,11 +1,14 @@
 import { Howl } from 'howler';
 import { Scene } from './../scene';
 import $R from '@/resources';
+
 export enum EClearMethod {
 	// 目標達成
 	TARGET = 0,
 	// 撐到時間到
 	SURVIVE,
+	// BOSS關, 通常為長遊戲, 
+	BOSS
 }
 
 // 可給予MiniGame目前的等級調整選項或視覺
@@ -35,12 +38,12 @@ export class MiniGameBase extends Scene {
 	constructor(option?: MiniGameOption) { super(); }
 
 	get Succed() {
-		// 如果是達成目標時, clearFlag須為true
-		if (this.clearMethod === EClearMethod.TARGET) {
-			return this.clearFlag;
-		}
 		// 如果是生存制時, clearFlag須為false
-		return !this.clearFlag;
+		if (this.clearMethod === EClearMethod.SURVIVE) {
+			return !this.clearFlag;
+		}
+		// 如果是達成目標 / BOSS戰時, clearFlag須為true
+		return this.clearFlag;
 	}
 	update(delta: number): void {
 		this.frame += delta;

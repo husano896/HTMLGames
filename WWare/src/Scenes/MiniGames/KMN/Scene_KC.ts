@@ -40,11 +40,17 @@ export class Scene_KC extends MiniGameBase {
             newKC.interactive = true;
             newKC.on('pointerdown', () => this.onMouseDown(i))
             newKC.x = 144 * i + 80;
-            newKC.y = GameConsts.HEIGHT / 2 + 64;
-
-            newKC.scale.x = Math.random() > 0.5 ? 1 : -1;
+            newKC.y = GameConsts.HEIGHT / 2 + 128;
             this.KCcontainer.addChild(newKC)
         }
+        // 若KC一直骰到同一邊，重骰
+        while (this.KCcontainer.children.every(c => c.scale.x === this.KCcontainer.children[0].scale.x)) {
+            for (let i = 0; i < 5; i++) {
+                this.KCcontainer.children[i].scale.x = Math.random() > 0.5 ? 1 : -1;
+            }
+        }
+        this.KCcontainer.pivot.set(0.5);
+        this.KCcontainer.x = GameConsts.WIDTH / 2 - this.KCcontainer.width / 2;
         // 過關KC
         this.addChild(this.KCcontainer);
 
@@ -75,7 +81,7 @@ export class Scene_KC extends MiniGameBase {
         // 過關
         if (this.clearFlag) {
             for (let i = 0; i < 5; i++) {
-                this.KCcontainer.children[i].y = GameConsts.HEIGHT / 2 + 64 + Math.sin(Math.PI / 2 * (this.frame + i * 200) / 250) * 64;
+                this.KCcontainer.children[i].y = GameConsts.HEIGHT / 2 + 128 + Math.sin(Math.PI / 2 * (this.frame + i * 200) / 250) * 64;
             }
             this.KCVictoryContainer.visible = true;
             this.kcL.scale.x = -(1 + 0.5 * (this.frame % 500 / 500));

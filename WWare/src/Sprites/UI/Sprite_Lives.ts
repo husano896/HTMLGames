@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import $R from '../resources';
+import $R from '@/resources';
 
 export class Sprite_Lives extends PIXI.Container {
     // 目前表示的時間 (動畫用)

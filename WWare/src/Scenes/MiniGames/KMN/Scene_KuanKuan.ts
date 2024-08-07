@@ -3,7 +3,6 @@ import { Graphics, Sprite, Texture, Text, InteractionEvent, Container, } from 'p
 import { $TextStyle, GameConsts } from '@/constants';
 import { Howl } from 'howler';
 import $R from '@/resources';
-import $game from '@/game';
 
 /** 框框寬寬 */
 export class Scene_KuanKuan extends MiniGameBase {
@@ -50,7 +49,6 @@ export class Scene_KuanKuan extends MiniGameBase {
 
         // 畫面上應該要有的食物數量
         const foods = Math.ceil(this.frame / 2000);
-        console.log(foods);
         // 食物不夠 產生食物
         if (this.foodsContainer.children.length < foods) {
             const newFood = new Sprite(Texture.from($R.Image.EatCake1));
@@ -59,7 +57,6 @@ export class Scene_KuanKuan extends MiniGameBase {
             newFood.x = Math.random() * (GameConsts.WIDTH - newFood.width / 2) + newFood.width / 2;
             newFood.y = 0;
             this.foodsContainer.addChild(newFood);
-
         }
 
         // 食物掉落

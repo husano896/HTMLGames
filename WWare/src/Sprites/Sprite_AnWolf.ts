@@ -13,7 +13,7 @@ export class Sprite_AnWolf extends PIXI.Sprite {
         super(PIXI.Texture.from($R.Image.anWolf));
         // 被抓到後才是彩虹
         this.texAAA = PIXI.Texture.from($R.Image.anWolfAAA);
-        this.texRainbow =  PIXI.Texture.from($R.Image.anWolfRainbow);
+        this.texRainbow = PIXI.Texture.from($R.Image.anWolfRainbow);
         this.caughtDelta = 0;
     }
 
@@ -30,7 +30,7 @@ export class Sprite_AnWolf extends PIXI.Sprite {
                 $R.Audio.anWolfWow.play();
             }
         } else {
-            this.y += this.caughtDelta %100 > 50 ? 4 : -4;
+            this.y += this.caughtDelta % 100 > 50 ? 4 : -4;
         }
     }
 

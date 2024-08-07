@@ -31,7 +31,7 @@ class Scene_Title extends _scene__WEBPACK_IMPORTED_MODULE_2__.Scene {
     }
     async onMouseDown() {
         this.off('pointerdown', this.onMouseDown.bind(this));
-        const scene = await __webpack_require__.e(/* import() */ 1).then(__webpack_require__.bind(__webpack_require__, 58)).then(s => s.Scene_Ready);
+        const scene = await Promise.all(/* import() */[__webpack_require__.e(2), __webpack_require__.e(1)]).then(__webpack_require__.bind(__webpack_require__, 58)).then(s => s.Scene_Ready);
         _game__WEBPACK_IMPORTED_MODULE_3__["default"].stage.removeChildren();
         const s = new scene();
         _game__WEBPACK_IMPORTED_MODULE_3__["default"].stage.addChild(s);
@@ -43887,7 +43887,7 @@ const $TextStyle = {
         align: 'center',
         fontFamily: 'Arial',
         fontSize: 24,
-        fill: ['#ffffff'],
+        fill: ['#ffffff'], // gradient
         // stroke: '#4a1850',
         // strokeThickness: 5,
         wordWrap: true,
@@ -43898,7 +43898,7 @@ const $TextStyle = {
         fontFamily: '微軟正黑體',
         fontSize: 48,
         fontWeight: 'bold',
-        fill: ['#dddddd', '#ffffff'],
+        fill: ['#dddddd', '#ffffff'], // gradient
         stroke: '#000000',
         strokeThickness: 4,
         dropShadow: true,
@@ -43909,7 +43909,7 @@ const $TextStyle = {
         fontFamily: '微軟正黑體',
         fontSize: 80,
         fontWeight: 'bold',
-        fill: ['#333333', '#ffffff'],
+        fill: ['#333333', '#ffffff'], // gradient
         stroke: '#454545',
         strokeThickness: 4,
         dropShadow: true,
@@ -43920,7 +43920,7 @@ const $TextStyle = {
         fontFamily: 'Arial Black',
         fontSize: 72,
         fontWeight: 'bold',
-        fill: '#ffffff',
+        fill: '#ffffff', // gradient
         stroke: '#000000',
         strokeThickness: 8,
         padding: 8,
@@ -43932,7 +43932,7 @@ const $TextStyle = {
         fontFamily: 'Arial Black',
         fontSize: 120,
         fontWeight: 'bold',
-        fill: '#FFFF66',
+        fill: '#FFFF66', // gradient
         stroke: '#000000',
         strokeThickness: 8,
         padding: 8,
@@ -43944,7 +43944,7 @@ const $TextStyle = {
         fontFamily: 'Arial',
         fontSize: 48,
         fontWeight: 'bold',
-        fill: '#ffffff',
+        fill: '#ffffff', // gradient
         stroke: '#000000',
         strokeThickness: 4,
         padding: 8,
@@ -43955,7 +43955,7 @@ const $TextStyle = {
         align: 'center',
         fontFamily: 'Arial',
         fontSize: 32,
-        fill: '#ffffff',
+        fill: '#ffffff', // gradient
         padding: 8,
         dropShadow: true,
         lineJoin: 'round',
@@ -44067,6 +44067,7 @@ const $R = {
         ME_Midgame: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/midgame.mp3' }),
         ME_Gameover: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/gameover.mp3' }),
         ME_result: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/result.mp3' }),
+        ME_retry: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/retry.mp3' }),
         // 輕快型：手風琴
         ME_game1: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/game1.mp3' }),
         // 謹慎型：Kick + 電吉他

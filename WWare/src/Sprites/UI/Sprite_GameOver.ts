@@ -1,7 +1,7 @@
 import { Graphics, Container, Text } from "pixi.js";
-import { $TextStyle, GameConsts } from '../constants';
-import $game from "../game";
-import $R from "../resources";
+import { $TextStyle, GameConsts } from '@/constants';
+import $game from "@/game";
+import $R from "@/resources";
 export class Sprite_GameOver extends Container {
 
     /** 給外部帶入Function用，按下重新開始且動畫完後重新開始遊戲的callback */
@@ -75,7 +75,6 @@ export class Sprite_GameOver extends Container {
                 this.bg.alpha = 1 - this.frame / 2000;
             } else {
                 this.bg.alpha = 0;
-                $R.Audio.ME_result.stop();
                 this.onrestart();
                 this.retrying = false;
                 this.visible = false;
@@ -83,7 +82,6 @@ export class Sprite_GameOver extends Container {
             return;
         }
         if (this.frame < 1000) {
-
             // 0秒~1秒：GameOver文字落下
             this.gameOverText.alpha = Math.min((this.frame / 750), 1);
             this.gameOverText.y = this.frame / 1000 * $game.screen.height / 2;
@@ -97,11 +95,11 @@ export class Sprite_GameOver extends Container {
             // 4秒~5秒：GameOver文字淡出+黑背景淡入
             this.gameOverText.x = $game.screen.width / 2;
             this.gameOverText.alpha = Math.max(0, 1 - (this.frame - 4000) / 1000);
-            this.bg.alpha = Math.min(0.75, (this.frame - 4000) / 1000);
+            this.bg.alpha = Math.min(0.9, (this.frame - 4000) / 1000);
         }
         else {
             // 5秒：分數與重新按鈕顯示
-            this.bg.alpha = 0.75;
+            this.bg.alpha = 0.9;
             if (!$R.Audio.ME_result.playing()) {
                 $R.Audio.ME_result.play();
                 $R.Audio.ME_result.loop(true);
@@ -121,5 +119,7 @@ export class Sprite_GameOver extends Container {
         this.retryText.interactive = false;
         this.scoreText.visible = false;
         this.frame = 0;
+        $R.Audio.ME_result.stop();
+        $R.Audio.ME_retry.play();
     }
 }

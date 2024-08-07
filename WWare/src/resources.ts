@@ -17,6 +17,7 @@ const $R = {
     ME_Midgame: new Howl({ src: 'audio/midgame.mp3' }),
     ME_Gameover: new Howl({ src: 'audio/gameover.mp3' }),
     ME_result: new Howl({ src: 'audio/result.mp3' }),
+    ME_retry: new Howl({ src: 'audio/retry.mp3' }),
     // 輕快型：手風琴
     ME_game1: new Howl({ src: 'audio/game1.mp3' }),
     // 謹慎型：Kick + 電吉他

@@ -21,18 +21,19 @@ export class Sprite_HintText extends PIXI.Text {
     }
     update(delta: number) {
         // 進入時
-        if (this.timeLength > 1000 - 200) {
-            this.scale.set((this.timeLength - (1000 - 200)) / 200 * 4 + 1);
+        this.timeLength -= delta;
+        if (this.timeLength > 750) {
+            this.scale.set((this.timeLength - 750) / 250 * 3 + 1);
         }
         // 淡出時
         else if (this.timeLength > 0) {
             this.scale.set(1);
-            this.alpha = this.timeLength / 1000;
-        } else {
-            // 顯示完畢走人
-            this.alpha = 0;
-            return;
+            this.alpha = Math.min(1, this.timeLength / 500);
         }
-        this.timeLength -= delta;
+        // 顯示完畢走人
+        else {
+            this.scale.set(1);
+            this.alpha = 0;
+        }
     }
 }

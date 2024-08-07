@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 
-import { GameConsts, $TextStyle } from '../constants';
+import { GameConsts, $TextStyle } from '@/constants';
 
 export class Sprite_Pause extends PIXI.Container {
     pauseTitleText: PIXI.Text;

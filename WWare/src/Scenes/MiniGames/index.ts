@@ -7,6 +7,7 @@ import { Scene_EatCake } from './Brainless/Scene_EatCake';
 import { Scene_MaxmaClass } from './Rhythm/Scene_MaxmaClass';
 import { Scene_KuanKuan } from './KMN/Scene_KuanKuan';
 import { Scene_KC } from './KMN/Scene_KC';
+import { Scene_Tetris1 } from './Brain/Scene_Tetris1';
 const games: typeof MiniGameBase[] = [
     Scene_EscapeDragon,
     Scene_RotateEviat,
@@ -15,7 +16,8 @@ const games: typeof MiniGameBase[] = [
     Scene_MaxmaClass,
     Scene_Caragua100,
     Scene_KuanKuan,
-    Scene_KC
+    Scene_KC,
+    Scene_Tetris1
 ];
 
 export default games;
