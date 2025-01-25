@@ -4,6 +4,7 @@ canvas {
   top: 0;
   z-index: 0;
   cursor: url('shared/cursor.png'), auto;
+  pointer-events: none;
 }
 
 body {
@@ -12,4 +13,14 @@ body {
 
 .container {
   z-index: 1;
+}
+
+.ts-grid .column {
+  transform: translateY(0);
+  background: rgba(127, 127, 127, 0) !important;
+  transition: 0.5s ease-out;
+}
+
+.ts-grid .column:hover {
+  transform: translateY(-8px);
 }

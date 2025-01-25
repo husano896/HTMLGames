@@ -28,6 +28,8 @@ const $R = {
     ME_game4: new Howl({ src: 'audio/game4.mp3' }),
     // 輕快型：Flute
     ME_game5: new Howl({ src: 'audio/game5.mp3' }),
+    // 俄羅斯方塊相關
+    ME_game6: new Howl({ src: 'audio/game6.mp3' }),
     //
     SE_Nom: new Howl({ src: 'audio/SEnom.mp3' }),
     //
