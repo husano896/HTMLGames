@@ -22,6 +22,8 @@ class UntitledChart {
 
     /** @type {string} */
     this.laserPosString = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno'
+
+    this.totalChain = 0;
   }
 
   /**
@@ -245,7 +247,8 @@ class UntitledChart {
       }
     });
     //#endregion
-    console.log('currentTime', currentTime);
+
+    _this.calculateTotalChain();
     return _this;
   }
 
@@ -258,5 +261,33 @@ class UntitledChart {
 
     throw new Error('尚未實作完成！')
     return _this;
+  }
+
+  calculateTotalChain() {
+    const baseBPM = this.BPM[0];
+    if (!baseBPM) {
+      throw new Error('譜面無基礎baseBPM!');
+    }
+    const baseDivMs = 60000 / baseBPM / 4;
+
+    this.totalChain = 0;
+
+    const buttonCalculator = (n) => {
+      if (n[1] === 0) {
+        this.totalChain++;
+        return;
+      }
+      this.totalChain += Math.floor(n / baseDivMs);
+    }
+    this.btA.forEach(buttonCalculator);
+    this.btB.forEach(buttonCalculator)
+    this.btC.forEach(buttonCalculator)
+    this.btD.forEach(buttonCalculator)
+    this.fxL.forEach(buttonCalculator)
+    this.fxR.forEach(buttonCalculator)
+    // this.laserL.forEach()
+    // this.laserR.forEach()
+    console.log('totalChain', this.totalChain);
+    return this.totalChain;
   }
 }

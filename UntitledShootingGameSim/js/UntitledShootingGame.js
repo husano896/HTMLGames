@@ -97,10 +97,16 @@ class UntitledShootingGame {
     // 旋鈕渲染文字
     this.ctx.font = "90px Arial Black";
     this.ctx.textAlign = 'center'
+
     this.BTfillStyle = this.ctx.createLinearGradient(0, 0, 90, 0);
     this.BTfillStyle.addColorStop(0, '#CFD8DC');
     this.BTfillStyle.addColorStop(0.5, '#FAFAFA');
-    this.BTfillStyle.addColorStop(1, '#FAFAFA');
+    this.BTfillStyle.addColorStop(1, '#CFD8DC');
+
+    this.BTChipfillStyle = this.ctx.createLinearGradient(0, 0, 90, 0);
+    this.BTChipfillStyle.addColorStop(0, '#FAFAFA');
+    this.BTChipfillStyle.addColorStop(0.5, '#FAFAFA');
+    this.BTChipfillStyle.addColorStop(1, '#FAFAFA');
 
     this.FXfillStyle = this.ctx.createLinearGradient(0, 0, 180, 0);
     this.FXfillStyle.addColorStop(0, '#FFA726AA');
@@ -126,7 +132,6 @@ class UntitledShootingGame {
     this.textFillStyle.addColorStop(0, '#AAAAAA');
     this.textFillStyle.addColorStop(0.5, '#FFFFFF');
     this.textFillStyle.addColorStop(1, '#AAAAAA');
-    this.scale = 1;
 
     /**
      * @type {UntitledChart}
@@ -136,7 +141,7 @@ class UntitledShootingGame {
     this.highSpeed = 3.0;
 
     //#region 事件聆聽
-    document.body.addEventListener('focus', ev => ev.preventDefault());
+    document.addEventListener('focus', ev => ev.preventDefault());
     document.addEventListener('keydown', this.onKeyDown.bind(this));
     document.addEventListener('keyup', this.onKeyUp.bind(this))
     document.addEventListener('pointermove', this.onPointerMove.bind(this))
@@ -145,7 +150,10 @@ class UntitledShootingGame {
     //#endregion
 
     // 給外部註冊的callback
-    this.onAudioLoaded = [];
+    /** 音檔讀取完成事件 */
+    this._onAudioLoaded = [];
+    /** 畫面更新事件 */
+    this._onPostUpdate = [];
     //#region UI
     this.UI = new UIBase(this, document.querySelector('div#scene-play-UI'));
     //#endregion
@@ -240,7 +248,7 @@ class UntitledShootingGame {
        * @param {[number,number][]} noteArr
        * @param {number} lane FX第幾軌道  
        */
-      function fxLongRenderer(noteArr, lane) {
+      const fxLongRenderer = (noteArr, lane) => {
         noteArr.filter(longNoteFilter).forEach(note => {
           const timeDiff = note[0] - audioPos;
           const lengthToHeight = this.canvas.height * note[1] / seeTime;
@@ -257,7 +265,7 @@ class UntitledShootingGame {
        * @param {[number,number][]} noteArr
        * @param {number} lane BT第幾軌道  
        */
-      function btLongRenderer(noteArr, lane) {
+      const btLongRenderer = (noteArr, lane) => {
         noteArr.filter(longNoteFilter).forEach(note => {
           const timeDiff = note[0] - audioPos;
           const lengthToHeight = this.canvas.height * note[1] / seeTime;
@@ -336,7 +344,7 @@ class UntitledShootingGame {
               laserStartXPos + (laneWidth - 90) * nextNote[1],
               this.canvas.height * (1 - timeDiff / seeTime),
               90,
-              Math.max(-120, -120 * this.highSpeed));
+              Math.max(-120, -60 * this.highSpeed));
           }
         }
         else {
@@ -416,7 +424,7 @@ class UntitledShootingGame {
               laserStartXPos + (laneWidth - 90) * nextNote[1],
               this.canvas.height * (1 - timeDiff / seeTime),
               90,
-              Math.max(-120, -120 * this.highSpeed));
+              Math.max(-120, -60 * this.highSpeed));
           }
         }
         else {
@@ -448,7 +456,7 @@ class UntitledShootingGame {
        * @param {[number,number][]} noteArr
        * @param {number} lane FX第幾軌道  
        */
-      function fxChipRenderer(noteArr, lane) {
+      const fxChipRenderer = (noteArr, lane) => {
         noteArr.filter(chipNoteFilter).forEach(note => {
           const timeDiff = note[0] - audioPos;
           this.ctx.fillRect(
@@ -463,7 +471,7 @@ class UntitledShootingGame {
        * @param {[number,number][]} noteArr
        * @param {number} lane BT第幾軌道  
        */
-      function btChipRenderer(noteArr, lane) {
+      const btChipRenderer = (noteArr, lane) => {
         // 白鍵
         noteArr.filter(chipNoteFilter).forEach(note => {
           const timeDiff = note[0] - audioPos;
@@ -475,12 +483,12 @@ class UntitledShootingGame {
         });
       }
       // 橘鍵
-      this.ctx.fillStyle = this.FXChipfillStyle
-      fxChipRenderer.bind(this)(this.chart.fxL, 0);
-      fxChipRenderer.bind(this)(this.chart.fxR, 1);
+      this.ctx.fillStyle = this.FXChipfillStyle;
+      fxChipRenderer(this.chart.fxL, 0);
+      fxChipRenderer(this.chart.fxR, 1);
 
       // 白鍵
-      this.ctx.fillStyle = this.BTfillStyle
+      this.ctx.fillStyle = this.BTChipfillStyle;
       btChipRenderer.bind(this)(this.chart.btA, 0)
       btChipRenderer.bind(this)(this.chart.btB, 1)
       btChipRenderer.bind(this)(this.chart.btC, 2)
@@ -491,6 +499,7 @@ class UntitledShootingGame {
 
     const currentLaserLPos = this.currentLaserLPos;
     const currentLaserRPos = this.currentLaserRPos;
+
     // AUTO模式下跟隨旋鈕
     if (true) {
       if (currentLaserLPos[0] !== -1) {
@@ -501,7 +510,7 @@ class UntitledShootingGame {
         this.cursorRPos = currentLaserRPos[0];
       }
     }
-    
+
     // 若目前沒有左旋鈕，不顯示指標
     if (currentLaserLPos[0] !== -1) {
 
@@ -513,7 +522,6 @@ class UntitledShootingGame {
         this.canvas.height - this.images.cursorl.height
       );
     }
-
     // 若目前沒有右旋鈕，不顯示指標
     if (currentLaserRPos[0] !== -1) {
 
@@ -525,13 +533,14 @@ class UntitledShootingGame {
         this.canvas.height - this.images.cursorr.height
       );
     }
-
     // filter
 
     if (this.filter) {
       this.filter.frequency.value = Math.max(currentLaserLPos[0], currentLaserRPos[0], 0);
     }
     this.UI.update(delta, this.canvas);
+
+    this._onPostUpdate.forEach(e => e());
     this.currentFrameTime = currentTime;
     requestAnimationFrame(this.update.bind(this));
   }
@@ -689,17 +698,20 @@ class UntitledShootingGame {
               format: file.name.slice(file.name.lastIndexOf('.') + 1)
             })
             console.log(this.chartHowl);
+            
 
-
-            this.chartHowl.once('play', () => {
+            this.chartHowl.once('load', () => {
               console.log(ev);
               console.log(this.chartHowl);
               this.audioCtx = Howler.ctx;
-
+              this.audioId.chartHowl = this.chartHowl.play();
+              this.chartHowl.pause(this.audioId.chartHowl);
               Howler.masterGain.connect(this.filter)
               this.filter = this.audioCtx.createBiquadFilter();
               this.filter.type = 'bandpass';
               this.filter.connect(this.ctx.destination);
+              // 事件推送
+              this._onAudioLoaded.forEach(e => e());
             })
           }
         }
@@ -729,6 +741,18 @@ class UntitledShootingGame {
     this.update();
   }
 
+  /**
+   * 給予外部插件聆聽事件
+   * @param {*} event 
+   * @param {Function} callback 
+   */
+  addEventListener(event, callback) {
+    switch (event) {
+      case 'audioLoaded': {
+        this._onAudioLoaded.push(callback)
+      }
+    }
+  }
   //#region GET區
   get songPos() {
     return this.chartHowl?.seek(this.audioId.chartHowl) * 1000 || 0;

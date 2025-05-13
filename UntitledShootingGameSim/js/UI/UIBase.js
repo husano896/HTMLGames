@@ -46,18 +46,30 @@ class UIBase extends _UIBase {
     //#endregion
 
     //#region 進度條
+    const playContainer = document.createElement('div');
+    playContainer.style.display = 'flex';
+    playContainer.style.flexDirection = 'row';
+    playContainer.style.gap = '8px';
+    playContainer.style.width = '100%';
+
+    const playPauseButton = document.createElement('button');
+    playPauseButton.innerText = '▶▐▐';
+    playContainer.appendChild(playPauseButton);
+    this.playPauseButton = playPauseButton;
+
     const songProgressEl = document.createElement('input')
     songProgressEl.type = 'range'
     songProgressEl.min = 0;
     songProgressEl.value = 0;
     songProgressEl.max = 0;
-    songProgressEl.width = '100%';
+    songProgressEl.style.width = '100%';
     songProgressEl.style.background = 'rgba(0,0,0,0.5)';
     songProgressEl.style.border = '1px cyan solid';
     songProgressEl.disabled = true;
     songProgressEl.step = 1;
     this.songProgressEl = songProgressEl;
-    titleBarEl.appendChild(songProgressEl);
+    playContainer.appendChild(songProgressEl);
+    titleBarEl.appendChild(playContainer);
     //#endregion
 
     //#region BPM
@@ -92,6 +104,8 @@ class UIBase extends _UIBase {
 
     //#region 事件聆聽
     this.songProgressEl.addEventListener('change', this.onProgressBarChange.bind(this))
+
+    this.playPauseButton.addEventListener('click', this.onPlayClick.bind(this))
     // this.highSpeedRangeEl.addEventListener('change', this.onHighSpeedChange.bind(this));
     //#endregion
   }
@@ -119,7 +133,6 @@ class UIBase extends _UIBase {
       if (!Number(this.songProgressEl.max)) {
         this.songProgressEl.disabled = false;
         this.songProgressEl.max = this.game.chartHowl.duration() * 1000;
-
         // this.highSpeedRangeEl.value = this.game.highSpeed;
       }
 
@@ -157,5 +170,16 @@ class UIBase extends _UIBase {
     console.log(ev)
     this.game.highSpeed = Number(ev.target.value);
     this.highSpeedEl.innerText = `x${this.game.highSpeed.toFixed(1)}`;
+  }
+  onPlayClick() {
+    if (!this.game.chartHowl) {
+      return;
+    }
+    if (this.game.chartHowl.playing(this.game.audioId.chartHowl)) {
+      this.game.chartHowl.pause(this.game.audioId.chartHowl);
+    }
+    else {
+      this.game.chartHowl.play(this.game.audioId.chartHowl);
+    }
   }
 }
