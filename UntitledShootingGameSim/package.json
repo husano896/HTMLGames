@@ -1,0 +1,14 @@
+{
+  "name": "untitled-shooting-game-s",
+  "version": "1.0.0",
+  "main": "scripts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xFly_Dragon",
+  "license": "WTFPL",
+  "description": "",
+  "devDependencies": {
+    "@types/howler": "^2.2.12"
+  }
+}

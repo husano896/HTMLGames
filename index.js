@@ -23,7 +23,7 @@ class Sprite_Ball {
     Game.ctx.arc(this.x, this.y, this.BALL_SIZE, 0, 2 * Math.PI);
     Game.ctx.fill();
   }
-  handle_border(groundX) {
+  handle_border(groundX, delta) {
     // 扣除圖片的高度後實際的容許Y軸位置
     const borderRight = groundX - this.BALL_SIZE;
     const borderLeft = this.BALL_SIZE;
@@ -31,9 +31,9 @@ class Sprite_Ball {
     if (this.vec_x > 0 && this.x >= borderRight || this.vec_x < 0 && this.x <= borderLeft) {
       this.vec_x = -this.vec_x;
     }
-    this.x += this.vec_x;
+    this.x += this.vec_x * delta;
   }
-  handle_gravity(groundY) {
+  handle_gravity(groundY, delta) {
     // 扣除圖片的高度後實際的容許Y軸位置
     const bottomY = groundY - this.BALL_SIZE;
     // 地板判定
@@ -43,8 +43,8 @@ class Sprite_Ball {
       return true;
     }
     // 重力判定
-    this.vec_y += this.gravity;
-    this.y += this.vec_y;
+    this.vec_y += this.gravity * delta;
+    this.y += this.vec_y  * delta;
     return false;
   }
 }
@@ -64,8 +64,9 @@ var game = class {
     // 場景初始化
     this.pressedKeys = {};
     this.balls = [];
+    this.lastTime = 0;
     // 根據現在時間決定球數量
-    for (var i = 0; i < new Date().getHours() * 5; i++) {
+    for (var i = 0; i < (new Date().getHours() +1)* 5; i++) {
       this.balls.push(new Sprite_Ball());
     }
 
@@ -86,16 +87,18 @@ var game = class {
   }
 
   // 更新畫布
-  update() {
+  update(timeNow) {
+    const delta = (timeNow - this.lastTime) / 16.66;
     // 設定畫布大小
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
-
-    for (var b of this.balls) {
-      b.handle_border(window.innerWidth);
-      b.handle_gravity(window.innerHeight);
+    for (const b of this.balls) {
+      b.handle_border(window.innerWidth, delta);
+      b.handle_gravity(window.innerHeight, delta);
       b.draw();
     }
+
+    this.lastTime = timeNow;
     window.requestAnimationFrame(this.update.bind(this));
   }
 
