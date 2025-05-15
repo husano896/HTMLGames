@@ -6,7 +6,7 @@ class _UIBase {
   constructor(game, parentContainer) {
     /** @type {UntitledShootingGame} */
     this.game = game;
-    this.createElement(parentContainer);
+    this.createElementAndAddToParent(parentContainer);
   }
   /**
    * 讀取需要載入的素材

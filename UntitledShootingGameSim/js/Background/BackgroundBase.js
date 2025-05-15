@@ -1,6 +1,7 @@
 class BackgroundBase {
   constructor() {
     this.frame = 0;
+
   }
 
   /**
@@ -11,17 +12,30 @@ class BackgroundBase {
       resolve();
     });
   }
+
+  appendStylesToHeader() {
+    /**
+     * @type {HTMLStyleElement}
+     */
+    let gameBgEl = document.head.querySelector('style#game-bg');
+    if (!gameBgEl) {
+      gameBgEl = document.createElement('style');
+      document.head.appendChild(gameBgEl);
+    }
+
+    gameBgEl.innerHTML = ``;
+  }
   /**
    * 
    * @param {HTMLElement} parentContainer 
    */
-  createElement(parentContainer) {
+  createElementAndAddToParent(parentContainer) {
     const el = document.createElement('div')
     el.style.position = 'absolute';
     el.style.width = '100%';
     el.style.height = '100%';
     el.style.contain = 'content';
-
+    
   }
   /**
    * 

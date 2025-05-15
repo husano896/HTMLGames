@@ -263,6 +263,9 @@ class UntitledChart {
     return _this;
   }
 
+  /**
+   * 計算譜面總Chain數並記錄後回傳
+   */
   calculateTotalChain() {
     const baseBPM = this.BPM[0];
     if (!baseBPM) {
@@ -272,12 +275,23 @@ class UntitledChart {
 
     this.totalChain = 0;
 
+    /** 
+     * @param {[number, number]} n
+     * */
     const buttonCalculator = (n) => {
+      // Chip
       if (n[1] === 0) {
         this.totalChain++;
         return;
       }
+      // Long
       this.totalChain += Math.floor(n / baseDivMs);
+    }
+    /** 
+    * @param {[number, number, number, boolean]} n
+    */
+    const laserCalculator = (n) => {
+
     }
     this.btA.forEach(buttonCalculator);
     this.btB.forEach(buttonCalculator)

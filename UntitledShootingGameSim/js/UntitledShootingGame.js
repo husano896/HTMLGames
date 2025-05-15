@@ -132,13 +132,15 @@ class UntitledShootingGame {
     this.textFillStyle.addColorStop(0, '#AAAAAA');
     this.textFillStyle.addColorStop(0.5, '#FFFFFF');
     this.textFillStyle.addColorStop(1, '#AAAAAA');
-
+    this.ctx.lineWidth = 1;
     /**
      * @type {UntitledChart}
      */
     this.chart = null;
 
     this.highSpeed = 3.0;
+
+    this.fixedTilt = null;
 
     //#region 事件聆聽
     document.addEventListener('focus', ev => ev.preventDefault());
@@ -163,7 +165,7 @@ class UntitledShootingGame {
  * 
  * @param {HTMLElement} parentContainer 
  */
-  createElement(parentContainer) {
+  createElementAndAddToParent(parentContainer) {
 
   }
   updateCamera() {
@@ -238,7 +240,7 @@ class UntitledShootingGame {
       const endTimePos = audioPos + seeTime;
       const baseBPM = this.chart.BPM[0][1];
       //#region 長鍵渲染
-      const longNoteFilter = note => note[1] && note[0] >= audioPos - note[1] && note[0] <= endTimePos + note[1]
+      const longNoteFilter = note => note[1] && note[0] >= audioPos - note[1]
       // 以變速將繪製的長Note分段
       const longSegmentsByNote = note => {
 
@@ -296,11 +298,13 @@ class UntitledShootingGame {
       // 若目前時間為 該節點位置與他至下個節點之中間時，繪製
       this.chart.laserL.forEach((note, index, arr) => {
 
-        if (!((note[0] >= audioPos && note[0] <= endTimePos) ||
-          (this.chart.laserL[index + 1] && (this.chart.laserL[index + 1][0] >= audioPos)))) {
+        const nextNote = this.chart.laserL[index + 1];
+        if (!nextNote) {
           return;
         }
-
+        if (note[0] > endTimePos || nextNote[0] < audioPos) {
+          return;
+        }
         // 不繪製結束節點
         if (note[2] === 2) {
           return;
@@ -309,7 +313,6 @@ class UntitledShootingGame {
         this.ctx.fillStyle = this.LaserLFillStyle
 
         const timeDiff = note[0] - audioPos;
-        const nextNote = this.chart.laserL[index + 1];
         const lengthToHeight = this.canvas.height * (nextNote[0] - note[0]) / seeTime;
 
         // 2x範圍標籤
@@ -373,8 +376,12 @@ class UntitledShootingGame {
 
       // 若目前時間為 該節點位置與他至下個節點之中間時，繪製
       this.chart.laserR.forEach((note, index, arr) => {
-        if (!((note[0] >= audioPos && note[0] <= endTimePos) ||
-          (this.chart.laserR[index + 1] && (this.chart.laserR[index + 1][0] >= audioPos)))) {
+
+        const nextNote = this.chart.laserR[index + 1];
+        if (!nextNote) {
+          return;
+        }
+        if (note[0] > endTimePos || nextNote[0] < audioPos) {
           return;
         }
 
@@ -386,7 +393,6 @@ class UntitledShootingGame {
         this.ctx.fillStyle = this.LaserRFillStyle;
 
         const timeDiff = note[0] - audioPos;
-        const nextNote = this.chart.laserR[index + 1];
         const lengthToHeight = this.canvas.height * (nextNote[0] - note[0]) / seeTime;
 
         // 2x範圍標籤
@@ -495,43 +501,68 @@ class UntitledShootingGame {
       btChipRenderer.bind(this)(this.chart.btD, 3)
 
       //#endregion 
-    }
 
-    const currentLaserLPos = this.currentLaserLPos;
-    const currentLaserRPos = this.currentLaserRPos;
 
-    // AUTO模式下跟隨旋鈕
-    if (true) {
+      const currentLaserLPos = this.currentLaserLPos;
+      const currentLaserRPos = this.currentLaserRPos;
+
+      // AUTO模式下跟隨旋鈕
+      if (true) {
+        if (currentLaserLPos[0] !== -1) {
+          this.cursorLPos = currentLaserLPos[0];
+        }
+
+        if (currentLaserRPos[0] !== -1) {
+          this.cursorRPos = currentLaserRPos[0];
+        }
+      }
+
+      this.ctx.strokeStyle = this.LaserLFillStyle;
+      this.ctx.lineWidth = 8;
+      // 若目前沒有左旋鈕，不顯示指標
       if (currentLaserLPos[0] !== -1) {
-        this.cursorLPos = currentLaserLPos[0];
+
+        const laserStartXPos = currentLaserLPos[2] ? 0 : this.canvas.width / 2 - this.images.lane.width / 2;
+        const laneWidth = (currentLaserLPos[2] ? this.images.lane.width * 2 : this.images.lane.width);
+        /** 繪製旋鈕位置 */
+        this.ctx.drawImage(this.images.cursorl,
+          laserStartXPos + (laneWidth - this.images.cursorl.width) * this.cursorLPos,
+          this.canvas.height - this.images.cursorl.height
+        );
+
+        this.ctx.beginPath();
+        /** 旋鈕外圈 */
+        this.ctx.arc(
+          laserStartXPos + (laneWidth) * this.cursorLPos,
+          this.canvas.height - this.images.cursorl.height,
+          this.images.cursorl.width * (1 - 0.2 * Math.sin(audioPos * this.BPM / 2000 / Math.PI)),
+          0, 2 * Math.PI);
+        this.ctx.stroke();
       }
 
+      this.ctx.strokeStyle = this.LaserRFillStyle;
+      // 若目前沒有右旋鈕，不顯示指標
       if (currentLaserRPos[0] !== -1) {
-        this.cursorRPos = currentLaserRPos[0];
+
+        const laserStartXPos = currentLaserRPos[2] ? 0 : this.canvas.width / 2 - this.images.lane.width / 2;
+        const laneWidth = (currentLaserRPos[2] ? this.images.lane.width * 2 : this.images.lane.width);
+
+        this.ctx.drawImage(this.images.cursorr,
+          laserStartXPos + (laneWidth - this.images.cursorr.width) * this.cursorRPos,
+          this.canvas.height - this.images.cursorr.height
+        );
+
+        this.ctx.beginPath();
+        /** 旋鈕外圈 */
+        this.ctx.arc(
+          laserStartXPos + (laneWidth) * this.cursorRPos,
+          this.canvas.height - this.images.cursorr.height,
+          this.images.cursorr.width * (1 - 0.2 * Math.sin(audioPos * this.BPM / 2000 / Math.PI)),
+          0, 2 * Math.PI);
+        this.ctx.stroke();
+        // 
       }
-    }
 
-    // 若目前沒有左旋鈕，不顯示指標
-    if (currentLaserLPos[0] !== -1) {
-
-      const laserStartXPos = currentLaserLPos[2] ? 0 : this.canvas.width / 2 - this.images.lane.width / 2;
-      const laneWidth = (currentLaserLPos[2] ? this.images.lane.width * 2 : this.images.lane.width);
-      /** 繪製旋鈕位置 */
-      this.ctx.drawImage(this.images.cursorl,
-        laserStartXPos + (laneWidth - this.images.cursorl.width) * this.cursorLPos,
-        this.canvas.height - this.images.cursorl.height
-      );
-    }
-    // 若目前沒有右旋鈕，不顯示指標
-    if (currentLaserRPos[0] !== -1) {
-
-      const laserStartXPos = currentLaserRPos[2] ? 0 : this.canvas.width / 2 - this.images.lane.width / 2;
-      const laneWidth = (currentLaserRPos[2] ? this.images.lane.width * 2 : this.images.lane.width);
-
-      this.ctx.drawImage(this.images.cursorr,
-        laserStartXPos + (laneWidth - this.images.cursorr.width) * this.cursorRPos,
-        this.canvas.height - this.images.cursorr.height
-      );
     }
     // filter
 
@@ -589,6 +620,9 @@ class UntitledShootingGame {
 
 
   getTilt() {
+    if (this.fixedTilt != null) {
+      return this.fixedTilt;
+    }
     const lp = this.currentLaserLPos;
     const l = lp[1] && lp[0] !== -1 ? lp[0] : 0;
     const rp = this.currentLaserRPos;
@@ -698,7 +732,7 @@ class UntitledShootingGame {
               format: file.name.slice(file.name.lastIndexOf('.') + 1)
             })
             console.log(this.chartHowl);
-            
+
 
             this.chartHowl.once('load', () => {
               console.log(ev);

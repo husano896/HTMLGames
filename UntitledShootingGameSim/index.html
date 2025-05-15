@@ -5,19 +5,83 @@
   <meta charset="utf-8">
   <title>low cost not shooting game sim</title>
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+  <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
   <link rel="stylesheet" href="styles.css">
 
+  <style>
+    div#game-root>#game-stage {
+      margin: auto;
+      height: 100%;
+      display: flex;
+      perspective-origin: center bottom;
+      perspective: 540px;
+      overflow: hidden;
+    }
+
+    div#game-root>#scene-play-UI {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      contain: content;
+      top: 0;
+    }
+  </style>
+  <style id="game-bg">
+    #game-stage-2 {
+      background: radial-gradient(circle at 50% 150%, #333, #333 70%, #eee 74%, #333 75%);
+      animation: 1s anim-game-bg-1 infinite ease-in;
+    }
+
+    #game-stage {
+      background:
+        radial-gradient(ellipse at top, rgb(3, 155, 229), transparent),
+        radial-gradient(ellipse at 25%, rgb(26, 35, 126), transparent);
+        animation-name: anim-game-bg-1;
+        animation-timing-function: ease-in-out;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+        background-position: center;
+    }
+
+    @keyframes anim-game-bg-1 {
+
+      0%,
+      to {
+        background-size: 100%;
+      }
+
+      50% {
+        background-size: 200%;
+      }
+    }
+
+    @keyframes anim-game-bg-2 {
+
+      0%,
+      to {
+        background: radial-gradient(circle at 50% 150%, #111, #333 70%, #eee 74%, #333 75%);
+      }
+
+      50% {
+        background: radial-gradient(circle at 50% 160%, #111, #333 70%, #eee 74%, #333 75%);
+
+      }
+    }
+  </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
 </head>
 
 <body>
   <div id="game-root" style="background-size: contain; width: 100%; height: 100%;">
-    <div style="margin: auto; height: 100%; display: flex; perspective-origin: center bottom; perspective: 540px; overflow: hidden;">
+    <div id="game-stage">
       <canvas width="1080" height="1920"
         style="width: 100%; height: 100%; object-fit: contain; transform: rotateX(15deg) rotateY(0deg) rotateZ(0deg);transform-origin: center top; transform-style: preserve-3d; transition: 0.166s linear;"></canvas>
     </div>
-    <div id="scene-play-UI"
-      style="position: absolute; width: 100%; height: 100%; z-index: 1;display: flex; flex-direction: column; contain: content; top: 0;">
+    <div id="scene-play-UI">
 
     </div>
   </div>

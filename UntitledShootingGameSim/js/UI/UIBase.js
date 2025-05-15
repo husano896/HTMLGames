@@ -10,7 +10,7 @@ class UIBase extends _UIBase {
    * 讀取需要載入的素材
    */
   loadAssets() {
-    return new Promise(async resolve => {
+    return new Promise(resolve => {
       resolve();
     });
   }
@@ -18,7 +18,7 @@ class UIBase extends _UIBase {
    * 
    * @param {HTMLElement} parentContainer 
    */
-  createElement(parentContainer) {
+  createElementAndAddToParent(parentContainer) {
     //#region 標題列
     const titleBarEl = document.createElement('div')
     titleBarEl.id = 'title-bar'
