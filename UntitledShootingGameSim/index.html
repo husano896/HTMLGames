@@ -15,7 +15,7 @@
       height: 100%;
       display: flex;
       perspective-origin: center bottom;
-      perspective: 540px;
+      perspective: 256px;
       overflow: hidden;
     }
 
@@ -73,24 +73,24 @@
     }
 
     .game-bg-arrow-left {
-      width: 100%;
-      height: 50%;
+      width: 50%;
+      height: auto;
       background-image: url(imgs/bg_arrow.png);
       background-repeat: repeat-x;
-      background-size: cover;
-
+      background-size: 200% 100%;
+      aspect-ratio: 2 / 1;
       transform-origin: left center;
 
       animation: 3s anim-game-bg-arrow linear infinite;
     }
 
     .game-bg-arrow-right {
-      width: 100%;
-      height: 50%;
+      width: 50%;
+      height: auto;
       background-image: url(imgs/bg_arrow.png);
       background-repeat: repeat-x;
-      background-size: cover;
-
+      background-size: 200% 100%;
+      aspect-ratio: 2 / 1;
       transform-origin: right center;
       animation: 3s anim-game-bg-arrow linear infinite;
     }
@@ -99,9 +99,9 @@
       0% {
         background-position: 0% center;
       }
+
       to {
         background-position: 200% center;
-        
       }
     }
   </style>
@@ -111,8 +111,9 @@
 <body>
   <div id="game-root" style="background-size: contain; width: 100%; height: 100%;">
     <div id="game-stage">
+      <!-- transform: perspective(256px) -->
       <div class="game-bg-arrow"
-        style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; flex-direction: row; justify-content: space-between; transform: perspective(256px) rotateX(-45deg); transform-style: preserve-3d;">
+        style="position: absolute; width: 200%; height: 25%; top: 0; left: 0; display: flex; flex-direction: row; justify-content: space-between; align-items: center; transform: translateX(-25%) translateY(-100%) rotateX(-90deg); transform-style: preserve-3d; perspective: 256px; perspective-origin: center; ">
         <!-- 左邊-->
         <div class="game-bg-arrow-left"
           style="transform: rotateX(0deg) rotateY(90deg) rotateZ(45deg) translateX(0%) translateY(50%);"></div>
@@ -123,7 +124,7 @@
         </div>
       </div>
       <canvas width="1080" height="1920"
-        style="width: 100%; height: 100%; object-fit: contain; transform: rotateX(15deg) rotateY(0deg) rotateZ(0deg);transform-origin: center top; transform-style: preserve-3d; transition: 0.166s linear;"></canvas>
+        style="width: 100%; height: 100%; object-fit: contain; transform-origin: center center; transform-style: preserve-3d; transition: 0.166s linear;"></canvas>
     </div>
     <div id="scene-play-UI">
 

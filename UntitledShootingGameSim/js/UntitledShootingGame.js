@@ -91,7 +91,7 @@ class UntitledShootingGame {
     */
     this.currentFrameTime = 0;
 
-    this.rotateX = 15;
+    this.rotateX = 22.5;
     this.rotateZ = 0;
 
     // 旋鈕渲染文字
