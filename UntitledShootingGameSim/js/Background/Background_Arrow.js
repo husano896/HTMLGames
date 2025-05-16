@@ -1,7 +1,6 @@
-class BackgroundBase {
+class Background_Arrow {
   constructor() {
     this.frame = 0;
-
   }
 
   /**
@@ -9,6 +8,7 @@ class BackgroundBase {
    */
   loadAssets() {
     return new Promise(async resolve => {
+      
       resolve();
     });
   }

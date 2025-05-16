@@ -40,11 +40,11 @@
       background:
         radial-gradient(ellipse at top, rgb(3, 155, 229), transparent),
         radial-gradient(ellipse at 25%, rgb(26, 35, 126), transparent);
-        animation-name: anim-game-bg-1;
-        animation-timing-function: ease-in-out;
-        animation-duration: 3s;
-        animation-iteration-count: infinite;
-        background-position: center;
+      animation-name: anim-game-bg-1;
+      animation-timing-function: ease-in-out;
+      animation-duration: 3s;
+      animation-iteration-count: infinite;
+      background-position: center;
     }
 
     @keyframes anim-game-bg-1 {
@@ -71,6 +71,39 @@
 
       }
     }
+
+    .game-bg-arrow-left {
+      width: 100%;
+      height: 50%;
+      background-image: url(imgs/bg_arrow.png);
+      background-repeat: repeat-x;
+      background-size: cover;
+
+      transform-origin: left center;
+
+      animation: 3s anim-game-bg-arrow linear infinite;
+    }
+
+    .game-bg-arrow-right {
+      width: 100%;
+      height: 50%;
+      background-image: url(imgs/bg_arrow.png);
+      background-repeat: repeat-x;
+      background-size: cover;
+
+      transform-origin: right center;
+      animation: 3s anim-game-bg-arrow linear infinite;
+    }
+
+    @keyframes anim-game-bg-arrow {
+      0% {
+        background-position: 0% center;
+      }
+      to {
+        background-position: 200% center;
+        
+      }
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
 </head>
@@ -78,6 +111,17 @@
 <body>
   <div id="game-root" style="background-size: contain; width: 100%; height: 100%;">
     <div id="game-stage">
+      <div class="game-bg-arrow"
+        style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: flex; flex-direction: row; justify-content: space-between; transform: perspective(256px) rotateX(-45deg); transform-style: preserve-3d;">
+        <!-- 左邊-->
+        <div class="game-bg-arrow-left"
+          style="transform: rotateX(0deg) rotateY(90deg) rotateZ(45deg) translateX(0%) translateY(50%);"></div>
+        <!-- 右邊-->
+
+        <div class="game-bg-arrow-right"
+          style="transform: rotateX(0deg) rotateY(90deg) rotateZ(45deg) translateX(100%) translateY(50%);">
+        </div>
+      </div>
       <canvas width="1080" height="1920"
         style="width: 100%; height: 100%; object-fit: contain; transform: rotateX(15deg) rotateY(0deg) rotateZ(0deg);transform-origin: center top; transform-style: preserve-3d; transition: 0.166s linear;"></canvas>
     </div>

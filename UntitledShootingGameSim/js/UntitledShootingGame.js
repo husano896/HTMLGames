@@ -108,22 +108,22 @@ class UntitledShootingGame {
     this.BTChipfillStyle.addColorStop(0.5, '#FAFAFA');
     this.BTChipfillStyle.addColorStop(1, '#FAFAFA');
 
-    this.FXfillStyle = this.ctx.createLinearGradient(0, 0, 180, 0);
+    this.FXfillStyle = this.ctx.createLinearGradient(0, 0, 1080, 0);
     this.FXfillStyle.addColorStop(0, '#FFA726AA');
     this.FXfillStyle.addColorStop(0.5, '#BF360CFF');
     this.FXfillStyle.addColorStop(1, '#FFA726AA');
 
-    this.FXChipfillStyle = this.ctx.createLinearGradient(0, 0, 180, 0);
+    this.FXChipfillStyle = this.ctx.createLinearGradient(0, 0, 1080, 0);
     this.FXChipfillStyle.addColorStop(0, '#FFA726');
     this.FXChipfillStyle.addColorStop(0.5, '#BF360C');
     this.FXChipfillStyle.addColorStop(1, '#FFA726');
 
-    this.LaserLFillStyle = this.ctx.createLinearGradient(0, 0, 90, 0);
+    this.LaserLFillStyle = this.ctx.createLinearGradient(0, 0, 1080, 0);
     this.LaserLFillStyle.addColorStop(0, '#42A5F5BB');
     this.LaserLFillStyle.addColorStop(0.5, '#1565C0FF');
     this.LaserLFillStyle.addColorStop(1, '#42A5F5BB');
 
-    this.LaserRFillStyle = this.ctx.createLinearGradient(0, 0, 90, 0);
+    this.LaserRFillStyle = this.ctx.createLinearGradient(0, 0, 1080, 0);
     this.LaserRFillStyle.addColorStop(0, '#EC407ABB');
     this.LaserRFillStyle.addColorStop(0.5, '#AD1457FF');
     this.LaserRFillStyle.addColorStop(1, '#EC407ABB');
