@@ -31,7 +31,7 @@ class UntitledShootingGame {
       * @public
     */
     this.ctx = canvas.getContext('2d')
-
+    console.log(this.ctx)
     /**
       * @type {{[imageName: string]: HTMLImageElement}}
       * @public
@@ -97,49 +97,102 @@ class UntitledShootingGame {
     // 旋鈕渲染文字
     this.ctx.font = "90px Arial Black";
     this.ctx.textAlign = 'center'
-
-    this.BTfillStyle = this.ctx.createLinearGradient(0, 0, 90, 0);
-    this.BTfillStyle.addColorStop(0, '#CFD8DC');
-    this.BTfillStyle.addColorStop(0.5, '#FAFAFA');
-    this.BTfillStyle.addColorStop(1, '#CFD8DC');
-
-    this.BTChipfillStyle = this.ctx.createLinearGradient(0, 0, 90, 0);
-    this.BTChipfillStyle.addColorStop(0, '#FAFAFA');
-    this.BTChipfillStyle.addColorStop(0.5, '#FAFAFA');
-    this.BTChipfillStyle.addColorStop(1, '#FAFAFA');
-
-    this.FXfillStyle = this.ctx.createLinearGradient(0, 0, 1080, 0);
-    this.FXfillStyle.addColorStop(0, '#FFA726AA');
-    this.FXfillStyle.addColorStop(0.5, '#BF360CFF');
-    this.FXfillStyle.addColorStop(1, '#FFA726AA');
-
-    this.FXChipfillStyle = this.ctx.createLinearGradient(0, 0, 1080, 0);
-    this.FXChipfillStyle.addColorStop(0, '#FFA726');
-    this.FXChipfillStyle.addColorStop(0.5, '#BF360C');
-    this.FXChipfillStyle.addColorStop(1, '#FFA726');
-
-    this.LaserLFillStyle = this.ctx.createLinearGradient(0, 0, 1080, 0);
-    this.LaserLFillStyle.addColorStop(0, '#42A5F5BB');
-    this.LaserLFillStyle.addColorStop(0.5, '#1565C0FF');
-    this.LaserLFillStyle.addColorStop(1, '#42A5F5BB');
-
-    this.LaserRFillStyle = this.ctx.createLinearGradient(0, 0, 1080, 0);
-    this.LaserRFillStyle.addColorStop(0, '#EC407ABB');
-    this.LaserRFillStyle.addColorStop(0.5, '#AD1457FF');
-    this.LaserRFillStyle.addColorStop(1, '#EC407ABB');
-
-    this.textFillStyle = this.ctx.createLinearGradient(0, 0, this.canvas.width, 0);
-    this.textFillStyle.addColorStop(0, '#AAAAAA');
-    this.textFillStyle.addColorStop(0.5, '#FFFFFF');
-    this.textFillStyle.addColorStop(1, '#AAAAAA');
     this.ctx.lineWidth = 1;
+
+    //#region 各按鍵渲染漸層
     /**
+     * 長BT漸層
+     * @type {CanvasGradient}
+     */
+    this.BTfillStyle = this.ctx.createLinearGradient(360, 0, 720, 0);
+    this.BTfillStyle.addColorStop(0, '#BDBDBD');
+    this.BTfillStyle.addColorStop(0.125, '#FAFAFA');
+    this.BTfillStyle.addColorStop(0.25, '#BDBDBD');
+    this.BTfillStyle.addColorStop(0.375, '#FAFAFA');
+    this.BTfillStyle.addColorStop(0.5, '#BDBDBD');
+    this.BTfillStyle.addColorStop(0.625, '#FAFAFA');
+    this.BTfillStyle.addColorStop(0.75, '#BDBDBD');
+    this.BTfillStyle.addColorStop(0.875, '#FAFAFA');
+    this.BTfillStyle.addColorStop(1, '#BDBDBD');
+
+    /**
+     * 短BT漸層
+     * @type {CanvasGradient}
+     */
+    this.BTChipfillStyle = this.ctx.createLinearGradient(360, 0, 720, 0);
+    this.BTChipfillStyle.addColorStop(0, '#BDBDBD');
+    this.BTChipfillStyle.addColorStop(0.125, '#FAFAFA');
+    this.BTChipfillStyle.addColorStop(0.25, '#BDBDBD');
+    this.BTChipfillStyle.addColorStop(0.375, '#FAFAFA');
+    this.BTChipfillStyle.addColorStop(0.5, '#BDBDBD');
+    this.BTChipfillStyle.addColorStop(0.625, '#FAFAFA');
+    this.BTChipfillStyle.addColorStop(0.75, '#BDBDBD');
+    this.BTChipfillStyle.addColorStop(0.875, '#FAFAFA');
+    this.BTChipfillStyle.addColorStop(1, '#BDBDBD');
+
+    /**
+     * 長FX漸層
+     * @type {CanvasGradient}
+     */
+    this.FXfillStyle = this.ctx.createLinearGradient(360, 0, 720, 0);
+    this.FXfillStyle.addColorStop(0, '#BF360CAA');
+    this.FXfillStyle.addColorStop(0.25, '#FFCC80FF');
+    this.FXfillStyle.addColorStop(0.5, '#BF360CAA');
+    this.FXfillStyle.addColorStop(0.75, '#FFCC80');
+    this.FXfillStyle.addColorStop(1, '#BF360CAA');
+
+    /**
+     * 短FX漸層
+     * @type {CanvasGradient}
+     */
+    this.FXChipfillStyle = this.ctx.createLinearGradient(360, 0, 720, 0);
+    this.FXChipfillStyle.addColorStop(0, '#FFA726AA');
+    this.FXChipfillStyle.addColorStop(0.25, '#BF360CFF');
+    this.FXChipfillStyle.addColorStop(0.5, '#FFA726AA');
+    this.FXChipfillStyle.addColorStop(0.75, '#BF360CFF');
+    this.FXChipfillStyle.addColorStop(1, '#FFA726AA');
+
+    /**
+     * 左旋鈕漸層
+     * @type {CanvasGradient}
+     */
+    this.LaserLFillStyle = this.ctx.createLinearGradient(0, 0, 1080, 0);
+    for (let i = 0; i <= 24; i++) {
+      this.LaserLFillStyle.addColorStop(i / 24, i % 2 == 0 ? '#1565C0BB' : '#42A5F5FF');
+    }
+
+    /**
+     * 右旋鈕漸層
+     * @type {CanvasGradient}
+     */
+    this.LaserRFillStyle = this.ctx.createLinearGradient(0, 0, 1080, 0);
+    for (let i = 0; i <= 24; i++) {
+      this.LaserRFillStyle.addColorStop(i / 24, i % 2 == 0 ? '#AD1457BB' : '#EC407AFF');
+    }
+
+    /**
+     * 文字渲染
+     * @type {string}
+     */
+    this.textFillStyle = '#FFF';
+    //#endregion
+
+    /**
+     * 譜面資訊
      * @type {UntitledChart}
      */
     this.chart = null;
 
+    /**
+     * 下落速度
+     * @type {number}
+     */
     this.highSpeed = 3.0;
 
+    /**
+     * 固定的傾斜角度
+     * @type {number | null}
+     */
     this.fixedTilt = null;
 
     //#region 事件聆聽
@@ -435,15 +488,19 @@ class UntitledShootingGame {
         }
         else {
           this.ctx.beginPath();
+          // 左下開始點
           this.ctx.moveTo(
             laserStartXPos + (laneWidth - 90) * note[1],
             this.canvas.height * (1 - timeDiff / seeTime));
+          // 右下
           this.ctx.lineTo(
             laserStartXPos + (laneWidth - 90) * note[1] + 90,
             this.canvas.height * (1 - timeDiff / seeTime));
+          // 右上
           this.ctx.lineTo(
             laserStartXPos + (laneWidth - 90) * nextNote[1] + 90,
             this.canvas.height * (1 - timeDiff / seeTime) - lengthToHeight);
+          // 左上
           this.ctx.lineTo(
             laserStartXPos + (laneWidth - 90) * nextNote[1],
             this.canvas.height * (1 - timeDiff / seeTime) - lengthToHeight);

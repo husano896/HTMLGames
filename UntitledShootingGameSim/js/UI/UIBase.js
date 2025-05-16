@@ -100,7 +100,54 @@ class UIBase extends _UIBase {
     metaAndScoreContainerEl.appendChild(metaContainer);
     titleBarEl.appendChild(metaAndScoreContainerEl);
     //#endregion
+
+    //#region 血條
+    const gaugeElContainer = document.createElement('div')
+    gaugeElContainer.style.display = 'flex';
+    gaugeElContainer.style.flexDirection = 'row';
+    gaugeElContainer.style.position = 'absolute';
+    gaugeElContainer.style.height = '50%';
+    gaugeElContainer.style.width = '64px';
+    gaugeElContainer.style.bottom = '25%';
+    gaugeElContainer.style.right = '10%';
+
+    const gaugeEl = document.createElement('div')
+    gaugeEl.style.background = 'linear-gradient(to bottom, #00000077 0% 50%, pink 50% 100%)';
+    gaugeEl.style.border = '6px solid #CFD8DC';
+    gaugeEl.style.height = '100%';
+    gaugeEl.style.minWidth = '32px';
+
+    const gaugeTextContainerEl = document.createElement('div')
+    gaugeTextContainerEl.style.display = 'flex';
+    gaugeTextContainerEl.style.flexDirection = 'column';
+    gaugeTextContainerEl.style.justifyContent = 'space-between';
+    gaugeTextContainerEl.style.width = '100%';
+    gaugeTextContainerEl.style.height = '100%';
+
+    const gaugeText = document.createElement('label')
+    gaugeText.style.background = '#CFD8DC';
+    gaugeText.style.rotate = '90deg';
+    gaugeText.style.fontWeight = 'bolder';
+    gaugeText.style.whiteSpace = 'nowrap';
+    gaugeText.innerText = 'EFFECTIVE RATE';
+
+    const gaugeDifficultyText = document.createElement('label')
+    gaugeDifficultyText.style.background = '#CFD8DC';
+    gaugeDifficultyText.style.rotate = '90deg';
+    gaugeDifficultyText.innerText = 'O O O O O';
+    gaugeDifficultyText.style.whiteSpace = 'nowrap';
+    gaugeDifficultyText.style.fontWeight = 'bolder';
+
+
+    gaugeTextContainerEl.appendChild(gaugeText);
+    gaugeTextContainerEl.appendChild(gaugeDifficultyText);
+
+    gaugeElContainer.appendChild(gaugeEl);
+    gaugeElContainer.appendChild(gaugeTextContainerEl);
     parentContainer.appendChild(titleBarEl);
+    parentContainer.appendChild(gaugeElContainer);
+
+    //#endregion
 
     //#region 事件聆聽
     this.songProgressEl.addEventListener('change', this.onProgressBarChange.bind(this))

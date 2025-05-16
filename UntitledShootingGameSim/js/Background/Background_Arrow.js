@@ -8,7 +8,7 @@ class Background_Arrow {
    */
   loadAssets() {
     return new Promise(async resolve => {
-      
+
       resolve();
     });
   }
@@ -23,13 +23,46 @@ class Background_Arrow {
       document.head.appendChild(gameBgEl);
     }
 
-    gameBgEl.innerHTML = ``;
+    gameBgEl.innerHTML = `
+        .game-bg-arrow-left {
+      width: 50%;
+      height: auto;
+      background-image: url(imgs/bg_arrow.png);
+      background-repeat: repeat-x;
+      background-size: 200% 100%;
+      aspect-ratio: 2 / 1;
+      transform-origin: left center;
+
+      animation: 3s anim-game-bg-arrow linear infinite;
+    }
+
+    .game-bg-arrow-right {
+      width: 50%;
+      height: auto;
+      background-image: url(imgs/bg_arrow.png);
+      background-repeat: repeat-x;
+      background-size: 200% 100%;
+      aspect-ratio: 2 / 1;
+      transform-origin: right center;
+      animation: 3s anim-game-bg-arrow linear infinite;
+    }
+
+    @keyframes anim-game-bg-arrow {
+      0% {
+        background-position: 0% center;
+      }
+
+      to {
+        background-position: 200% center;
+      }
+    }
+    `;
   }
   /**
    * 
    * @param {HTMLElement} parentContainer 
    */
-  createElementAndAddToParent(parentContainer) {    
+  createElementAndAddToParent(parentContainer) {
   }
   /**
    * 
