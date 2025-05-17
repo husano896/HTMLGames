@@ -57,6 +57,11 @@ class UIBase extends _UIBase {
     playContainer.appendChild(playPauseButton);
     this.playPauseButton = playPauseButton;
 
+    const optButton = document.createElement('button');
+    optButton.innerText = 'Options';
+    playContainer.appendChild(optButton);
+    this.optButton = optButton;
+
     const songProgressEl = document.createElement('input')
     songProgressEl.type = 'range'
     songProgressEl.min = 0;
@@ -154,6 +159,11 @@ class UIBase extends _UIBase {
 
     this.playPauseButton.addEventListener('click', this.onPlayClick.bind(this))
     // this.highSpeedRangeEl.addEventListener('change', this.onHighSpeedChange.bind(this));
+    this.optButton.addEventListener('click', () => this.game.Windows.find(f => {
+      if (f instanceof Window_Base) {
+        f.open();
+      }
+    }))
     //#endregion
   }
   /**
@@ -196,7 +206,7 @@ class UIBase extends _UIBase {
       this.songProgressEl.value = this.game.chartHowl.seek(this.game.audioId.chartHowl) * 1000;
     }
 
-    this.highSpeedEl.innerText = `x${this.game.highSpeed.toFixed(1)}`;
+    this.highSpeedEl.innerText = `x${this.game.highSpeed.toFixed(2)}`;
   }
 
   /**

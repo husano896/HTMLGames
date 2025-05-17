@@ -211,6 +211,10 @@ class UntitledShootingGame {
     this._onPostUpdate = [];
     //#region UI
     this.UI = new UIBase(this, document.querySelector('div#scene-play-UI'));
+
+    this.Windows = [
+      new Window_Base(this, document.querySelector('div#scene-play-UI'))
+    ];
     //#endregion
   }
 
@@ -228,6 +232,8 @@ class UntitledShootingGame {
     /* rotateY為旋鈕導致的左右傾斜 */
 
     this.canvas.style.transform = `rotateX(${this.rotateX}deg) rotateY(0deg) rotateZ(${this.getTilt()}deg)`;
+    const gameBgAarrow = document.querySelector('.game-bg-arrow');
+    gameBgAarrow.style.transform = `translateX(-25%) translateY(-100%) rotateX(${-150 + this.rotateX * 2.5}deg) rotateZ(${this.getTilt()}deg)`;
   }
 
   /**
@@ -576,6 +582,7 @@ class UntitledShootingGame {
 
       this.ctx.strokeStyle = this.LaserLFillStyle;
       this.ctx.lineWidth = 8;
+
       // 若目前沒有左旋鈕，不顯示指標
       if (currentLaserLPos[0] !== -1) {
 
@@ -587,14 +594,17 @@ class UntitledShootingGame {
           this.canvas.height - this.images.cursorl.height
         );
 
-        this.ctx.beginPath();
-        /** 旋鈕外圈 */
-        this.ctx.arc(
-          laserStartXPos + (laneWidth) * this.cursorLPos,
-          this.canvas.height - this.images.cursorl.height,
-          this.images.cursorl.width * (1 - 0.2 * Math.sin(audioPos * this.BPM / 2000 / Math.PI)),
-          0, 2 * Math.PI);
-        this.ctx.stroke();
+        if (currentLaserLPos[1]) {
+
+          this.ctx.beginPath();
+          /** 旋鈕外圈 */
+          this.ctx.arc(
+            laserStartXPos + (laneWidth) * this.cursorLPos,
+            this.canvas.height - this.images.cursorl.height,
+            this.images.cursorl.width * (1 - 0.2 * Math.sin(audioPos * this.BPM / 2000 / Math.PI)),
+            0, 2 * Math.PI);
+          this.ctx.stroke();
+        }
       }
 
       this.ctx.strokeStyle = this.LaserRFillStyle;
@@ -609,15 +619,18 @@ class UntitledShootingGame {
           this.canvas.height - this.images.cursorr.height
         );
 
-        this.ctx.beginPath();
-        /** 旋鈕外圈 */
-        this.ctx.arc(
-          laserStartXPos + (laneWidth) * this.cursorRPos,
-          this.canvas.height - this.images.cursorr.height,
-          this.images.cursorr.width * (1 - 0.2 * Math.sin(audioPos * this.BPM / 2000 / Math.PI)),
-          0, 2 * Math.PI);
-        this.ctx.stroke();
-        // 
+        if (currentLaserRPos[1]) {
+
+          this.ctx.beginPath();
+          /** 旋鈕外圈 */
+          this.ctx.arc(
+            laserStartXPos + (laneWidth) * this.cursorRPos,
+            this.canvas.height - this.images.cursorr.height,
+            this.images.cursorr.width * (1 - 0.2 * Math.sin(audioPos * this.BPM / 2000 / Math.PI)),
+            0, 2 * Math.PI);
+          this.ctx.stroke();
+          // 
+        }
       }
 
     }
@@ -859,7 +872,15 @@ class UntitledShootingGame {
     }
     return bpmNote;
   }
-
+  /**
+   * 取得目前旋鈕的應在位置
+   * @returns [
+   * 位置:number = (0.0~1.0 或ｰ1), 
+   * 
+   * 傾斜與判定是否生效: boolean, 
+   * 
+   * 出界: boolean ]
+   */
   get currentLaserLPos() {
 
     if (!this.chart) {
@@ -867,17 +888,25 @@ class UntitledShootingGame {
     }
 
     const endNoteIndex = this.chart.laserL.findIndex(l => l[0] >= this.songPos);
-    if (endNoteIndex <= 0) {
-      return [-1, false, false];
-    }
-    const startNoteIndex = endNoteIndex - 1;
-    const startNote = this.chart.laserL[startNoteIndex];
-    if (startNote[2] === 2) {
+    if (endNoteIndex < 0) {
       return [-1, false, false];
     }
     const endNote = this.chart.laserL[endNoteIndex];
+    const startNoteIndex = endNoteIndex - 1;
+    const startNote = this.chart.laserL[startNoteIndex];
+
+    //#region 旋鈕開始前的指標位置計算，出現時間為2拍前
+    if (endNote[0] - this.songPos <= 60000 / this.BPM * 2 && (!startNote || startNote[2] === 2)) {
+      return [endNote[1], false, endNote[3]]
+    } else if (endNoteIndex === 0) {
+      return [-1, false, false];
+    }
+    //#endregion
     const timeDiff = endNote[0] - startNote[0];
 
+    if (startNote[2] === 2) {
+      return [-1, false, false];
+    }
     return [
       // 位置
       (startNote[1] * (timeDiff + startNote[0] - this.songPos) + endNote[1] * (timeDiff + this.songPos - endNote[0])) / timeDiff,
@@ -888,23 +917,41 @@ class UntitledShootingGame {
     ]
   }
 
+  /**
+   * 取得目前旋鈕的應在位置
+   * @returns [
+   * 位置:number = (0.0~1.0 或ｰ1), 
+   * 
+   * 傾斜與判定是否生效: boolean, 
+   * 
+   * 出界: boolean ]
+   */
   get currentLaserRPos() {
 
     if (!this.chart) {
       return [-1, false, false];
     }
     const endNoteIndex = this.chart.laserR.findIndex(l => l[0] >= this.songPos);
-    if (endNoteIndex <= 0) {
-      return [-1, false, false];
-    }
-    const startNoteIndex = endNoteIndex - 1;
-    const startNote = this.chart.laserR[startNoteIndex];
-    if (startNote[2] === 2) {
+    if (endNoteIndex < 0) {
       return [-1, false, false];
     }
     const endNote = this.chart.laserR[endNoteIndex];
+    const startNoteIndex = endNoteIndex - 1;
+    const startNote = this.chart.laserR[startNoteIndex];
+    //#region 旋鈕開始前的指標位置計算，出現時間為2拍前
+    if (endNote[0] - this.songPos <= 60000 / this.BPM * 2 && (!startNote || startNote[2] === 2)) {
+      return [endNote[1], false, endNote[3]]
+    }
+    else if (endNoteIndex === 0) {
+      return [-1, false, false];
+    }
+    //#endregion
+
     const timeDiff = endNote[0] - startNote[0];
 
+    if (startNote[2] === 2) {
+      return [-1, false, false];
+    }
     return [
       // 位置
       (startNote[1] * (timeDiff + startNote[0] - this.songPos) + endNote[1] * (timeDiff + this.songPos - endNote[0])) / timeDiff,

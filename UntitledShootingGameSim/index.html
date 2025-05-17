@@ -42,7 +42,7 @@
         radial-gradient(ellipse at 25%, rgb(26, 35, 126), transparent);
       animation-name: anim-game-bg-1;
       animation-timing-function: ease-in-out;
-      animation-duration: 3s;
+      animation-duration: 1s;
       animation-iteration-count: infinite;
       background-position: center;
     }
@@ -75,24 +75,22 @@
     .game-bg-arrow-left {
       width: 50%;
       height: auto;
-      background-image: url(imgs/bg_wave.png);
       background-repeat: repeat-x;
       background-size: 200% 100%;
       aspect-ratio: 2 / 1;
       transform-origin: left center;
 
-      animation: 3s anim-game-bg-arrow linear infinite;
+      animation: 1s anim-game-bg-arrow linear infinite;
     }
 
     .game-bg-arrow-right {
       width: 50%;
       height: auto;
-      background-image: url(imgs/bg_wave.png);
       background-repeat: repeat-x;
       background-size: 200% 100%;
       aspect-ratio: 2 / 1;
       transform-origin: right center;
-      animation: 3s anim-game-bg-arrow linear infinite;
+      animation: 1s anim-game-bg-arrow linear infinite;
     }
 
     @keyframes anim-game-bg-arrow {
@@ -113,15 +111,16 @@
     <div id="game-stage">
       <!-- transform: perspective(256px) -->
       <div class="game-bg-arrow"
-        style="position: absolute; width: 200%; height: 25%; top: 0; left: 0; display: flex; flex-direction: row; justify-content: space-between; align-items: center; transform: translateX(-25%) translateY(-100%) rotateX(-90deg); transform-style: preserve-3d; perspective: 256px; perspective-origin: center; ">
+        style="position: absolute; width: 200%; height: 25%; top: 0; left: 0; display: flex; flex-direction: row; justify-content: space-between; align-items: center; transform: translateY(-100%) rotateX(-90deg); transform-origin: center; transform-style: preserve-3d; perspective: 256px; perspective-origin: center; transition: 0.166s linear;">
         <!-- 左邊-->
         <div class="game-bg-arrow-left"
-          style="transform: rotateX(0deg) rotateY(90deg) rotateZ(45deg) translateX(0%) translateY(50%);"></div>
-        <!-- 右邊-->
-
-        <div class="game-bg-arrow-right"
-          style="transform: rotateX(0deg) rotateY(90deg) rotateZ(45deg) translateX(100%) translateY(50%);">
+          style="transform: rotateX(0deg) rotateY(90deg) rotateZ(40deg) translateX(0%) translateY(50%); background-image: url(imgs/bg_wave.png);">
         </div>
+        <!-- 右邊-->
+        <div class="game-bg-arrow-right"
+          style="transform: rotateX(0deg) rotateY(90deg) rotateZ(40deg) translateX(100%) translateY(50%);background-image: url(imgs/bg_wave.png);">
+        </div>
+        <!-- RotateZ真的是44deg-->
       </div>
       <canvas width="1080" height="1920"
         style="width: 100%; height: 100%; object-fit: contain; transform-origin: center center; transform-style: preserve-3d; transition: 0.166s linear;"></canvas>
@@ -132,6 +131,7 @@
   </div>
   <script src="js/UI/_UIBase.js"></script>
   <script src="js/UI/UIBase.js"></script>
+  <script src="js/Window/Window_Base.js"></script>
   <script src="js/UntitledChart.js"></script>
   <script src="js/UntitledShootingGame.js"></script>
   <script>
