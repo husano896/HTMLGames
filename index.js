@@ -17,11 +17,15 @@ class Sprite_Ball {
     this.BALL_COLOR = `rgb(${random_color()} ,${random_color()},${random_color()})`;
   }
 
-  draw() {
-    Game.ctx.fillStyle = this.BALL_COLOR;
-    Game.ctx.beginPath();
-    Game.ctx.arc(this.x, this.y, this.BALL_SIZE, 0, 2 * Math.PI);
-    Game.ctx.fill();
+  /**
+   * 
+   * @param {Game} game 
+   */
+  draw(game) {
+    game.ctx.fillStyle = this.BALL_COLOR;
+    game.ctx.beginPath();
+    game.ctx.arc(this.x, this.y, this.BALL_SIZE, 0, 2 * Math.PI);
+    game.ctx.fill();
   }
   handle_border(groundX, delta) {
     // 扣除圖片的高度後實際的容許Y軸位置
@@ -49,18 +53,12 @@ class Sprite_Ball {
   }
 }
 
-var game = class {
+const Game = class {
 
   constructor() {
     // 掛載畫布
     this.initalizeCanvas();
-
-    // 掛載事件
-    this.canvas.addEventListener('click', this.onCanvasClick.bind(this));
-    this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
-    document.addEventListener('keydown', this.onKeyDown.bind(this));
-    document.addEventListener('keyup', this.onKeyUp.bind(this));
-
+    
     // 場景初始化
     this.pressedKeys = {};
     this.balls = [];
@@ -95,39 +93,11 @@ var game = class {
     for (const b of this.balls) {
       b.handle_border(window.innerWidth, delta);
       b.handle_gravity(window.innerHeight, delta);
-      b.draw();
+      b.draw(this);
     }
 
     this.lastTime = timeNow;
     window.requestAnimationFrame(this.update.bind(this));
-  }
-
-  // 畫布點擊事件
-  onCanvasClick(event) {
-    // console.log(event);
-    // this.playAudio(this.audio.snd_tada);
-  }
-  // 滑鼠移動事件
-  onMouseMove(event) {
-    //滑鼠請抓offsetX, offsetY
-    /*if (event.offsetX || event.offsetY) {
-      event.x = event.offsetX;
-      event.y = event.offsetY;
-    }*/
-  }
-
-  // 鍵盤點擊事件
-  onKeyDown(event) {
-    this.pressedKeys[event.code] = true;
-  }
-
-  onKeyUp(event) {
-    this.pressedKeys[event.code] = false;
-  }
-
-  // 取得是否已按下按鍵(包含壓著)
-  getPressed(key) {
-    return this.pressedKeys[key];
   }
 
   // 繪製文字
@@ -143,4 +113,4 @@ var game = class {
 
 }
 
-Game = new game();
+const game = new Game();
