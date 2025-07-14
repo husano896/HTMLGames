@@ -1,0 +1,35 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="google" value="notranslate">
+  <title>Gyroscope Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+  <div id="board"
+    style="width: 128px; height: 128px; background: linear-gradient(45deg, #ffffffff, #ccccccbb);border:1px solid gray;border-radius: 8px; position: absolute; left: 128px; top: 128px;">
+  </div>
+  <label id="test">label</label>
+  <script>
+    let gyroscope = new Gyroscope({ frequency: 60 });
+    let debugInfoLabel = document.querySelector('label#test')
+    let board = document.querySelector('div#board')
+    gyroscope.addEventListener("reading", (e) => {
+      console.log(`Angular velocity along the X-axis ${gyroscope.x}`);
+      console.log(`Angular velocity along the Y-axis ${gyroscope.y}`);
+      console.log(`Angular velocity along the Z-axis ${gyroscope.z}`);
+      debugInfoLabel.innerHTML = `x ${gyroscope.x}, y ${gyroscope.y} z ${gyroscope.z}`
+      board.style.boxShadow = `${gyroscope.x * 8}px ${gyroscope.y * 8}px 4px ${gyroscope.z * 8}px`;
+    });
+    gyroscope.start();
+    function start() {
+
+      gyroscope.start();
+    }
+  </script>
+  <button onclick="start()">
+    start
+  </button>
+</body>
