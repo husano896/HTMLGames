@@ -24,7 +24,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
 
     debugText: PIXI.Text = new PIXI.Text('');
 
-    lastPointerEvent: InteractionEvent;
+    lastPointerY: number = null;
     constructor() {
         super();
         const Bg = new Graphics();
@@ -35,6 +35,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
         this.addChild(Bg);
 
         this.sprVideo = Game.loader.resources.daisukeMeowMeow.animation;
+        // this.sprVideo.play();
         this.sprVideo.stop();
 
         this.sprVideo.anchor.set(0.5, 0.5);
@@ -43,7 +44,6 @@ export class Scene_DaisukeMeow extends MiniGameBase {
         this.sprVideo.y = GameConsts.HEIGHT / 2;
         this.on('pointerdown', this.onMouseDown.bind(this));
         this.on('pointermove', this.onMouseMove.bind(this));
-        this.on('pointerup', this.onMouseUp.bind(this));
         this.interactive = true;
         this.addChild(this.sprVideo);
         this.addChild(this.debugText);
@@ -54,36 +54,41 @@ export class Scene_DaisukeMeow extends MiniGameBase {
     }
 
     onMouseDown($event: InteractionEvent) {
-        this.lastPointerEvent = $event;
+        this.lastPointerY = ($event.data.originalEvent as PointerEvent).clientY;
     }
     onMouseMove($event: InteractionEvent) {
-        if (this.lastPointerEvent) {
-            
-        const newY = ($event.data.originalEvent as PointerEvent).clientY
-        const movementY = newY - (this.lastPointerEvent.data.originalEvent as PointerEvent).clientY;
-        this.debugText.text = `rev, ${this.reverse}, ${movementY}`;
-        if ((!this.reverse && movementY > 0) || (this.reverse && movementY < 0)) {
-            this.sprVideo.currentFrame = Math.max(0, Math.min(this.sprVideo.totalFrames - 1,
-                this.sprVideo.currentFrame + Math.abs(movementY)));
+        // console.log($event)
 
-            if (this.sprVideo.currentFrame >= this.sprVideo.totalFrames - 2 && this.reverse) {
-                // 已經做完向下又向上
-                this.reverse = false;
-                this.sprVideo.currentFrame = 0;
-                // 還沒過關才放音效 當然你可以繼續大助貓貓
-                if (!this.clearFlag) {
-                    $R.Audio.Success.play();
-                    this.clearFlag = true;
-                    this.addChild(new Effect_Flash());
+        const newY = ($event.data.originalEvent as PointerEvent).clientY
+        if (this.lastPointerY !== null) {
+            const movementY = this.lastPointerY - newY;
+            if (Math.abs(movementY) < 1) {
+                return;
+            }
+            this.debugText.text = `rev, ${this.reverse}, ${movementY}`;
+            if ((!this.reverse && movementY > 0) || (this.reverse && movementY < 0)) {
+                this.sprVideo.currentFrame = Math.round(
+                    Math.max(
+                        0, Math.min(this.sprVideo.totalFrames - 1,
+                            this.sprVideo.currentFrame + movementY)
+                    )
+                );
+                // console.log(movementY, this.sprVideo.currentFrame, this.sprVideo.totalFrames)
+                if (this.sprVideo.currentFrame <= 3 && this.reverse) {
+                    // 已經做完向下又向上
+                    this.reverse = false;
+                    this.sprVideo.currentFrame = 0;
+                    // 還沒過關才放音效 當然你可以繼續大助貓貓
+                    if (!this.clearFlag) {
+                        $R.Audio.Success.play();
+                        this.clearFlag = true;
+                        this.addChild(new Effect_Flash());
+                    }
+                } else if (this.sprVideo.currentFrame > this.reverseTime) {
+                    this.reverse = true;
                 }
-            } else if (this.sprVideo.currentFrame > this.reverseTime) {
-                this.reverse = true;
             }
         }
-        }
-        this.lastPointerEvent = $event;
-    }
-    onMouseUp($event: InteractionEvent) {
-        this.lastPointerEvent = null;
+        this.lastPointerY = newY;
     }
 }

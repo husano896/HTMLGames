@@ -40,52 +40,6 @@ class Effect_Flash extends pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container {
 
 /***/ }),
 
-/***/ 78:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Scene_Tetris1": () => (/* binding */ Scene_Tetris1)
-/* harmony export */ });
-/* harmony import */ var _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(59);
-/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(52);
-
-
-
-/**
- * 俄羅斯方塊PC挑戰
- * Lv1: 兩方塊
- * Lv2: 三方塊
- * Lv3: 四方塊且須旋轉
- */
-class Scene_Tetris1 extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameBase {
-    constructor() {
-        super();
-        // 過關方式：達成目標
-        this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.EClearMethod.TARGET;
-        // 小遊戲時間長度
-        this.timeLength = 4000;
-        // 目標文字
-        this.targetText = '';
-        const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Graphics();
-        Bg.beginFill(0xBBBBBB);
-        Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT);
-        Bg.endFill();
-        Bg.alpha = 1;
-        this.addChild(Bg);
-        this.interactive = true;
-    }
-    update(delta) {
-        super.update(delta);
-    }
-    onMouseDown() {
-    }
-}
-
-
-/***/ }),
-
 /***/ 74:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -287,6 +241,7 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
         // 改判定的時間點
         this.reverseTime = 50;
         this.debugText = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Text('');
+        this.lastPointerY = null;
         const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Graphics();
         Bg.beginFill(0xBBBBBB);
         Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT);
@@ -294,13 +249,13 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
         Bg.alpha = 0.5;
         this.addChild(Bg);
         this.sprVideo = _game__WEBPACK_IMPORTED_MODULE_4__["default"].loader.resources.daisukeMeowMeow.animation;
+        // this.sprVideo.play();
         this.sprVideo.stop();
         this.sprVideo.anchor.set(0.5, 0.5);
         this.sprVideo.x = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH / 2;
         this.sprVideo.y = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT / 2;
         this.on('pointerdown', this.onMouseDown.bind(this));
         this.on('pointermove', this.onMouseMove.bind(this));
-        this.on('pointerup', this.onMouseUp.bind(this));
         this.interactive = true;
         this.addChild(this.sprVideo);
         this.addChild(this.debugText);
@@ -309,16 +264,21 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
         super.update(delta);
     }
     onMouseDown($event) {
-        this.lastPointerEvent = $event;
+        this.lastPointerY = $event.data.originalEvent.clientY;
     }
     onMouseMove($event) {
-        if (this.lastPointerEvent) {
-            const newY = $event.data.originalEvent.clientY;
-            const movementY = newY - this.lastPointerEvent.data.originalEvent.clientY;
+        console.log($event);
+        const newY = $event.data.originalEvent.clientY;
+        if (this.lastPointerY !== null) {
+            const movementY = this.lastPointerY - newY;
+            if (Math.abs(movementY) < 1) {
+                return;
+            }
             this.debugText.text = `rev, ${this.reverse}, ${movementY}`;
             if ((!this.reverse && movementY > 0) || (this.reverse && movementY < 0)) {
-                this.sprVideo.currentFrame = Math.max(0, Math.min(this.sprVideo.totalFrames - 1, this.sprVideo.currentFrame + Math.abs(movementY)));
-                if (this.sprVideo.currentFrame >= this.sprVideo.totalFrames - 2 && this.reverse) {
+                this.sprVideo.currentFrame = Math.round(Math.max(0, Math.min(this.sprVideo.totalFrames - 1, this.sprVideo.currentFrame + movementY)));
+                console.log(movementY, this.sprVideo.currentFrame, this.sprVideo.totalFrames);
+                if (this.sprVideo.currentFrame <= 3 && this.reverse) {
                     // 已經做完向下又向上
                     this.reverse = false;
                     this.sprVideo.currentFrame = 0;
@@ -334,10 +294,7 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
                 }
             }
         }
-        this.lastPointerEvent = $event;
-    }
-    onMouseUp($event) {
-        this.lastPointerEvent = null;
+        this.lastPointerY = newY;
     }
 }
 
@@ -941,8 +898,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Rhythm_Scene_MaxmaClass__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(75);
 /* harmony import */ var _KMN_Scene_KuanKuan__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(76);
 /* harmony import */ var _KMN_Scene_KC__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(77);
-/* harmony import */ var _Brain_Scene_Tetris1__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(78);
-
 
 
 
@@ -960,7 +915,7 @@ const games = [
     _KMN_Scene_Caragua__WEBPACK_IMPORTED_MODULE_3__.Scene_Caragua100,
     _KMN_Scene_KuanKuan__WEBPACK_IMPORTED_MODULE_6__.Scene_KuanKuan,
     _KMN_Scene_KC__WEBPACK_IMPORTED_MODULE_7__.Scene_KC,
-    _Brain_Scene_Tetris1__WEBPACK_IMPORTED_MODULE_8__.Scene_Tetris1
+    // Scene_Tetris1
 ];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (games);
 
@@ -982,7 +937,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _resources__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(56);
 /* harmony import */ var _MiniGames__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(66);
 /* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(54);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(79);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(78);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_8__);
 
 

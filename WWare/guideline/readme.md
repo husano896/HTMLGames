@@ -22,7 +22,7 @@ Game categories are divided by "Brain", "Brainless", "Action", --"Furries"--, wi
 
 ex：顯示長得相像的四個角色，但只有其中一個角色長的與三者不同，目標為選出長得不同的角色。
 
-  
+
 ### 「無腦型」
 「無腦型」：通常只需按下按鍵一定次數即可過關，且幾乎無失敗條件。
 

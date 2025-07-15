@@ -44078,6 +44078,8 @@ const $R = {
         ME_game4: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/game4.mp3' }),
         // 輕快型：Flute
         ME_game5: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/game5.mp3' }),
+        // 俄羅斯方塊相關
+        ME_game6: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/game6.mp3' }),
         //
         SE_Nom: new howler__WEBPACK_IMPORTED_MODULE_0__.Howl({ src: 'audio/SEnom.mp3' }),
         //
