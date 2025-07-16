@@ -57,11 +57,11 @@ export class Scene_DaisukeMeow extends MiniGameBase {
         this.lastPointerY = ($event.data.originalEvent as PointerEvent).clientY;
     }
     onMouseMove($event: InteractionEvent) {
-        // console.log($event)
-
-        const newY = ($event.data.originalEvent as PointerEvent).clientY
+        console.log($event)
+        const newY = ($event.data.originalEvent as PointerEvent).layerY
         if (this.lastPointerY !== null) {
             const movementY = this.lastPointerY - newY;
+
             if (Math.abs(movementY) < 1) {
                 return;
             }

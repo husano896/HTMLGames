@@ -268,7 +268,7 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
     }
     onMouseMove($event) {
         console.log($event);
-        const newY = $event.data.originalEvent.clientY;
+        const newY = $event.data.originalEvent.layerY;
         if (this.lastPointerY !== null) {
             const movementY = this.lastPointerY - newY;
             if (Math.abs(movementY) < 1) {
@@ -277,7 +277,7 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
             this.debugText.text = `rev, ${this.reverse}, ${movementY}`;
             if ((!this.reverse && movementY > 0) || (this.reverse && movementY < 0)) {
                 this.sprVideo.currentFrame = Math.round(Math.max(0, Math.min(this.sprVideo.totalFrames - 1, this.sprVideo.currentFrame + movementY)));
-                console.log(movementY, this.sprVideo.currentFrame, this.sprVideo.totalFrames);
+                // console.log(movementY, this.sprVideo.currentFrame, this.sprVideo.totalFrames)
                 if (this.sprVideo.currentFrame <= 3 && this.reverse) {
                     // 已經做完向下又向上
                     this.reverse = false;
