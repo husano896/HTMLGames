@@ -46,7 +46,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
         this.on('pointermove', this.onMouseMove.bind(this));
         this.interactive = true;
         this.addChild(this.sprVideo);
-        this.addChild(this.debugText);
+        // this.addChild(this.debugText);
     }
 
     update(delta: number): void {
