@@ -1,6 +1,6 @@
 (self["webpackChunkwware"] = self["webpackChunkwware"] || []).push([[2],{
 
-/***/ 78:
+/***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* module decorator */ module = __webpack_require__.nmd(module);

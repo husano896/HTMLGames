@@ -10,7 +10,7 @@ export class Scene_KC extends MiniGameBase {
     // 過關方式：達成目標
     clearMethod = EClearMethod.TARGET;
     // 小遊戲時間長度
-    timeLength = 4000;
+    timeLength = 8000;
     // 目標文字
     targetText = '面向同一邊！';
     // BGM

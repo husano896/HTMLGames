@@ -220,7 +220,10 @@ export class Scene_Ready extends Scene {
         this.score++;
         this.BPM = Math.min(240, 120 + (Math.floor((this.score - 1) / 2)) * 8);
         const nextGameIndex: number = this.nextGameIndexs.shift();
-        this.nextGame = new MiniGameScenes[nextGameIndex];
+        // 等級 ＝ 周目數(分數 / 遊戲總數)
+        this.level = Math.floor(this.score / MiniGameScenes.length);
+
+        this.nextGame = new MiniGameScenes[nextGameIndex]({ level: this.level });
 
         this.nextGame.interactive = false;
         $R.Audio.ME_Midgame.rate(this.speed);
@@ -272,7 +275,7 @@ export class Scene_Ready extends Scene {
 
     onRetry() {
         this.lives = 4;
-        this.level = 1;
+        this.level = 0;
         this.BPM = 120;
         this.score = 0;
         this.restTimeLeft = RestTimeBase / 2;

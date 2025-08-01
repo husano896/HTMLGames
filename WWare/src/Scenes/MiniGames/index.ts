@@ -8,6 +8,7 @@ import { Scene_MaxmaClass } from './Rhythm/Scene_MaxmaClass';
 import { Scene_KuanKuan } from './KMN/Scene_KuanKuan';
 import { Scene_KC } from './KMN/Scene_KC';
 import { Scene_Tetris1 } from './Brain/Scene_Tetris1';
+import { Scene_CookFilm } from './KMN/Scene_CookFilm';
 const games: typeof MiniGameBase[] = [
     Scene_EscapeDragon,
     Scene_RotateEviat,
@@ -17,6 +18,7 @@ const games: typeof MiniGameBase[] = [
     Scene_Caragua100,
     Scene_KuanKuan,
     Scene_KC,
+    Scene_CookFilm
     // Scene_Tetris1
 ];
 

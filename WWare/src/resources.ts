@@ -33,7 +33,11 @@ const $R = {
     //
     SE_Nom: new Howl({ src: 'audio/SEnom.mp3' }),
     //
-    SE_Decision39: new Howl({ src: 'audio/decision39.mp3' })
+    SE_Decision39: new Howl({ src: 'audio/decision39.mp3' }),
+
+    // Fire from https://soundeffect-lab.info/sound/battle/
+    SE_Fire: new Howl({ src: 'audio/SEFire.mp3' }),
+    SE_HandClap: new Howl({ src: 'audio/SEHandclap.mp3' })
     //https://www.youtube.com/watch?v=PJ_QgB7bAnM
   },
   Image: {
@@ -80,7 +84,14 @@ const $R = {
 
     // KC
     KC1: 'imgs/KC/1.png',
-    KC2: 'imgs/KC/2.png'
+    KC2: 'imgs/KC/2.png',
+
+    // 烤雪豹！
+    CookFilmBG: 'imgs/CookFilm/bg.png',
+    CookFilm1: 'imgs/CookFilm/1.png',
+    CookFilm2: 'imgs/CookFilm/2.png',
+    CookFilm3: 'imgs/CookFilm/3.png',
+    CookFilmFire: 'imgs/CookFilm/fire.png',
   }
 }
 // 圖像處理部分
