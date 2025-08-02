@@ -34,6 +34,7 @@ export class Scene_KuanKuan extends MiniGameBase {
         this.sprKuan.x = GameConsts.WIDTH / 2;
         this.sprKuan.y = GameConsts.HEIGHT;
         this.addChild(this.sprKuan);
+
         // 食物容器
         this.foodsContainer = new Container();
         this.addChild(this.foodsContainer);
@@ -78,6 +79,7 @@ export class Scene_KuanKuan extends MiniGameBase {
                 // 變寬
                 this.sprKuan.texture = Texture.from($R.Image.KuangKuan2);
                 this.sprKuan.scale.x = 3;
+                
                 // BUFFET!
                 const buffet = Sprite.from(Texture.from($R.Image.KuangKuanBuffet));
                 buffet.anchor.set(0.5);

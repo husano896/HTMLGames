@@ -220,10 +220,10 @@ export class Scene_Ready extends Scene {
         this.score++;
         this.BPM = Math.min(240, 120 + (Math.floor((this.score - 1) / 2)) * 8);
         const nextGameIndex: number = this.nextGameIndexs.shift();
-        // 等級 ＝ 周目數(分數 / 遊戲總數)
-        this.level = Math.floor(this.score / MiniGameScenes.length);
+        // 等級 ＝ 周目數(分數 / 遊戲總數), 最高lv = 2 (1~3)
+        this.level = Math.min(2, Math.floor(this.score / MiniGameScenes.length));
 
-        this.nextGame = new MiniGameScenes[nextGameIndex]({ level: this.level });
+        this.nextGame = new MiniGameScenes[nextGameIndex]({ level: this.level, speed: this.speed });
 
         this.nextGame.interactive = false;
         $R.Audio.ME_Midgame.rate(this.speed);

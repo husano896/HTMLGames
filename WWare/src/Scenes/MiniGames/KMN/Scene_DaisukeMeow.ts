@@ -35,7 +35,6 @@ export class Scene_DaisukeMeow extends MiniGameBase {
         this.addChild(Bg);
 
         this.sprVideo = Game.loader.resources.daisukeMeowMeow.animation;
-        // this.sprVideo.play();
         this.sprVideo.stop();
 
         this.sprVideo.anchor.set(0.5, 0.5);
@@ -46,7 +45,6 @@ export class Scene_DaisukeMeow extends MiniGameBase {
         this.on('pointermove', this.onMouseMove.bind(this));
         this.interactive = true;
         this.addChild(this.sprVideo);
-        // this.addChild(this.debugText);
     }
 
     update(delta: number): void {
@@ -57,7 +55,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
         this.lastPointerY = ($event.data.originalEvent as PointerEvent).clientY;
     }
     onMouseMove($event: InteractionEvent) {
-        console.log($event)
+
         const newY = ($event.data.originalEvent as PointerEvent).layerY
         if (this.lastPointerY !== null) {
             const movementY = this.lastPointerY - newY;
@@ -65,7 +63,7 @@ export class Scene_DaisukeMeow extends MiniGameBase {
             if (Math.abs(movementY) < 1) {
                 return;
             }
-            this.debugText.text = `rev, ${this.reverse}, ${movementY}`;
+
             if ((!this.reverse && movementY > 0) || (this.reverse && movementY < 0)) {
                 this.sprVideo.currentFrame = Math.round(
                     Math.max(

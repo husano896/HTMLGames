@@ -97,6 +97,8 @@ export class Scene_CookFilm extends MiniGameBase {
 
         this.on('pointerdown', this.onMouseDown.bind(this));
         this.interactive = true;
+        $R.Audio.SE_Fire.rate(option.speed);
+        $R.Audio.SE_HandClap.rate(option.speed);
     }
 
     update(delta: number): void {

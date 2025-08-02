@@ -1,5 +1,5 @@
 import $R from '@/resources';
-import { EClearMethod, MiniGameBase } from '../MiniGameBase';
+import { EClearMethod, MiniGameBase, MiniGameOption } from '../MiniGameBase';
 
 import * as PIXI from 'pixi.js';
 import { Graphics, InteractionEvent } from 'pixi.js';
@@ -22,9 +22,11 @@ export class Scene_EscapeDragon extends MiniGameBase {
 
     // 嘎嗚吼的移動速度
     DraSpeed = 3;
+
     // 距離小於一定時判定為被抓到
-    CatchDistance = 32;
-    constructor() {
+    CatchDistance = 64;
+
+    constructor(option?: MiniGameOption) {
         super();
         const Bg = new Graphics();
         Bg.beginFill(0xBBBBFF);
@@ -44,6 +46,7 @@ export class Scene_EscapeDragon extends MiniGameBase {
         this.sprAnWolf.anchor.set(0.5);
         this.sprAnWolf.x = GameConsts.WIDTH / 2;
         this.sprAnWolf.y = GameConsts.HEIGHT / 2;
+        this.DraSpeed += option.level * 0.5;
         if (Math.random() > 0.5) {
             this.sprAnDra.y = Math.random() * GameConsts.HEIGHT;
         } else {

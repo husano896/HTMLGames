@@ -281,6 +281,8 @@ class Scene_CookFilm extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGame
         this.addChild(this.bg, this.film1, this.film2, this.film3, this.cookGauge, this.fire);
         this.on('pointerdown', this.onMouseDown.bind(this));
         this.interactive = true;
+        _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.SE_Fire.rate(option.speed);
+        _resources__WEBPACK_IMPORTED_MODULE_3__["default"].Audio.SE_HandClap.rate(option.speed);
     }
     update(delta) {
         super.update(delta);
@@ -375,7 +377,6 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
         Bg.alpha = 0.5;
         this.addChild(Bg);
         this.sprVideo = _game__WEBPACK_IMPORTED_MODULE_4__["default"].loader.resources.daisukeMeowMeow.animation;
-        // this.sprVideo.play();
         this.sprVideo.stop();
         this.sprVideo.anchor.set(0.5, 0.5);
         this.sprVideo.x = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH / 2;
@@ -384,7 +385,6 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
         this.on('pointermove', this.onMouseMove.bind(this));
         this.interactive = true;
         this.addChild(this.sprVideo);
-        // this.addChild(this.debugText);
     }
     update(delta) {
         super.update(delta);
@@ -393,14 +393,12 @@ class Scene_DaisukeMeow extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniG
         this.lastPointerY = $event.data.originalEvent.clientY;
     }
     onMouseMove($event) {
-        console.log($event);
         const newY = $event.data.originalEvent.layerY;
         if (this.lastPointerY !== null) {
             const movementY = this.lastPointerY - newY;
             if (Math.abs(movementY) < 1) {
                 return;
             }
-            this.debugText.text = `rev, ${this.reverse}, ${movementY}`;
             if ((!this.reverse && movementY > 0) || (this.reverse && movementY < 0)) {
                 this.sprVideo.currentFrame = Math.round(Math.max(0, Math.min(this.sprVideo.totalFrames - 1, this.sprVideo.currentFrame + movementY)));
                 // console.log(movementY, this.sprVideo.currentFrame, this.sprVideo.totalFrames)
@@ -446,7 +444,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Scene_EscapeDragon extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.MiniGameBase {
-    constructor() {
+    constructor(option) {
         super();
         // 過關方式：達成目標
         this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.EClearMethod.SURVIVE;
@@ -457,7 +455,7 @@ class Scene_EscapeDragon extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.Mini
         // 嘎嗚吼的移動速度
         this.DraSpeed = 3;
         // 距離小於一定時判定為被抓到
-        this.CatchDistance = 32;
+        this.CatchDistance = 64;
         const Bg = new pixi_js__WEBPACK_IMPORTED_MODULE_2__.Graphics();
         Bg.beginFill(0xBBBBFF);
         Bg.drawRect(0, 0, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH, _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT);
@@ -474,6 +472,7 @@ class Scene_EscapeDragon extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_1__.Mini
         this.sprAnWolf.anchor.set(0.5);
         this.sprAnWolf.x = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.WIDTH / 2;
         this.sprAnWolf.y = _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT / 2;
+        this.DraSpeed += option.level * 0.5;
         if (Math.random() > 0.5) {
             this.sprAnDra.y = Math.random() * _constants__WEBPACK_IMPORTED_MODULE_3__.GameConsts.HEIGHT;
         }
@@ -563,12 +562,12 @@ __webpack_require__.r(__webpack_exports__);
 
 /** 小卡-100 */
 class Scene_KC extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameBase {
-    constructor() {
+    constructor(option) {
         super();
         // 過關方式：達成目標
         this.clearMethod = _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.EClearMethod.TARGET;
         // 小遊戲時間長度
-        this.timeLength = 8000;
+        this.timeLength = 4000;
         // 目標文字
         this.targetText = '面向同一邊！';
         // BGM
@@ -582,7 +581,7 @@ class Scene_KC extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameBase {
         this.addChild(Bg);
         this.KCcontainer = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Container();
         // 設定KC
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 3 + option.level; i++) {
             const newKC = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.KC1));
             newKC.anchor.set(0.5);
             newKC.interactive = true;
@@ -593,8 +592,8 @@ class Scene_KC extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameBase {
         }
         // 若KC一直骰到同一邊，重骰
         while (this.KCcontainer.children.every(c => c.scale.x === this.KCcontainer.children[0].scale.x)) {
-            for (let i = 0; i < 5; i++) {
-                this.KCcontainer.children[i].scale.x = Math.random() > 0.5 ? 1 : -1;
+            for (const c of this.KCcontainer.children) {
+                c.scale.x = Math.random() > 0.5 ? 1 : -1;
             }
         }
         this.KCcontainer.pivot.set(0.5);
@@ -625,7 +624,7 @@ class Scene_KC extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGameBase {
         super.update(delta);
         // 過關
         if (this.clearFlag) {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < this.KCcontainer.children.length; i++) {
                 this.KCcontainer.children[i].y = _constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.HEIGHT / 2 + 128 + Math.sin(Math.PI / 2 * (this.frame + i * 200) / 250) * 64;
             }
             this.KCVictoryContainer.visible = true;
@@ -1233,9 +1232,9 @@ class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_4__.Scene {
         this.score++;
         this.BPM = Math.min(240, 120 + (Math.floor((this.score - 1) / 2)) * 8);
         const nextGameIndex = this.nextGameIndexs.shift();
-        // 等級 ＝ 周目數(分數 / 遊戲總數)
-        this.level = Math.floor(this.score / _MiniGames__WEBPACK_IMPORTED_MODULE_6__["default"].length);
-        this.nextGame = new _MiniGames__WEBPACK_IMPORTED_MODULE_6__["default"][nextGameIndex]({ level: this.level });
+        // 等級 ＝ 周目數(分數 / 遊戲總數), 最高lv = 2 (1~3)
+        this.level = Math.min(2, Math.floor(this.score / _MiniGames__WEBPACK_IMPORTED_MODULE_6__["default"].length));
+        this.nextGame = new _MiniGames__WEBPACK_IMPORTED_MODULE_6__["default"][nextGameIndex]({ level: this.level, speed: this.speed });
         this.nextGame.interactive = false;
         _resources__WEBPACK_IMPORTED_MODULE_5__["default"].Audio.ME_Midgame.rate(this.speed);
         _resources__WEBPACK_IMPORTED_MODULE_5__["default"].Audio.ME_Midgame.play();

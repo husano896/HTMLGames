@@ -1,16 +1,15 @@
-import { EClearMethod, MiniGameBase } from '../MiniGameBase';
-import { Graphics, Sprite, Texture, Text, Container } from 'pixi.js';
-import { $TextStyle, GameConsts } from '@/constants';
+import { EClearMethod, MiniGameBase, MiniGameOption } from '../MiniGameBase';
+import { Graphics, Sprite, Texture, Container } from 'pixi.js';
+import { GameConsts } from '@/constants';
 import { Howl } from 'howler';
 import $R from '@/resources';
-import $game from '@/game';
 
 /** 小卡-100 */
 export class Scene_KC extends MiniGameBase {
     // 過關方式：達成目標
     clearMethod = EClearMethod.TARGET;
     // 小遊戲時間長度
-    timeLength = 8000;
+    timeLength = 4000;
     // 目標文字
     targetText = '面向同一邊！';
     // BGM
@@ -22,7 +21,7 @@ export class Scene_KC extends MiniGameBase {
 
     kcL: Sprite;
     kcR: Sprite;
-    constructor() {
+    constructor(option?: MiniGameOption) {
         super();
         // 背景
         const Bg = new Graphics();
@@ -34,7 +33,7 @@ export class Scene_KC extends MiniGameBase {
 
         this.KCcontainer = new Container();
         // 設定KC
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 3 + option.level; i++) {
             const newKC = new Sprite(Texture.from($R.Image.KC1));
             newKC.anchor.set(0.5);
             newKC.interactive = true;
@@ -45,12 +44,14 @@ export class Scene_KC extends MiniGameBase {
         }
         // 若KC一直骰到同一邊，重骰
         while (this.KCcontainer.children.every(c => c.scale.x === this.KCcontainer.children[0].scale.x)) {
-            for (let i = 0; i < 5; i++) {
-                this.KCcontainer.children[i].scale.x = Math.random() > 0.5 ? 1 : -1;
+            for (const c of this.KCcontainer.children) {
+                c.scale.x = Math.random() > 0.5 ? 1 : -1;
             }
         }
+
         this.KCcontainer.pivot.set(0.5);
         this.KCcontainer.x = GameConsts.WIDTH / 2 - this.KCcontainer.width / 2;
+        
         // 過關KC
         this.addChild(this.KCcontainer);
 
@@ -80,7 +81,7 @@ export class Scene_KC extends MiniGameBase {
         super.update(delta);
         // 過關
         if (this.clearFlag) {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < this.KCcontainer.children.length; i++) {
                 this.KCcontainer.children[i].y = GameConsts.HEIGHT / 2 + 128 + Math.sin(Math.PI / 2 * (this.frame + i * 200) / 250) * 64;
             }
             this.KCVictoryContainer.visible = true;

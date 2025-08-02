@@ -14,6 +14,7 @@ export enum EClearMethod {
 // 可給予MiniGame目前的等級調整選項或視覺
 export interface MiniGameOption {
 	level?: number;
+	speed?: number;
 }
 
 export class MiniGameBase extends Scene {
