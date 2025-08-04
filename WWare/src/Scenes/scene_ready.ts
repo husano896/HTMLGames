@@ -165,7 +165,14 @@ export class Scene_Ready extends Scene {
             // 進入小遊戲的暖身時間
             if (this.restTimeLeft > 0) {
                 this.restTimeLeft -= delta;
+                this.currentGame.scale.set(Math.min(1, 1 - this.restTimeLeft ** 2 / 250000));
+                this.currentGame.x = GameConsts.WIDTH / 2 - this.currentGame.width / 2;
+                this.currentGame.y = GameConsts.HEIGHT / 2 - this.currentGame.height / 2;
                 return;
+            } else {
+                this.currentGame.scale.set(1);
+                this.currentGame.x = 0;
+                this.currentGame.y = 0;
             }
 
             this.currentGame.interactive = true;

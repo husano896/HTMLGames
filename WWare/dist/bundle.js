@@ -44135,6 +44135,10 @@ const $R = {
         CookFilm2: 'imgs/CookFilm/2.png',
         CookFilm3: 'imgs/CookFilm/3.png',
         CookFilmFire: 'imgs/CookFilm/fire.png',
+        // 接住掉落小卡
+        SadCheese: 'imgs/CaraguaCheese/sadCheese.png',
+        FallingCaragua: 'imgs/CaraguaCheese/fallingCaragua.png',
+        HugCaragua: 'imgs/CaraguaCheese/hugCaragua.png',
     }
 };
 // 圖像處理部分

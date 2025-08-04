@@ -27,6 +27,7 @@ export class Scene_Caragua100 extends MiniGameBase {
 
     bottom: number;
 
+    
     constructor() {
         super();
         // 背景

@@ -55,7 +55,7 @@ export class Scene_KuanKuan extends MiniGameBase {
             const newFood = new Sprite(Texture.from($R.Image.EatCake1));
             newFood.anchor.set(0.5, 1);
             newFood.scale.set(0.5);
-            newFood.x = Math.random() * (GameConsts.WIDTH - newFood.width / 2) + newFood.width / 2;
+            newFood.x = Math.random() * (GameConsts.WIDTH - newFood.width / 2);
             newFood.y = 0;
             this.foodsContainer.addChild(newFood);
         }
@@ -71,7 +71,8 @@ export class Scene_KuanKuan extends MiniGameBase {
                 bounds1.x < bounds2.x + bounds2.width
                 && bounds1.x + bounds1.width > bounds2.x
                 && bounds1.y < bounds2.y + bounds2.height
-                && bounds1.y + bounds1.height > bounds2.y
+                && bounds1.y + bounds1.height > bounds2.y &&
+                Math.abs(bounds1.x - bounds2.x) < bounds2.width / 2
             ) {
                 this.clearFlag = true;
                 $R.Audio.SE_Decision39.play();
@@ -79,7 +80,7 @@ export class Scene_KuanKuan extends MiniGameBase {
                 // 變寬
                 this.sprKuan.texture = Texture.from($R.Image.KuangKuan2);
                 this.sprKuan.scale.x = 3;
-                
+
                 // BUFFET!
                 const buffet = Sprite.from(Texture.from($R.Image.KuangKuanBuffet));
                 buffet.anchor.set(0.5);
