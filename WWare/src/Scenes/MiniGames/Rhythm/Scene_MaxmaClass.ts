@@ -47,7 +47,7 @@ export class Scene_MaxmaClass extends MiniGameBase {
 
         this.level = option.level;
 
-        //Buttons
+        //#region Buttons
         for (let i = 0; i < 4; i++) {
             const btn = new Graphics();
             btn.beginFill(0xFFFFFF);
@@ -61,6 +61,7 @@ export class Scene_MaxmaClass extends MiniGameBase {
         this.buttonsContainer.x = ($game.screen.width - this.buttonsContainer.width) / 2;
         this.buttonsContainer.y = $game.screen.height / 2 + 32;
         this.addChild(this.buttonsContainer);
+        //#endregion
 
         // Hint
         this.hintText = new Text('重複！', $TextStyle.GameText);
@@ -69,13 +70,12 @@ export class Scene_MaxmaClass extends MiniGameBase {
         this.hintText.y = $game.screen.height / 2 - 128;
         this.hintText.visible = false;
         this.addChild(this.hintText);
-        //
-        this.on('pointerup', this.onMouseUp.bind(this));
+
         this.interactive = true;
 
         switch (this.level) {
             case 1: {
-                this.answers = [1, 3, 0, 0, 0];
+                this.answers = [1, -1, 3, -1, 0, 0, 0];
                 break;
             }
             case 2: {
@@ -83,7 +83,7 @@ export class Scene_MaxmaClass extends MiniGameBase {
                 break;
             }
             default: {
-                this.answers = [0, 1, 2, 3]
+                this.answers = [0, -1, 1, -1, 2, -1, 3];
                 break;
             }
         }
@@ -98,73 +98,18 @@ export class Scene_MaxmaClass extends MiniGameBase {
             }
         });
 
-        switch (this.level) {
-            case 1: {
-                if (this.frame < 500) {
-                    this.buttonsContainer.children[1].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[1].alpha = 0.5;
-                } else if (this.frame > 1000 && this.frame < 1500) {
-                    this.buttonsContainer.children[3].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[3].alpha = 0.5;
-                } else if (this.frame > 2000 && this.frame < 2500) {
-                    this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[0].alpha = 0.5;
-                } else if (this.frame > 2500 && this.frame < 3000) {
-                    this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[0].alpha = 0.5;
-                } else if (this.frame > 3000 && this.frame < 3500) {
-                    this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[0].alpha = 0.5;
-                } else if (this.frame > 3500) {
-                    this.hintText.visible = true;
-                }
-                break;
+        if (this.frame <= 3500) {
+            const currentButtonIndex = Math.floor(this.frame / 500);
+            const currentButton = this.answers[currentButtonIndex];
+
+            if (currentButton > 0) {
+                this.buttonsContainer.children[currentButton].y = this.frame % 500 / 500 * 32;
+                this.buttonsContainer.children[currentButton].alpha = 0.5;
             }
-            case 2: {
-                if (this.frame < 500) {
-                    this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[0].alpha = 0.5;
-                } else if (this.frame < 1000) {
-                    this.buttonsContainer.children[1].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[1].alpha = 0.5;
-                } else if (this.frame < 1500) {
-                    this.buttonsContainer.children[2].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[2].alpha = 0.5;
-                } else if (this.frame < 2000) {
-                    this.buttonsContainer.children[3].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[3].alpha = 0.5;
-                } else if (this.frame < 2500) {
-                    this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[0].alpha = 0.5;
-                } else if (this.frame < 3000) {
-                    this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[0].alpha = 0.5;
-                } else if (this.frame < 3500) {
-                    this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[0].alpha = 0.5;
-                } else {
-                    this.hintText.visible = true;
-                }
-                break;
-            }
-            default: {
-                if (this.frame < 500) {
-                    this.buttonsContainer.children[0].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[0].alpha = 0.5;
-                } else if (this.frame > 1000 && this.frame < 1500) {
-                    this.buttonsContainer.children[1].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[1].alpha = 0.5;
-                } else if (this.frame > 2000 && this.frame < 2500) {
-                    this.buttonsContainer.children[2].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[2].alpha = 0.5;
-                } else if (this.frame > 3000 && this.frame < 3500) {
-                    this.buttonsContainer.children[3].y = this.frame % 500 / 500 * 32;
-                    this.buttonsContainer.children[3].alpha = 0.5;
-                } else if (this.frame > 3500) {
-                    this.hintText.visible = true;
-                }
-            }
+        } else {
+            this.hintText.visible = true;
         }
+
     }
 
     onMouseDown(btn: number) {
@@ -188,6 +133,10 @@ export class Scene_MaxmaClass extends MiniGameBase {
 
         this.buttonsContainer.children.forEach((b, index) => b.alpha = btn === index ? 0.5 : 1);
         this.pressedButtons.push(btn);
+        // 空拍在按的當下自動補齊
+        if (this.answers[this.pressedButtons.length] === -1) {
+            this.pressedButtons.push(-1);
+        }
         // 都按對了
         if (this.answers.length === this.pressedButtons.length) {
             this.clearFlag = true;
@@ -198,7 +147,4 @@ export class Scene_MaxmaClass extends MiniGameBase {
         }
     }
 
-    onMouseUp() {
-
-    }
 }

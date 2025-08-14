@@ -20,7 +20,6 @@ const games: typeof MiniGameBase[] = [
     Scene_KuanKuan,
     Scene_KC,
     Scene_CookFilm,
-   
     Scene_CaraguaCheese
 
      // Scene_Tetris1
