@@ -102,7 +102,7 @@ export class Scene_MaxmaClass extends MiniGameBase {
             const currentButtonIndex = Math.floor(this.frame / 500);
             const currentButton = this.answers[currentButtonIndex];
 
-            if (currentButton > 0) {
+            if (currentButton >= 0) {
                 this.buttonsContainer.children[currentButton].y = this.frame % 500 / 500 * 32;
                 this.buttonsContainer.children[currentButton].alpha = 0.5;
             }

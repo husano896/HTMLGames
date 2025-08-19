@@ -229,7 +229,7 @@ export class Scene_Ready extends Scene {
         const nextGameIndex: number = this.nextGameIndexs.shift();
         // 等級 ＝ 周目數(分數 / 遊戲總數), 最高lv = 2 (1~3)
         this.level = Math.min(2, Math.floor(this.score / MiniGameScenes.length));
-
+// (this.score - 1) % 3 
         this.nextGame = new MiniGameScenes[nextGameIndex]({ level: this.level, speed: this.speed });
 
         this.nextGame.interactive = false;

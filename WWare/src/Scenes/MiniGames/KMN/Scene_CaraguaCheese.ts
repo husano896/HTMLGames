@@ -50,7 +50,7 @@ export class Scene_CaraguaCheese extends MiniGameBase {
         this.sprCaragua = new Sprite(Texture.from($R.Image.FallingCaragua));
         this.sprCaragua.scale.set(0.5)
         this.sprCaragua.anchor.set(0.5, 0.5);
-        this.sprCaragua.x = Math.random() * (GameConsts.WIDTH - this.sprCaragua.width / 2) + this.sprCaragua.width / 2;
+        this.sprCaragua.x = Math.random() * (GameConsts.WIDTH - this.sprCaragua.width) + this.sprCaragua.width / 2;
         this.sprCaragua.y = 0;
         this.timeLeft = this.timeLength;
 
@@ -110,7 +110,7 @@ export class Scene_CaraguaCheese extends MiniGameBase {
             bg.endFill();
             bg.alpha = 0.0;
             (bg as any).update = (delta: number) => {
-                bg.alpha = Math.min(0.5, bg.alpha + delta / 1000);
+                bg.alpha = Math.min(0.25, bg.alpha + delta / 1000);
             }
             this.addChild(bg);
 

@@ -254,7 +254,7 @@ class Scene_CaraguaCheese extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.Min
         this.sprCaragua = new pixi_js__WEBPACK_IMPORTED_MODULE_1__.Sprite(pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.FallingCaragua));
         this.sprCaragua.scale.set(0.5);
         this.sprCaragua.anchor.set(0.5, 0.5);
-        this.sprCaragua.x = Math.random() * (_constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH - this.sprCaragua.width / 2) + this.sprCaragua.width / 2;
+        this.sprCaragua.x = Math.random() * (_constants__WEBPACK_IMPORTED_MODULE_2__.GameConsts.WIDTH - this.sprCaragua.width) + this.sprCaragua.width / 2;
         this.sprCaragua.y = 0;
         this.timeLeft = this.timeLength;
         this.level = option.level;
@@ -303,7 +303,7 @@ class Scene_CaraguaCheese extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.Min
             bg.endFill();
             bg.alpha = 0.0;
             bg.update = (delta) => {
-                bg.alpha = Math.min(0.5, bg.alpha + delta / 1000);
+                bg.alpha = Math.min(0.25, bg.alpha + delta / 1000);
             };
             this.addChild(bg);
             this.sprCheese.texture = pixi_js__WEBPACK_IMPORTED_MODULE_1__.Texture.from(_resources__WEBPACK_IMPORTED_MODULE_3__["default"].Image.HugCaragua);
@@ -1077,7 +1077,7 @@ class Scene_MaxmaClass extends _MiniGameBase__WEBPACK_IMPORTED_MODULE_0__.MiniGa
         if (this.frame <= 3500) {
             const currentButtonIndex = Math.floor(this.frame / 500);
             const currentButton = this.answers[currentButtonIndex];
-            if (currentButton > 0) {
+            if (currentButton >= 0) {
                 this.buttonsContainer.children[currentButton].y = this.frame % 500 / 500 * 32;
                 this.buttonsContainer.children[currentButton].alpha = 0.5;
             }
@@ -1360,6 +1360,7 @@ class Scene_Ready extends _scene__WEBPACK_IMPORTED_MODULE_4__.Scene {
         const nextGameIndex = this.nextGameIndexs.shift();
         // 等級 ＝ 周目數(分數 / 遊戲總數), 最高lv = 2 (1~3)
         this.level = Math.min(2, Math.floor(this.score / _MiniGames__WEBPACK_IMPORTED_MODULE_6__["default"].length));
+        // (this.score - 1) % 3 
         this.nextGame = new _MiniGames__WEBPACK_IMPORTED_MODULE_6__["default"][nextGameIndex]({ level: this.level, speed: this.speed });
         this.nextGame.interactive = false;
         _resources__WEBPACK_IMPORTED_MODULE_5__["default"].Audio.ME_Midgame.rate(this.speed);

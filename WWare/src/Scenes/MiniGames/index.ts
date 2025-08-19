@@ -22,7 +22,7 @@ const games: typeof MiniGameBase[] = [
     Scene_CookFilm,
     Scene_CaraguaCheese
 
-     // Scene_Tetris1
+    // Scene_Tetris1
 ];
 
 export default games;
